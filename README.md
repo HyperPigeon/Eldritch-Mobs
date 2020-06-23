@@ -4,9 +4,6 @@
 
 A port of Atomic Styker's Infernal Mobs for Fabric 1.16
 
-```
-./gradlew idea
-```
 
 ## License
 
