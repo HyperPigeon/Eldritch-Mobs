@@ -1,0 +1,297 @@
+package net.hyper_pigeon.eldritch_mobs.mixin;
+
+import jdk.internal.jline.internal.Nullable;
+import jdk.vm.ci.code.site.Call;
+import nerdhub.cardinal.components.api.component.ComponentProvider;
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
+import net.hyper_pigeon.eldritch_mobs.mod_components.modifiers.ModifierComponent;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.AttributeContainer;
+import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.ProjectileDamageSource;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.loot.LootTable;
+import net.minecraft.loot.LootTables;
+import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.tag.FluidTags;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.Final;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Random;
+
+@Mixin(LivingEntity.class)
+public abstract class LivingEntityMixin extends Entity implements ComponentProvider {
+    
+    //need to move some methods to MobEntityMixin
+
+    @Shadow
+    @Final
+    private DefaultedList<ItemStack> equippedArmor;
+
+    @Shadow
+    public native boolean hasStatusEffect(StatusEffect effect);
+
+    @Shadow
+    public native boolean addStatusEffect(StatusEffectInstance effect);
+
+    @Shadow
+    public native boolean teleport(double x, double y, double z, boolean particleEffects);
+
+    @Shadow
+    public native void sendEquipmentBreakStatus(EquipmentSlot slot);
+
+    @Shadow @Nullable
+    public abstract LivingEntity getAttacker();
+
+    @Shadow @Nullable public abstract LivingEntity getAttacking();
+
+    @Shadow public abstract boolean damage(DamageSource source, float amount);
+
+    @Shadow public abstract void setHealth(float health);
+
+    @Shadow public abstract float getHealth();
+
+    @Shadow protected abstract void applyDamage(DamageSource source, float amount);
+
+    @Shadow public native void heal(float amount);
+
+    @Shadow protected abstract net.minecraft.loot.context.LootContext.Builder
+    getLootContextBuilder(boolean causedByPlayer, DamageSource source);
+
+
+    @Shadow public abstract AttributeContainer getAttributes();
+
+    @Shadow public abstract double getAttributeBaseValue(EntityAttribute attribute);
+
+    @Shadow protected abstract Identifier getLootTable();
+
+    @Shadow @Final private static TrackedData<Boolean> POTION_SWIRLS_AMBIENT;
+    public ModifierComponent mods_container = new ModifierComponent();
+
+    public LivingEntityMixin(EntityType<?> type, World world) {
+        super(type, world);
+    }
+
+//    @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
+//    private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
+//        if(entityType != EntityType.PLAYER){
+//            EldritchMobsMod.rank(this);
+//            EldritchMobsMod.mods(this);
+//            if(EldritchMobsMod.isElite(this)){
+//                this.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 1000000000, 1));
+//            }
+//        }
+//    }
+//
+//    @Inject(at = @At("HEAD"), method = "tick")
+//    public void ability_try(CallbackInfo callback) {
+//        if (this.getType() != EntityType.PLAYER && EldritchMobsMod.isElite(this)) {
+//            EldritchMobsMod.useAbility(this);
+//        }
+//    }
+
+    private boolean teleportTo(double x, double y, double z) {
+        BlockPos.Mutable mutable = new BlockPos.Mutable(x, y, z);
+
+        while(mutable.getY() > 0 && !this.world.getBlockState(mutable).getMaterial().blocksMovement()) {
+            mutable.move(Direction.DOWN);
+        }
+
+        BlockState blockState = this.world.getBlockState(mutable);
+        boolean bl = blockState.getMaterial().blocksMovement();
+        boolean bl2 = blockState.getFluidState().matches(FluidTags.WATER);
+        if (bl && !bl2) {
+            boolean bl3 = this.teleport(x, y, z, false);
+            if (bl3 && !this.isSilent()) {
+                this.world.playSound(null, this.prevX, this.prevY, this.prevZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, this.getSoundCategory(), 1.0F, 1.0F);
+                this.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
+            }
+
+            return bl3;
+        } else {
+            return false;
+        }
+    }
+
+    protected boolean teleportRandomly() {
+        if (!this.world.isClient() && this.isAlive()) {
+            double d = this.getX() + (this.random.nextDouble() - 0.5D) * 25.0D;
+            double e = this.getY() + (double)(this.random.nextInt(64) - 32);
+            double f = this.getZ() + (this.random.nextDouble() - 0.5D) * 25.0D;
+            return this.teleportTo(d, e, f);
+        } else {
+            return false;
+        }
+    }
+
+    @Inject(at = @At("HEAD"), method = "onAttacking")
+    public void onAttackMods(Entity target, CallbackInfo info){
+        if(this.getType() != EntityType.PLAYER){
+            if(target instanceof LivingEntity){
+                if(EldritchMobsMod.hasMod(this, "lifesteal")) {
+                    LivingEntity livingTarget = (LivingEntity) target;
+                    this.heal(livingTarget.getMaxHealth() - livingTarget.getHealth());
+                }
+                if(EldritchMobsMod.hasMod(this, "rust")) {
+                    Random r = new Random();
+                    int randomInt_helmet = r.nextInt(100) + 1;
+                    int randomInt_chest = r.nextInt(100) + 1;
+                    int randomInt_leggings = r.nextInt(100) + 1;
+                    int randomInt_boots = r.nextInt(100) + 1;
+
+
+                    if(randomInt_helmet <= 10) {
+                        this.sendEquipmentBreakStatus(EquipmentSlot.HEAD);
+                        this.equipStack(EquipmentSlot.HEAD, ItemStack.EMPTY);
+                    }
+                    if(randomInt_chest <= 10) {
+                        this.sendEquipmentBreakStatus(EquipmentSlot.CHEST);
+                        this.equipStack(EquipmentSlot.CHEST, ItemStack.EMPTY);
+                    }
+                    if(randomInt_leggings <= 10) {
+                        this.sendEquipmentBreakStatus(EquipmentSlot.LEGS);
+                        this.equipStack(EquipmentSlot.LEGS, ItemStack.EMPTY);
+                    }
+                    if(randomInt_boots <= 10) {
+                        this.sendEquipmentBreakStatus(EquipmentSlot.FEET);
+                        this.equipStack(EquipmentSlot.FEET, ItemStack.EMPTY);
+                    }
+                }
+                if(EldritchMobsMod.hasMod(this, "yeeter")){
+                    LivingEntity livingTarget = (LivingEntity) target;
+                    livingTarget.addVelocity(0, 1.0, 0);
+                }
+            }
+        }
+    }
+
+
+
+    @Inject(at = @At("HEAD"), method = "damage", cancellable = true)
+    public void applyModifiers(DamageSource source, float amount, CallbackInfoReturnable<Boolean> callback) {
+        if(this.isAlive() && this != null && (this.getType() != EntityType.PLAYER)) {
+            Entity attacker = source.getAttacker();
+            LivingEntity the_attacker = this.getAttacker();
+            if(attacker != null) {
+                if((EldritchMobsMod.isElite(this)
+                        ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))) {
+                    if (EldritchMobsMod.hasMod(this, "beserk")) {
+                        this.applyDamage(source, amount);
+                    }
+                    if (EldritchMobsMod.hasMod(this, "deflector")) {
+                        if (amount >= 0.0F) {
+                            if (source instanceof ProjectileDamageSource) {
+                                ProjectileEntity projectileEntity = (ProjectileEntity) source.getSource();
+
+                                if (projectileEntity.getOwner() != null) {
+                                    Entity owner = projectileEntity.getOwner();
+                                    double targetX = owner.getX();
+                                    double targetY = owner.getY();
+                                    double targetZ = owner.getZ();
+
+                                    double entityX = this.getX();
+                                    double entityY = this.getY();
+                                    double entityZ = this.getZ();
+
+                                    double diffX = entityX - targetX;
+                                    double diffY = entityY - targetY;
+                                    double diffZ = entityZ - targetZ;
+
+                                    projectileEntity.setOwner(this);
+                                    projectileEntity.addVelocity(diffX, diffY, diffZ);
+                                } else {
+                                    projectileEntity.setOwner(this);
+                                    projectileEntity.setVelocity(10, projectileEntity.getVelocity().getY(), 10);
+                                }
+                                callback.setReturnValue(false);
+                            }
+                        }
+                    }
+                    if (EldritchMobsMod.hasMod(this, "ender")) {
+                        if (source instanceof ProjectileDamageSource) {
+                            for(int i = 0; i < 32; ++i) {
+                                if (this.teleportRandomly()) {
+                                    callback.setReturnValue(false);
+                                }
+                            }
+                        }
+                    }
+                    if (EldritchMobsMod.hasMod(this, "thorny")) {
+                        attacker.damage(DamageSource.MAGIC, amount/3);
+                    }
+                    if (EldritchMobsMod.hasMod(this, "toxic") && the_attacker != null) {
+                        the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 350, 0));
+                    }
+                    if (EldritchMobsMod.hasMod(this, "withering") && the_attacker != null) {
+                        the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 200, 0));
+                    }
+
+                    EldritchMobsMod.use_damageActivatedAbility(this, source, amount);
+
+                }
+            }
+
+        }
+    }
+
+    @Inject(at = @At("TAIL"), method = "dropLoot")
+    protected void dropEldritchLoot (DamageSource source, boolean causedByPlayer, CallbackInfo info) {
+        if(EldritchMobsMod.isElite(this)){
+            Identifier identifier = new Identifier("eldritch_mobs:entities/elite_loot");
+            LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
+            net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
+            lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+        }
+    }
+
+
+
+
+//    @Inject(at = @At("HEAD"), method = "damage", cancellable = true)
+//    public void EnderDodge(DamageSource source, float amount, CallbackInfoReturnable<Boolean> callback) {
+//        if(this.isAlive() && this != null && (this.getType() != EntityType.PLAYER)) {
+//            if (EldritchMobsMod.hasMod(this, "ender")) {
+//                if (source instanceof ProjectileDamageSource) {
+//                    for(int i = 0; i < 32; ++i) {
+//                        if (this.teleportRandomly()) {
+//                            callback.setReturnValue(false);
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+
+
+
+
+
+
+
+
+
+
+}

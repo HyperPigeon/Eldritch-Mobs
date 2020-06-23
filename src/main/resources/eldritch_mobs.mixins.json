@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.hyper_pigeon.eldritch_mobs.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "LivingEntityMixin",
+    "MobEntityMixin"
+  ],
+  "client": [
+    "ExampleMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

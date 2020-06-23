@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "eldritch_mobs",
+  "version": "${version}",
+
+  "name": "Eldritch Mobs",
+  "description": "A port of the Infernal Mobs mod",
+  "authors": [
+    "Hyper_Pigeon"
+  ],
+  "contact": {
+    "homepage": "https://github.com/HyperPigeon",
+    "sources": "https://github.com/HyperPigeon/Eldritch-Mobs"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/eldritch_mobs/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.hyper_pigeon.eldritch_mobs.EldritchMobsMod"
+    ]
+  },
+  "mixins": [
+    "eldritch_mobs.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
