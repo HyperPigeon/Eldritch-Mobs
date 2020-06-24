@@ -14,9 +14,8 @@
                 "sharpness",
                 "smite",
                 "bane_of_arthropods",
-                "knockback",
                 "fire_aspect",
-                "looting",
+                "knockback",
                 "sweeping"
               ]
             }
@@ -81,9 +80,8 @@
                 "sharpness",
                 "smite",
                 "bane_of_arthropods",
-                "knockback",
                 "fire_aspect",
-                "looting",
+                "knockback",
                 "sweeping"
               ]
             }
@@ -123,6 +121,72 @@
         {
           "type": "item",
           "name": "minecraft:iron_axe",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "enchant_randomly",
+              "enchantments": [
+                "sharpness",
+                "fire_aspect",
+                "efficiency",
+                "silk_touch",
+                "unbreaking"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_sword",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "enchant_randomly",
+              "enchantments": [
+                "sharpness",
+                "smite",
+                "bane_of_arthropods",
+                "fire_aspect",
+                "knockback",
+                "sweeping"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_shovel",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "enchant_randomly",
+              "enchantments": [
+                "efficiency",
+                "silk_touch",
+                "unbreaking"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_pickaxe",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "enchant_randomly",
+              "enchantments": [
+                "efficiency",
+                "silk_touch",
+                "unbreaking",
+                "fortune"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_axe",
           "weight": 1,
           "functions": [
             {

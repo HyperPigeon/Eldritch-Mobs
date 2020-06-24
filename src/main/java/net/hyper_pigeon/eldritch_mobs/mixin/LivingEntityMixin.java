@@ -1,22 +1,15 @@
 package net.hyper_pigeon.eldritch_mobs.mixin;
 
 import jdk.internal.jline.internal.Nullable;
-import jdk.vm.ci.code.site.Call;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
-import net.hyper_pigeon.eldritch_mobs.mod_components.modifiers.ModifierComponent;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.AttributeContainer;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.ProjectileDamageSource;
-import net.minecraft.entity.data.TrackedData;
-import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.ProjectileEntity;
@@ -43,15 +36,11 @@ import java.util.Random;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ComponentProvider {
-    
-    //need to move some methods to MobEntityMixin
+
 
     @Shadow
     @Final
     private DefaultedList<ItemStack> equippedArmor;
-
-    @Shadow
-    public native boolean hasStatusEffect(StatusEffect effect);
 
     @Shadow
     public native boolean addStatusEffect(StatusEffectInstance effect);
@@ -65,13 +54,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     @Shadow @Nullable
     public abstract LivingEntity getAttacker();
 
-    @Shadow @Nullable public abstract LivingEntity getAttacking();
-
     @Shadow public abstract boolean damage(DamageSource source, float amount);
-
-    @Shadow public abstract void setHealth(float health);
-
-    @Shadow public abstract float getHealth();
 
     @Shadow protected abstract void applyDamage(DamageSource source, float amount);
 
@@ -81,36 +64,9 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     getLootContextBuilder(boolean causedByPlayer, DamageSource source);
 
 
-    @Shadow public abstract AttributeContainer getAttributes();
-
-    @Shadow public abstract double getAttributeBaseValue(EntityAttribute attribute);
-
-    @Shadow protected abstract Identifier getLootTable();
-
-    @Shadow @Final private static TrackedData<Boolean> POTION_SWIRLS_AMBIENT;
-    public ModifierComponent mods_container = new ModifierComponent();
-
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
-
-//    @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
-//    private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
-//        if(entityType != EntityType.PLAYER){
-//            EldritchMobsMod.rank(this);
-//            EldritchMobsMod.mods(this);
-//            if(EldritchMobsMod.isElite(this)){
-//                this.addStatusEffect(new StatusEffectInstance(StatusEffects.NIGHT_VISION, 1000000000, 1));
-//            }
-//        }
-//    }
-//
-//    @Inject(at = @At("HEAD"), method = "tick")
-//    public void ability_try(CallbackInfo callback) {
-//        if (this.getType() != EntityType.PLAYER && EldritchMobsMod.isElite(this)) {
-//            EldritchMobsMod.useAbility(this);
-//        }
-//    }
 
     private boolean teleportTo(double x, double y, double z) {
         BlockPos.Mutable mutable = new BlockPos.Mutable(x, y, z);
@@ -264,34 +220,18 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
             net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
             lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
         }
+        if(EldritchMobsMod.isUltra(this)){
+            Identifier identifier = LootTables.SHIPWRECK_TREASURE_CHEST;
+            LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
+            net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
+            lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+        }
+        if(EldritchMobsMod.isEldritch(this)){
+            Identifier identifier = LootTables.END_CITY_TREASURE_CHEST;
+            LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
+            net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
+            lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+        }
     }
-
-
-
-
-//    @Inject(at = @At("HEAD"), method = "damage", cancellable = true)
-//    public void EnderDodge(DamageSource source, float amount, CallbackInfoReturnable<Boolean> callback) {
-//        if(this.isAlive() && this != null && (this.getType() != EntityType.PLAYER)) {
-//            if (EldritchMobsMod.hasMod(this, "ender")) {
-//                if (source instanceof ProjectileDamageSource) {
-//                    for(int i = 0; i < 32; ++i) {
-//                        if (this.teleportRandomly()) {
-//                            callback.setReturnValue(false);
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-
-
-
-
-
-
-
-
-
 
 }

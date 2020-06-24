@@ -17,7 +17,7 @@ public class EldritchMobsMod implements ModInitializer {
 
 	public static final ComponentType<ModifierInterface> ELDRITCH_MODIFIERS =
 			ComponentRegistry.INSTANCE.registerIfAbsent(new Identifier("eldritch_mobs:eldritch_modifiers"), ModifierInterface.class)
-			.attach(EntityComponentCallback.event(LivingEntity.class), entity -> new ModifierComponent());
+			.attach(EntityComponentCallback.event(LivingEntity.class), ModifierComponent::new);
 
 //	public static final ComponentType<HealthInterface> HEALTH_MODIFIERS =
 //			ComponentRegistry.INSTANCE.registerIfAbsent(new Identifier("eldritch_mobs:health_modifiers"), HealthInterface.class)
