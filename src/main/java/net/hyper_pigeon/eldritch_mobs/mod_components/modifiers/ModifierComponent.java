@@ -127,7 +127,7 @@ public class ModifierComponent implements ModifierInterface {
         if(!rank_decided) {
             Random random = new Random();
             int random_int_one = random.nextInt(10) + 1;
-            if (random_int_one >= 1) {
+            if (random_int_one == 1) {
                 is_elite = true;
                 int random_int_two = random.nextInt(10) + 1;
                 if (random_int_two <= 2) {
