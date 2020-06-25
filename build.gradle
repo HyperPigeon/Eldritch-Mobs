@@ -28,9 +28,9 @@ dependencies {
 	//Fabric api
 	modImplementation "net.fabricmc.fabric-api:fabric-api:0.13.1+build.370-1.16"
 
-	modApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.4.0-nightly.1.16-rc1.build.2"
+	modApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.4.0"
 
-	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.4.0-nightly.1.16-rc1.build.2"
+	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.4.0"
 
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
