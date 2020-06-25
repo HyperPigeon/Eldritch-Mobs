@@ -26,5 +26,12 @@ public interface ModifierInterface extends Component {
 
     boolean isUltra();
 
+    void setIs_elite(boolean bool);
+
+    void setIs_ultra(boolean bool);
+
+    void setIs_eldritch(boolean bool);
+
+
 
 }

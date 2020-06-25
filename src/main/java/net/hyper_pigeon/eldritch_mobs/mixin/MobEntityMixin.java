@@ -45,6 +45,7 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
     @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
     private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
         if(!EldritchMobsMod.get_mod_list(this).equals("")){
+            //System.out.println(EldritchMobsMod.get_mod_list(this));
             this.setCustomName(new TranslatableText(EldritchMobsMod.get_mod_list(this), new Object[0]));
             this.setCustomNameVisible(true);
         }

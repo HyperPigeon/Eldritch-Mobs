@@ -72,7 +72,7 @@ public class ModifierComponent implements ModifierInterface {
         mods_hashmap.put("alchemist", new AlchemyComponent());
         mods_hashmap.put("beserk", new BeserkComponent());
         mods_hashmap.put("blinding", new BlindingComponent());
-        mods_hashmap.put("burning", new BlindingComponent());
+        mods_hashmap.put("burning", new BurningComponent());
         mods_hashmap.put("cloaked",new CloakedComponent());
         mods_hashmap.put("draining",new DrainingComponent());
         mods_hashmap.put("drowning",new DrowningComponent());
@@ -127,7 +127,7 @@ public class ModifierComponent implements ModifierInterface {
         if(!rank_decided) {
             Random random = new Random();
             int random_int_one = random.nextInt(10) + 1;
-            if (random_int_one == 1) {
+            if (random_int_one >= 1) {
                 is_elite = true;
                 int random_int_two = random.nextInt(10) + 1;
                 if (random_int_two <= 2) {

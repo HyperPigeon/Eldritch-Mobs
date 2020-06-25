@@ -18,7 +18,7 @@ public class WeaknessComponent implements ModifierInterface {
         if(entity.getTarget() != null) {
             long time = entity.getEntityWorld().getTime();
             if (time > nextAbilityUse) {
-                nextAbilityUse = time + nextAbilityUse;
+                nextAbilityUse = time + cooldown;
                 entity.getTarget().addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 175, 0));
             }
         }
@@ -62,6 +62,21 @@ public class WeaknessComponent implements ModifierInterface {
     @Override
     public boolean isUltra() {
         return false;
+    }
+
+    @Override
+    public void setIs_elite(boolean bool) {
+
+    }
+
+    @Override
+    public void setIs_ultra(boolean bool) {
+
+    }
+
+    @Override
+    public void setIs_eldritch(boolean bool) {
+
     }
 
     @Override

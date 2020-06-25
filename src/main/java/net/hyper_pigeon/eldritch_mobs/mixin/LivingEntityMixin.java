@@ -77,7 +77,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
 
         BlockState blockState = this.world.getBlockState(mutable);
         boolean bl = blockState.getMaterial().blocksMovement();
-        boolean bl2 = blockState.getFluidState().matches(FluidTags.WATER);
+        boolean bl2 = blockState.getFluidState().isIn(FluidTags.WATER);
         if (bl && !bl2) {
             boolean bl3 = this.teleport(x, y, z, false);
             if (bl3 && !this.isSilent()) {

@@ -76,6 +76,21 @@ public class StormyComponent implements ModifierInterface {
     }
 
     @Override
+    public void setIs_elite(boolean bool) {
+
+    }
+
+    @Override
+    public void setIs_ultra(boolean bool) {
+
+    }
+
+    @Override
+    public void setIs_eldritch(boolean bool) {
+
+    }
+
+    @Override
     public void fromTag(CompoundTag compoundTag) {
 
     }
