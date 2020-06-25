@@ -13,6 +13,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.SkeletonEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -57,7 +58,7 @@ public class ModifierComponent implements ModifierInterface {
     public ArrayList<String> ranged_mobs_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
             "resistant", "snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
-            "withering"));
+            "withering","sniper"));
 
     public ArrayList<String> creeper_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
@@ -65,7 +66,7 @@ public class ModifierComponent implements ModifierInterface {
             "withering"));
 
     private ArrayList<String> alt_activated_mods = new ArrayList<>(Arrays.asList("yeeter", "deflector","rust","ender","lifesteal","one_up","thorny","toxic",
-            "withering"));
+            "withering","sniper"));
 
     private HashMap<String, ModifierInterface> mods_hashmap = new HashMap<>();
     {
@@ -163,8 +164,9 @@ public class ModifierComponent implements ModifierInterface {
     }
 
     public void setMods() {
-        if(mob instanceof RangedAttackMob) {
-            if (is_elite) {
+        if(is_elite) {
+            if (mob instanceof RangedAttackMob) {
+                modifier_list.clear();
                 for (int i = 0; i < 4; i++) {
                     String random_mod = ranged_mobs_mods.get(new Random().nextInt(mods.size()));
                     ranged_mobs_mods.remove(random_mod);
@@ -185,10 +187,8 @@ public class ModifierComponent implements ModifierInterface {
                         }
                     }
                 }
-            }
-        }
-        else if(mob instanceof CreeperEntity){
-            if (is_elite) {
+            } else if (mob instanceof CreeperEntity) {
+                modifier_list.clear();
                 for (int i = 0; i < 4; i++) {
                     String random_mod = creeper_mods.get(new Random().nextInt(mods.size()));
                     creeper_mods.remove(random_mod);
@@ -200,7 +200,6 @@ public class ModifierComponent implements ModifierInterface {
                         creeper_mods.remove(random_mod);
                         modifier_list.add(random_mod);
                     }
-
                     if (is_eldritch) {
                         for (int i = 0; i < 4; i++) {
                             String random_mod = creeper_mods.get(new Random().nextInt(mods.size()));
@@ -209,10 +208,8 @@ public class ModifierComponent implements ModifierInterface {
                         }
                     }
                 }
-            }
-        }
-        else {
-            if (is_elite) {
+            } else {
+                modifier_list.clear();
                 for (int i = 0; i < 4; i++) {
                     String random_mod = mods.get(new Random().nextInt(mods.size()));
                     mods.remove(random_mod);

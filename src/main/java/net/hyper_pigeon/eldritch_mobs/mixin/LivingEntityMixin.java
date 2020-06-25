@@ -1,6 +1,5 @@
 package net.hyper_pigeon.eldritch_mobs.mixin;
 
-import jdk.internal.jline.internal.Nullable;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.minecraft.block.BlockState;
@@ -51,7 +50,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     @Shadow
     public native void sendEquipmentBreakStatus(EquipmentSlot slot);
 
-    @Shadow @Nullable
+    @Shadow
     public abstract LivingEntity getAttacker();
 
     @Shadow public abstract boolean damage(DamageSource source, float amount);

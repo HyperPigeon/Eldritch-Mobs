@@ -66,6 +66,7 @@ public class SummonUltraCommand {
                     entity2.setCustomName(new TranslatableText(EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).get_mod_string(), new Object[0]));
                     entity2.setCustomNameVisible(true);
                     ((MobEntity)entity2).initialize(source.getWorld(), source.getWorld().getLocalDifficulty(entity2.getBlockPos()), SpawnReason.COMMAND, (EntityData)null, (CompoundTag)null);
+
                 }
 
                 source.sendFeedback(new TranslatableText("commands.summon_ultra.success", new Object[]{entity2.getDisplayName()}), true);

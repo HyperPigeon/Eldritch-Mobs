@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Eldritch Mobs",
-  "description": "A port of the Infernal Mobs mod",
+  "description": "A port of the Infernal Mobs mod made for Modfest 1.16 2020",
   "authors": [
     "Hyper_Pigeon"
   ],
