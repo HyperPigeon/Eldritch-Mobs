@@ -2,7 +2,7 @@
 
 ## Description 
 
-A port of Atomic Styker's Infernal Mobs for Fabric 1.16
+A port of Atomic Styker's Infernal Mobs for Fabric 1.16 made for Modfest 1.16 2020
 
 
 ## License
