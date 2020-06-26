@@ -173,7 +173,7 @@ public class ModifierComponent implements ModifierInterface {
                     modifier_list.add(random_mod);
                 }
                 if (is_ultra) {
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < 4; i++) {
                         String random_mod = ranged_mobs_mods.get(new Random().nextInt(mods.size()));
                         ranged_mobs_mods.remove(random_mod);
                         modifier_list.add(random_mod);
@@ -195,7 +195,7 @@ public class ModifierComponent implements ModifierInterface {
                     modifier_list.add(random_mod);
                 }
                 if (is_ultra) {
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < 4; i++) {
                         String random_mod = creeper_mods.get(new Random().nextInt(mods.size()));
                         creeper_mods.remove(random_mod);
                         modifier_list.add(random_mod);
@@ -216,7 +216,7 @@ public class ModifierComponent implements ModifierInterface {
                     modifier_list.add(random_mod);
                 }
                 if (is_ultra) {
-                    for (int i = 0; i < 3; i++) {
+                    for (int i = 0; i < 4; i++) {
                         String random_mod = mods.get(new Random().nextInt(mods.size()));
                         mods.remove(random_mod);
                         modifier_list.add(random_mod);
