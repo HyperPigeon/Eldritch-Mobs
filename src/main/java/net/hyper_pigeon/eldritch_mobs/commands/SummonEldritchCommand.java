@@ -5,7 +5,9 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
+import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.command.arguments.EntitySummonArgumentType;
 import net.minecraft.command.arguments.NbtCompoundTagArgumentType;
 import net.minecraft.command.arguments.Vec3ArgumentType;
@@ -14,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.command.CommandManager;
@@ -42,6 +45,7 @@ public class SummonEldritchCommand {
     }
 
     private static int execute(ServerCommandSource source, Identifier entity, Vec3d pos, CompoundTag nbt, boolean initialize) throws CommandSyntaxException {
+        EldritchMobsConfig config = AutoConfig.getConfigHolder(EldritchMobsConfig.class).getConfig();
         BlockPos blockPos = new BlockPos(pos);
         if (!World.method_25953(blockPos)) {
             throw INVALID_POSITION_EXCEPTION.create();
@@ -63,8 +67,10 @@ public class SummonEldritchCommand {
                         EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setIs_eldritch(true);
                         EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setMods();
                     }
-                    entity2.setCustomName(new TranslatableText(EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).get_mod_string(), new Object[0]));
-                    entity2.setCustomNameVisible(true);
+                    if(!(config.turnOffNames)) {
+                        entity2.setCustomName(new TranslatableText(EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).get_mod_string(), new Object[0]));
+                        entity2.setCustomNameVisible(true);
+                    }
                     ((MobEntity)entity2).initialize(source.getWorld(), source.getWorld().getLocalDifficulty(entity2.getBlockPos()), SpawnReason.COMMAND, (EntityData)null, (CompoundTag)null);
 
                 }

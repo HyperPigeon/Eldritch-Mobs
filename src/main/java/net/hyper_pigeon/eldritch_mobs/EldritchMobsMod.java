@@ -1,10 +1,7 @@
 package net.hyper_pigeon.eldritch_mobs;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
+import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
 import nerdhub.cardinal.components.api.ComponentRegistry;
 import nerdhub.cardinal.components.api.ComponentType;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
@@ -14,24 +11,13 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.hyper_pigeon.eldritch_mobs.commands.SummonEldritchCommand;
 import net.hyper_pigeon.eldritch_mobs.commands.SummonEliteCommand;
 import net.hyper_pigeon.eldritch_mobs.commands.SummonUltraCommand;
+import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.hyper_pigeon.eldritch_mobs.mod_components.modifiers.ModifierComponent;
-import net.minecraft.command.arguments.EntitySummonArgumentType;
-import net.minecraft.command.arguments.NbtCompoundTagArgumentType;
-import net.minecraft.command.arguments.Vec3ArgumentType;
-import net.minecraft.command.suggestion.SuggestionProviders;
-import net.minecraft.entity.*;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
 
 public class EldritchMobsMod implements ModInitializer {
 
@@ -79,6 +65,7 @@ public class EldritchMobsMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		AutoConfig.register(EldritchMobsConfig.class, JanksonConfigSerializer::new);
 		CommandRegistrationCallback.EVENT.register(SummonEliteCommand::register);
 		CommandRegistrationCallback.EVENT.register(SummonUltraCommand::register);
 		CommandRegistrationCallback.EVENT.register(SummonEldritchCommand::register);

@@ -1,19 +1,22 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
 import javafx.print.PageLayout;
+import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
+import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RangedAttackMob;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.CreeperEntity;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.SkeletonEntity;
+import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -28,6 +31,7 @@ public class ModifierComponent implements ModifierInterface {
     private boolean is_ultra;
     private boolean is_eldritch;
     private boolean rank_decided;
+    private int mod_number = 0;
 //    private AlchemyComponent alchemy = new AlchemyComponent();
 //    private BeserkComponent beserk = new BeserkComponent();
 //    private BlindingComponent blinding = new BlindingComponent();
@@ -99,12 +103,33 @@ public class ModifierComponent implements ModifierInterface {
 
     public LivingEntity mob;
 
+    EldritchMobsConfig config = AutoConfig.getConfigHolder(EldritchMobsConfig.class).getConfig();
+
+    private int EliteSpawnRate = config.EliteSpawnRates;
+
+    private int UltraSpawnRate = config.UltraSpawnRates;
+
+    private int EldritchSpawnRate = config.EldritchSpawnRates;
+
 
     public ModifierComponent(LivingEntity entity) {
-        if(!(entity instanceof PassiveEntity) && !(entity instanceof PlayerEntity)) {
-            this.setRank();
-            this.setMods();
-            mob = entity;
+        if(!(entity instanceof PassiveEntity) && !(entity instanceof PlayerEntity)
+        && !(entity instanceof AmbientEntity)) {
+            if(entity instanceof  WaterCreatureEntity && config.toggleEldritchWaterCreatures){
+                this.setRank();
+                this.setMods();
+                mob = entity;
+            }
+            else if((entity instanceof WitherEntity || entity instanceof EnderDragonEntity) && config.toggleEldritchWaterCreatures) {
+                this.setRank();
+                this.setMods();
+                mob = entity;
+            }
+            else {
+                this.setRank();
+                this.setMods();
+                mob = entity;
+            }
         }
     }
 
@@ -114,28 +139,34 @@ public class ModifierComponent implements ModifierInterface {
 
     public void setIs_elite(boolean bool){
         is_elite = bool;
+        mod_number = 4;
     }
 
     public void setIs_ultra(boolean bool){
         is_ultra = bool;
+        mod_number = 8;
     }
 
     public void setIs_eldritch(boolean bool){
         is_eldritch = bool;
+        mod_number = 12;
     }
 
     public void setRank() {
         if(!rank_decided) {
             Random random = new Random();
             int random_int_one = random.nextInt(10) + 1;
-            if (random_int_one == 1) {
+            if (random_int_one <= EliteSpawnRate) {
                 is_elite = true;
+                mod_number = 4;
                 int random_int_two = random.nextInt(10) + 1;
-                if (random_int_two <= 2) {
+                if (random_int_two <= UltraSpawnRate) {
                     is_ultra = true;
+                    mod_number = 8;
                     int random_int_three = random.nextInt(10) + 1;
-                    if (random_int_three <= 2) {
+                    if (random_int_three <= EldritchSpawnRate) {
                         is_eldritch = true;
+                        mod_number = 12;
                     }
                 }
             }
@@ -165,70 +196,24 @@ public class ModifierComponent implements ModifierInterface {
 
     public void setMods() {
         if(is_elite) {
+            modifier_list.clear();
             if (mob instanceof RangedAttackMob) {
-                modifier_list.clear();
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < mod_number; i++) {
                     String random_mod = ranged_mobs_mods.get(new Random().nextInt(mods.size()));
                     ranged_mobs_mods.remove(random_mod);
                     modifier_list.add(random_mod);
                 }
-                if (is_ultra) {
-                    for (int i = 0; i < 4; i++) {
-                        String random_mod = ranged_mobs_mods.get(new Random().nextInt(mods.size()));
-                        ranged_mobs_mods.remove(random_mod);
-                        modifier_list.add(random_mod);
-                    }
-
-                    if (is_eldritch) {
-                        for (int i = 0; i < 4; i++) {
-                            String random_mod = ranged_mobs_mods.get(new Random().nextInt(mods.size()));
-                            ranged_mobs_mods.remove(random_mod);
-                            modifier_list.add(random_mod);
-                        }
-                    }
-                }
             } else if (mob instanceof CreeperEntity) {
-                modifier_list.clear();
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < mod_number; i++) {
                     String random_mod = creeper_mods.get(new Random().nextInt(mods.size()));
                     creeper_mods.remove(random_mod);
                     modifier_list.add(random_mod);
                 }
-                if (is_ultra) {
-                    for (int i = 0; i < 4; i++) {
-                        String random_mod = creeper_mods.get(new Random().nextInt(mods.size()));
-                        creeper_mods.remove(random_mod);
-                        modifier_list.add(random_mod);
-                    }
-                    if (is_eldritch) {
-                        for (int i = 0; i < 4; i++) {
-                            String random_mod = creeper_mods.get(new Random().nextInt(mods.size()));
-                            creeper_mods.remove(random_mod);
-                            modifier_list.add(random_mod);
-                        }
-                    }
-                }
             } else {
-                modifier_list.clear();
-                for (int i = 0; i < 4; i++) {
+                for (int i = 0; i < mod_number; i++) {
                     String random_mod = mods.get(new Random().nextInt(mods.size()));
                     mods.remove(random_mod);
                     modifier_list.add(random_mod);
-                }
-                if (is_ultra) {
-                    for (int i = 0; i < 4; i++) {
-                        String random_mod = mods.get(new Random().nextInt(mods.size()));
-                        mods.remove(random_mod);
-                        modifier_list.add(random_mod);
-                    }
-
-                    if (is_eldritch) {
-                        for (int i = 0; i < 4; i++) {
-                            String random_mod = mods.get(new Random().nextInt(mods.size()));
-                            mods.remove(random_mod);
-                            modifier_list.add(random_mod);
-                        }
-                    }
                 }
             }
         }

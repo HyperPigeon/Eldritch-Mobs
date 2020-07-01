@@ -1,0 +1,9 @@
+{
+  "text.autoconfig.eldritch_mobs.title": "Eldritch Mobs Config",
+  "text.autoconfig.eldritch_mobs.option.toggleEldritchWaterCreatures": "Toggle Elite/Ultra/Eldritch Water Creatures",
+  "text.autoconfig.eldritch_mobs.option.toggleEldritchBossMobs": "Toggle Elite/Ultra/Eldritch Boss Mobs",
+  "text.autoconfig.eldritch_mobs.option.turnOffNames": "Turn off names for Elite/Ultra/Eldritch Mobs",
+  "text.autoconfig.eldritch_mobs.option.EliteSpawnRates": "Spawn rates out of 10 for Elite Mobs",
+  "text.autoconfig.eldritch_mobs.option.UltraSpawnRates": "Spawn rates out of 10 Elites for Ultra Mobs",
+  "text.autoconfig.eldritch_mobs.option.EldritchSpawnRates": "Spawn rates out of 10 Ultras for Eldritch Mobs"
+}

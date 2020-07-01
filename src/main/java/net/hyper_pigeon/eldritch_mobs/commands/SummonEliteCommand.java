@@ -5,7 +5,9 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
+import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
+import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.command.arguments.EntitySummonArgumentType;
 import net.minecraft.command.arguments.NbtCompoundTagArgumentType;
 import net.minecraft.command.arguments.Vec3ArgumentType;
@@ -14,7 +16,9 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.mob.WitchEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -29,6 +33,7 @@ public class SummonEliteCommand {
     private static final SimpleCommandExceptionType FAILED_EXCEPTION = new SimpleCommandExceptionType(new TranslatableText("commands.summon_elite.failed"));
     private static final SimpleCommandExceptionType INVALID_POSITION_EXCEPTION = new SimpleCommandExceptionType(new TranslatableText("commands.summon_elite.invalidPosition"));
 
+
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, boolean dedicated) {
         dispatcher.register((LiteralArgumentBuilder)((LiteralArgumentBuilder) CommandManager.literal("summon_elite").requires((serverCommandSource) -> {
             return serverCommandSource.hasPermissionLevel(2);
@@ -42,6 +47,7 @@ public class SummonEliteCommand {
     }
 
     private static int execute(ServerCommandSource source, Identifier entity, Vec3d pos, CompoundTag nbt, boolean initialize) throws CommandSyntaxException {
+        EldritchMobsConfig config = AutoConfig.getConfigHolder(EldritchMobsConfig.class).getConfig();
         BlockPos blockPos = new BlockPos(pos);
         if (!World.method_25953(blockPos)) {
             throw INVALID_POSITION_EXCEPTION.create();
@@ -59,12 +65,15 @@ public class SummonEliteCommand {
                 if (initialize && entity2 instanceof MobEntity) {
                     if(!EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).isElite()) {
                         EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setIs_elite(true);
-                        EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setIs_ultra(false);
-                        EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setIs_eldritch(false);
+                        //EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setIs_ultra(false);
+                       //EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setIs_eldritch(false);
                         EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setMods();
                     }
-                    entity2.setCustomName(new TranslatableText(EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).get_mod_string(), new Object[0]));
-                    entity2.setCustomNameVisible(true);
+                    if(!(config.turnOffNames)) {
+                        entity2.setCustomName(new TranslatableText(EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).get_mod_string(), new Object[0]));
+                        entity2.setCustomNameVisible(true);
+                    }
+                    System.out.println(EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).get_mod_string());
                     ((MobEntity)entity2).initialize(source.getWorld(), source.getWorld().getLocalDifficulty(entity2.getBlockPos()), SpawnReason.COMMAND, (EntityData)null, (CompoundTag)null);
 
                 }

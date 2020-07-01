@@ -11,7 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 public class RegeneratingComponent implements ModifierInterface {
     @Override
     public void useAbility(MobEntity entity) {
-        entity.heal(0.02F);
+        entity.heal(0.005F);
     }
 
     @Override

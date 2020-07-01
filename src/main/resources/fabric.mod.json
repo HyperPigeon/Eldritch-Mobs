@@ -20,6 +20,9 @@
   "entrypoints": {
     "main": [
       "net.hyper_pigeon.eldritch_mobs.EldritchMobsMod"
+    ],
+    "modmenu": [
+      "net.hyper_pigeon.eldritch_mobs.config.ModMenuIntegration"
     ]
   },
   "mixins": [

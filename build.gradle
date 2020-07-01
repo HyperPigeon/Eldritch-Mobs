@@ -29,8 +29,15 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:0.13.1+build.370-1.16"
 
 	modApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.4.0"
-
 	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.4.0"
+
+	modApi "me.shedaniel.cloth:config-2:4.5.6"
+	include "me.shedaniel.cloth:config-2:4.5.6"
+
+	modApi "me.sargunvohra.mcmods:autoconfig1u:3.2.0-unstable"
+	include "me.sargunvohra.mcmods:autoconfig1u:3.2.0-unstable"
+
+	modImplementation "io.github.prospector:modmenu:1.12.2+build.17"
 
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.

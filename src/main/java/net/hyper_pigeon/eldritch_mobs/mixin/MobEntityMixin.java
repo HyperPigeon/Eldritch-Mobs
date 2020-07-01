@@ -1,11 +1,14 @@
 package net.hyper_pigeon.eldritch_mobs.mixin;
 
 
+import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
+import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
@@ -42,12 +45,16 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
 
     @Shadow protected int experiencePoints;
 
+    EldritchMobsConfig config = AutoConfig.getConfigHolder(EldritchMobsConfig.class).getConfig();
+
     @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
     private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
         if(!EldritchMobsMod.get_mod_list(this).equals("")){
             //System.out.println(EldritchMobsMod.get_mod_list(this));
-            this.setCustomName(new TranslatableText(EldritchMobsMod.get_mod_list(this), new Object[0]));
-            this.setCustomNameVisible(true);
+            if(!(entityType == EntityType.WITHER) && !config.turnOffNames) {
+                this.setCustomName(new TranslatableText(EldritchMobsMod.get_mod_list(this), new Object[0]));
+            }
+            //this.setCustomNameVisible(true);
         }
 
     }
