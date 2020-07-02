@@ -54,12 +54,17 @@ public class ModifierComponent implements ModifierInterface {
 //    private WebslingingComponent webslinging = new WebslingingComponent();
 
 
-    public ArrayList<String> mods = new ArrayList<>(Arrays.asList("alchemist", "beserk", "yeeter", "blinding", "burning",
+    public static ArrayList<String> all_mods = new ArrayList<>(Arrays.asList("alchemist", "beserk", "yeeter", "blinding", "burning",
+            "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
+            "resistant","rust","snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
+            "withering", "sniper"));
+
+    private ArrayList<String> mods = new ArrayList<>(Arrays.asList("alchemist", "beserk", "yeeter", "blinding", "burning",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
             "resistant","rust","snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering"));
 
-    public ArrayList<String> ranged_mobs_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
+    private ArrayList<String> ranged_mobs_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
             "resistant", "snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering","sniper"));
@@ -118,16 +123,19 @@ public class ModifierComponent implements ModifierInterface {
             if(entity instanceof  WaterCreatureEntity && config.toggleEldritchWaterCreatures){
                 this.setRank();
                 this.setMods();
+                config.removeMods();
                 mob = entity;
             }
             else if((entity instanceof WitherEntity || entity instanceof EnderDragonEntity) && config.toggleEldritchWaterCreatures) {
                 this.setRank();
                 this.setMods();
+                config.removeMods();
                 mob = entity;
             }
             else {
                 this.setRank();
                 this.setMods();
+                config.removeMods();
                 mob = entity;
             }
         }
@@ -155,15 +163,15 @@ public class ModifierComponent implements ModifierInterface {
     public void setRank() {
         if(!rank_decided) {
             Random random = new Random();
-            int random_int_one = random.nextInt(10) + 1;
+            int random_int_one = random.nextInt(100) + 1;
             if (random_int_one <= EliteSpawnRate) {
                 is_elite = true;
                 mod_number = 4;
-                int random_int_two = random.nextInt(10) + 1;
+                int random_int_two = random.nextInt(100) + 1;
                 if (random_int_two <= UltraSpawnRate) {
                     is_ultra = true;
                     mod_number = 8;
-                    int random_int_three = random.nextInt(10) + 1;
+                    int random_int_three = random.nextInt(100) + 1;
                     if (random_int_three <= EldritchSpawnRate) {
                         is_eldritch = true;
                         mod_number = 12;
@@ -198,18 +206,21 @@ public class ModifierComponent implements ModifierInterface {
         if(is_elite) {
             modifier_list.clear();
             if (mob instanceof RangedAttackMob) {
+                ranged_mobs_mods.retainAll(all_mods);
                 for (int i = 0; i < mod_number; i++) {
                     String random_mod = ranged_mobs_mods.get(new Random().nextInt(mods.size()));
                     ranged_mobs_mods.remove(random_mod);
                     modifier_list.add(random_mod);
                 }
             } else if (mob instanceof CreeperEntity) {
+                creeper_mods.retainAll(all_mods);
                 for (int i = 0; i < mod_number; i++) {
                     String random_mod = creeper_mods.get(new Random().nextInt(mods.size()));
                     creeper_mods.remove(random_mod);
                     modifier_list.add(random_mod);
                 }
             } else {
+                mods.retainAll(all_mods);
                 for (int i = 0; i < mod_number; i++) {
                     String random_mod = mods.get(new Random().nextInt(mods.size()));
                     mods.remove(random_mod);

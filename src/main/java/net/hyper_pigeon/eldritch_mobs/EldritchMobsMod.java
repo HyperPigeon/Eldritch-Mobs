@@ -23,7 +23,7 @@ public class EldritchMobsMod implements ModInitializer {
 
 	public static final ComponentType<ModifierInterface> ELDRITCH_MODIFIERS =
 			ComponentRegistry.INSTANCE.registerIfAbsent(new Identifier("eldritch_mobs:eldritch_modifiers"), ModifierInterface.class)
-			.attach(EntityComponentCallback.event(LivingEntity.class), ModifierComponent::new);
+			.attach(EntityComponentCallback.event(MobEntity.class), ModifierComponent::new);
 
 
 	public static void useAbility(ComponentProvider provider) {
