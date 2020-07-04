@@ -29,123 +29,123 @@ public class EldritchMobsConfig implements ConfigData {
     public DisableModifiers disableModifiers = new DisableModifiers();
 
     public static class DisableModifiers {
-        public static boolean disableAlchemist = false;
-        public static boolean disableBeserk = false;
-        public static boolean disableYeeter = false;
-        public static boolean disableBlinding = false;
-        public static boolean disableBurning = false;
-        public static boolean disableCloaked = false;
-        public static boolean disableDeflector = false;
-        public static boolean disableDraining = false;
-        public static boolean disableDrowning = false;
-        public static boolean disableEnder = false;
-        public static boolean disableGhastly = false;
-        public static boolean disableGravity = false;
-        public static boolean disableLethargic = false;
-        public static boolean disableLifesteal = false;
-        public static boolean disableOneUp = false;
-        public static boolean disableRegen = false;
-        public static boolean disableResistant = false;
-        public static boolean disableRust = false;
-        public static boolean disableSnatcher = false;
-        public static boolean disableSpeedster = false;
-        public static boolean disableSprinter = false;
-        public static boolean disableStarving = false;
-        public static boolean disableStormy = false;
-        public static boolean disableThorny = false;
-        public static boolean disableToxic = false;
-        public static boolean disableWeakness = false;
-        public static boolean disableWebslinging = false;
-        public static boolean disableWithering = false;
-        public static boolean disableSniper = false;
+        public boolean disableAlchemist = false;
+        public boolean disableBeserk = false;
+        public boolean disableYeeter = false;
+        public boolean disableBlinding = false;
+        public boolean disableBurning = false;
+        public boolean disableCloaked = false;
+        public boolean disableDeflector = false;
+        public  boolean disableDraining = false;
+        public  boolean disableDrowning = false;
+        public  boolean disableEnder = false;
+        public  boolean disableGhastly = false;
+        public  boolean disableGravity = false;
+        public  boolean disableLethargic = false;
+        public  boolean disableLifesteal = false;
+        public  boolean disableOneUp = false;
+        public  boolean disableRegen = false;
+        public  boolean disableResistant = false;
+        public  boolean disableRust = false;
+        public  boolean disableSnatcher = false;
+        public  boolean disableSpeedster = false;
+        public  boolean disableSprinter = false;
+        public  boolean disableStarving = false;
+        public  boolean disableStormy = false;
+        public  boolean disableThorny = false;
+        public  boolean disableToxic = false;
+        public  boolean disableWeakness = false;
+        public  boolean disableWebslinging = false;
+        public  boolean disableWithering = false;
+        public  boolean disableSniper = false;
     }
 
     public void removeMods(){
-        if(DisableModifiers.disableAlchemist){
+        if(disableModifiers.disableAlchemist){
             ModifierComponent.all_mods.remove("alchemist");
         }
-        if(DisableModifiers.disableBeserk){
+        if(disableModifiers.disableBeserk){
             ModifierComponent.all_mods.remove("beserk");
         }
-        if(DisableModifiers.disableYeeter){
+        if(disableModifiers.disableYeeter){
             ModifierComponent.all_mods.remove("yeeter");
         }
-        if(DisableModifiers.disableBlinding){
+        if(disableModifiers.disableBlinding){
             ModifierComponent.all_mods.remove("blinding");
         }
-        if(DisableModifiers.disableBurning){
+        if(disableModifiers.disableBurning){
             ModifierComponent.all_mods.remove("burning");
         }
-        if(DisableModifiers.disableCloaked){
+        if(disableModifiers.disableCloaked){
             ModifierComponent.all_mods.remove("cloaked");
         }
-        if(DisableModifiers.disableDeflector){
+        if(disableModifiers.disableDeflector){
             ModifierComponent.all_mods.remove("deflector");
         }
-        if(DisableModifiers.disableDraining){
+        if(disableModifiers.disableDraining){
             ModifierComponent.all_mods.remove("draining");
         }
-        if(DisableModifiers.disableDrowning){
+        if(disableModifiers.disableDrowning){
             ModifierComponent.all_mods.remove("drowning");
         }
-        if(DisableModifiers.disableEnder){
+        if(disableModifiers.disableEnder){
             ModifierComponent.all_mods.remove("ender");
         }
-        if(DisableModifiers.disableGhastly){
+        if(disableModifiers.disableGhastly){
             ModifierComponent.all_mods.remove("ghastly");
         }
-        if(DisableModifiers.disableGravity){
+        if(disableModifiers.disableGravity){
             ModifierComponent.all_mods.remove("gravity");
         }
-        if(DisableModifiers.disableLethargic){
+        if(disableModifiers.disableLethargic){
             ModifierComponent.all_mods.remove("lethargic");
         }
-        if(DisableModifiers.disableLifesteal){
+        if(disableModifiers.disableLifesteal){
             ModifierComponent.all_mods.remove("lifesteal");
         }
-        if(DisableModifiers.disableOneUp){
+        if(disableModifiers.disableOneUp){
             ModifierComponent.all_mods.remove("one_up");
         }
-        if(DisableModifiers.disableRegen){
+        if(disableModifiers.disableRegen){
             ModifierComponent.all_mods.remove("regen");
         }
-        if(DisableModifiers.disableResistant){
+        if(disableModifiers.disableResistant){
             ModifierComponent.all_mods.remove("resistant");
         }
-        if(DisableModifiers.disableRust){
+        if(disableModifiers.disableRust){
             ModifierComponent.all_mods.remove("rust");
         }
-        if(DisableModifiers.disableSnatcher){
+        if(disableModifiers.disableSnatcher){
             ModifierComponent.all_mods.remove("snatcher");
         }
-        if(DisableModifiers.disableSpeedster){
+        if(disableModifiers.disableSpeedster){
             ModifierComponent.all_mods.remove("speedster");
         }
-        if(DisableModifiers.disableSprinter){
+        if(disableModifiers.disableSprinter){
             ModifierComponent.all_mods.remove("sprinter");
         }
-        if(DisableModifiers.disableStarving){
+        if(disableModifiers.disableStarving){
             ModifierComponent.all_mods.remove("starving");
         }
-        if(DisableModifiers.disableStormy){
+        if(disableModifiers.disableStormy){
             ModifierComponent.all_mods.remove("stormy");
         }
-        if(DisableModifiers.disableThorny){
+        if(disableModifiers.disableThorny){
             ModifierComponent.all_mods.remove("thorny");
         }
-        if(DisableModifiers.disableToxic){
+        if(disableModifiers.disableToxic){
             ModifierComponent.all_mods.remove("toxic");
         }
-        if(DisableModifiers.disableWeakness){
+        if(disableModifiers.disableWeakness){
             ModifierComponent.all_mods.remove("weakness");
         }
-        if(DisableModifiers.disableWebslinging){
+        if(disableModifiers.disableWebslinging){
             ModifierComponent.all_mods.remove("webslinging");
         }
-        if(DisableModifiers.disableWithering){
+        if(disableModifiers.disableWithering){
             ModifierComponent.all_mods.remove("withering");
         }
-        if(DisableModifiers.disableSniper){
+        if(disableModifiers.disableSniper){
             ModifierComponent.all_mods.remove("sniper");
         }
     }
