@@ -119,7 +119,7 @@ public class ModifierComponent implements ModifierInterface {
 
     public ModifierComponent(LivingEntity entity) {
         if(!(entity instanceof PassiveEntity) && !(entity instanceof PlayerEntity)
-        && !(entity instanceof AmbientEntity)) {
+        && !(entity instanceof AmbientEntity) && !(entity.getType().isIn(EldritchMobsMod.ELDRITCH_BLACKLIST))) {
             config.removeMods();
             ranged_mobs_mods.retainAll(all_mods);
             creeper_mods.retainAll(all_mods);
