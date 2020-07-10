@@ -6,7 +6,8 @@
   "mixins": [
     "LivingEntityMixin",
     "MobEntityMixin",
-    "CreeperEntityMixin"
+    "CreeperEntityMixin",
+    "PersistentProjectileEntityMixin"
   ],
   "client": [
 

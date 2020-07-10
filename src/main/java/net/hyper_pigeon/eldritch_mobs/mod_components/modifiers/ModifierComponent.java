@@ -134,7 +134,7 @@ public class ModifierComponent implements ModifierInterface {
                 this.setMods();
                 mob = entity;
             }
-            else {
+            else if(!(entity instanceof WaterCreatureEntity) && !(entity instanceof WitherEntity || entity instanceof EnderDragonEntity)) {
                 this.setRank();
                 this.setMods();
                 mob = entity;
