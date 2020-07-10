@@ -13,7 +13,6 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -45,19 +44,6 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
     @Shadow protected int experiencePoints;
 
     EldritchMobsConfig config = AutoConfig.getConfigHolder(EldritchMobsConfig.class).getConfig();
-
-    @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
-    private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
-        if(!EldritchMobsMod.get_mod_list(this).equals("")){
-            //System.out.println(EldritchMobsMod.get_mod_list(this));
-            if(!(entityType == EntityType.WITHER) && !config.turnOffNames) {
-                this.setCustomName(new TranslatableText(EldritchMobsMod.get_mod_list(this), new Object[0]));
-            }
-            //this.setCustomNameVisible(true);
-        }
-
-    }
-
 
     @Inject(at = @At("HEAD"), method = "tick")
     public void ability_try(CallbackInfo callback) {

@@ -4,12 +4,11 @@
   "package": "net.hyper_pigeon.eldritch_mobs.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "CreeperEntityMixin",
     "LivingEntityMixin",
-    "MobEntityMixin",
-    "CreeperEntityMixin"
+    "MobEntityMixin"
   ],
   "client": [
-
   ],
   "injectors": {
     "defaultRequire": 1
