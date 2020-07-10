@@ -2,6 +2,7 @@ package net.hyper_pigeon.eldritch_mobs.mixin;
 
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
+import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -18,6 +19,7 @@ import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.FluidTags;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -26,6 +28,7 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -62,10 +65,37 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     @Shadow protected abstract net.minecraft.loot.context.LootContext.Builder
     getLootContextBuilder(boolean causedByPlayer, DamageSource source);
 
+    @Unique
+    private boolean eldritchMobs_hasConfiguredName = false;
+
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
+
+    @Inject(
+            method = "tick",
+            at = @At("HEAD")
+    )
+    private void configureCustomName(CallbackInfo ci) {
+        // only attempt to apply a custom name to the mob on their first tick
+        if(!world.isClient && !eldritchMobs_hasConfiguredName) {
+            ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
+
+            // only apply custom name if the mob doesn't have one and their modifier provides one
+            boolean hasCustomName = this.getCustomName() != null && this.getCustomName().asString().equals("");
+            if (!modifiers.get_mod_string().equals("") && !hasCustomName) {
+                if (!EldritchMobsMod.CONFIG.turnOffNames) {
+                    this.setCustomName(new TranslatableText(modifiers.get_mod_string(), new Object[0]));
+                    this.setCustomNameVisible(true);
+                }
+            }
+
+            eldritchMobs_hasConfiguredName = true;
+        }
+    }
+
+
 
     private boolean teleportTo(double x, double y, double z) {
         BlockPos.Mutable mutable = new BlockPos.Mutable(x, y, z);

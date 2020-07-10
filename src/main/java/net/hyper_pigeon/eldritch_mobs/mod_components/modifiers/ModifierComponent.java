@@ -139,6 +139,7 @@ public class ModifierComponent implements ModifierInterface {
                 this.setMods();
                 mob = entity;
             }
+
         }
     }
 

@@ -25,6 +25,7 @@ public class EldritchMobsMod implements ModInitializer {
 			ComponentRegistry.INSTANCE.registerIfAbsent(new Identifier("eldritch_mobs:eldritch_modifiers"), ModifierInterface.class)
 			.attach(EntityComponentCallback.event(LivingEntity.class), ModifierComponent::new);
 
+	public static final EldritchMobsConfig CONFIG = AutoConfig.register(EldritchMobsConfig.class, JanksonConfigSerializer::new).getConfig();
 
 	public static void useAbility(ComponentProvider provider) {
 		ELDRITCH_MODIFIERS.get(provider).useAbility((MobEntity) provider);
@@ -65,7 +66,6 @@ public class EldritchMobsMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		AutoConfig.register(EldritchMobsConfig.class, JanksonConfigSerializer::new);
 		CommandRegistrationCallback.EVENT.register(SummonEliteCommand::register);
 		CommandRegistrationCallback.EVENT.register(SummonUltraCommand::register);
 		CommandRegistrationCallback.EVENT.register(SummonEldritchCommand::register);
