@@ -1,28 +1,29 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Random;
-
-import org.apache.commons.lang3.text.WordUtils;
-
+import javafx.print.PageLayout;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.AmbientEntity;
-import net.minecraft.entity.mob.CreeperEntity;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.WaterCreatureEntity;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
+import org.apache.commons.lang3.text.WordUtils;
+import org.lwjgl.system.CallbackI;
+
+import java.util.*;
 
 public class ModifierComponent implements ModifierInterface {
 
@@ -118,8 +119,7 @@ public class ModifierComponent implements ModifierInterface {
 
     public ModifierComponent(LivingEntity entity) {
         if(!(entity instanceof PassiveEntity) && !(entity instanceof PlayerEntity)
-        && !(entity instanceof AmbientEntity)
-        && !(entity.getType().isIn(EldritchMobsMod.ELDRITCH_BLACKLIST))) {
+        && !(entity instanceof AmbientEntity)) {
             config.removeMods();
             ranged_mobs_mods.retainAll(all_mods);
             creeper_mods.retainAll(all_mods);

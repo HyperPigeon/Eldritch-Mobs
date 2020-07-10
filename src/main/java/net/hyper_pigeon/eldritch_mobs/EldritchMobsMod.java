@@ -8,18 +8,15 @@ import nerdhub.cardinal.components.api.component.ComponentProvider;
 import nerdhub.cardinal.components.api.event.EntityComponentCallback;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.hyper_pigeon.eldritch_mobs.commands.SummonEldritchCommand;
 import net.hyper_pigeon.eldritch_mobs.commands.SummonEliteCommand;
 import net.hyper_pigeon.eldritch_mobs.commands.SummonUltraCommand;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.hyper_pigeon.eldritch_mobs.mod_components.modifiers.ModifierComponent;
-import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 
 public class EldritchMobsMod implements ModInitializer {
@@ -28,8 +25,6 @@ public class EldritchMobsMod implements ModInitializer {
 			ComponentRegistry.INSTANCE.registerIfAbsent(new Identifier("eldritch_mobs:eldritch_modifiers"), ModifierInterface.class)
 			.attach(EntityComponentCallback.event(LivingEntity.class), ModifierComponent::new);
 
-	private static final Identifier ELDRITCH_BLACKLIST_ID = new Identifier("eldritch_mobs:eldritch_blacklist");
-	public static final Tag<EntityType<?>> ELDRITCH_BLACKLIST = TagRegistry.entityType(ELDRITCH_BLACKLIST_ID);
 
 	public static void useAbility(ComponentProvider provider) {
 		ELDRITCH_MODIFIERS.get(provider).useAbility((MobEntity) provider);
