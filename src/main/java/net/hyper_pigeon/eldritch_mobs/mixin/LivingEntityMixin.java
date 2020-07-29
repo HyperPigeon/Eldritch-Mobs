@@ -8,6 +8,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.BossBar;
+import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -68,9 +70,13 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     @Unique
     private boolean eldritchMobs_hasConfiguredName = false;
 
+    private final ServerBossBar bossBar;
+
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
+        this.bossBar = (ServerBossBar)(new ServerBossBar(this.getDisplayName(), BossBar.Color.PURPLE, BossBar.Style.PROGRESS)).setDarkenSky(true);
+        this.bossBar.setVisible(false);
     }
 
     @Inject(
@@ -79,6 +85,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     )
     private void configureCustomName(CallbackInfo ci) {
         // only attempt to apply a custom name to the mob on their first tick
+
         if(!world.isClient && !eldritchMobs_hasConfiguredName) {
             ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
 
