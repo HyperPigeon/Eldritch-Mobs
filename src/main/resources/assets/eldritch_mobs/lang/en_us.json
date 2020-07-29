@@ -3,6 +3,7 @@
   "text.autoconfig.eldritch_mobs.option.toggleEldritchWaterCreatures": "Toggle Elite/Ultra/Eldritch Water Creatures",
   "text.autoconfig.eldritch_mobs.option.toggleEldritchBossMobs": "Toggle Elite/Ultra/Eldritch Boss Mobs",
   "text.autoconfig.eldritch_mobs.option.turnOffNames": "Turn off names for Elite/Ultra/Eldritch Mobs",
+  "text.autoconfig.eldritch_mobs.option.turnOnGlowingMobs": "Enable glowing effect",
   "text.autoconfig.eldritch_mobs.option.EliteSpawnRates": "Spawn rates out of 100 for Elite Mobs",
   "text.autoconfig.eldritch_mobs.option.UltraSpawnRates": "Spawn rates out of 100 Elites for Ultra Mobs",
   "text.autoconfig.eldritch_mobs.option.EldritchSpawnRates": "Spawn rates out of 100 Ultras for Eldritch Mobs",
@@ -35,5 +36,6 @@
   "text.autoconfig.eldritch_mobs.option.disableModifiers.disableWeakness": "Disable Weakness",
   "text.autoconfig.eldritch_mobs.option.disableModifiers.disableWebslinging": "Disable Webslinging",
   "text.autoconfig.eldritch_mobs.option.disableModifiers.disableWithering": "Disable Withering",
-  "text.autoconfig.eldritch_mobs.option.disableModifiers.disableSniper": "Disable Sniper"
+  "text.autoconfig.eldritch_mobs.option.disableModifiers.disableSniper": "Disable Sniper",
+  "text.autoconfig.eldritch_mobs.option.disableModifiers.disableDuplicator": "Disable Duplicator"
 }

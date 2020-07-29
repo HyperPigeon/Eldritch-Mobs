@@ -65,19 +65,19 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
             ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))) {
             if(!this.hasStatusEffect(StatusEffects.HEALTH_BOOST)){
                 if(EldritchMobsMod.isEldritch(this)){
-                    int level = (int) ((this.getMaxHealth()*12)/2);
-                    this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
-                    this.heal(level*2);
-                }
-                else if(EldritchMobsMod.isUltra(this)){
                     int level = (int) ((this.getMaxHealth()*8)/2);
                     this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
-                    this.heal(level*2);
+                    this.heal(this.getMaxHealth()*8);
+                }
+                else if(EldritchMobsMod.isUltra(this)){
+                    int level = (int) ((this.getMaxHealth()*6)/2);
+                    this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
+                    this.heal(this.getMaxHealth()*6);
                 }
                 else if(EldritchMobsMod.isElite(this)){
                     int level = (int) ((this.getMaxHealth()*4)/2);
                     this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
-                    this.heal(level*2);
+                    this.heal(this.getMaxHealth()*4);
                 }
             }
             EldritchMobsMod.useAbility(this);

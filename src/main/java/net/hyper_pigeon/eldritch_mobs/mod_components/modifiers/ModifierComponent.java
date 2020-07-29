@@ -57,22 +57,22 @@ public class ModifierComponent implements ModifierInterface {
     public static ArrayList<String> all_mods = new ArrayList<>(Arrays.asList("alchemist", "beserk", "yeeter", "blinding", "burning",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
             "resistant","rust","snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
-            "withering", "sniper"));
+            "withering", "sniper", "duplicator"));
 
     private ArrayList<String> mods = new ArrayList<>(Arrays.asList("alchemist", "beserk", "yeeter", "blinding", "burning",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
             "resistant","rust","snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
-            "withering"));
+            "withering","duplicator"));
 
     private ArrayList<String> ranged_mobs_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
             "resistant", "snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
-            "withering","sniper"));
+            "withering","sniper", "duplicator"));
 
     public ArrayList<String> creeper_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
             "resistant", "snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
-            "withering"));
+            "withering", "duplicator"));
 
     private ArrayList<String> alt_activated_mods = new ArrayList<>(Arrays.asList("yeeter", "deflector","rust","ender","lifesteal","one_up","thorny","toxic",
             "withering","sniper"));
@@ -99,6 +99,7 @@ public class ModifierComponent implements ModifierInterface {
         mods_hashmap.put("stormy",new StormyComponent());
         mods_hashmap.put("weakness",new WeaknessComponent());
         mods_hashmap.put("webslinging",new WebslingingComponent());
+        mods_hashmap.put("duplicator", new DuplicatorComponent());
     }
 
 
@@ -110,11 +111,11 @@ public class ModifierComponent implements ModifierInterface {
 
     EldritchMobsConfig config = AutoConfig.getConfigHolder(EldritchMobsConfig.class).getConfig();
 
-    private int EliteSpawnRate = config.EliteSpawnRates;
+    private double EliteSpawnRate = config.EliteSpawnRates;
 
-    private int UltraSpawnRate = config.UltraSpawnRates;
+    private double UltraSpawnRate = config.UltraSpawnRates;
 
-    private int EldritchSpawnRate = config.EldritchSpawnRates;
+    private double EldritchSpawnRate = config.EldritchSpawnRates;
 
 
     public ModifierComponent(LivingEntity entity) {
@@ -165,15 +166,15 @@ public class ModifierComponent implements ModifierInterface {
     public void setRank() {
         if(!rank_decided) {
             Random random = new Random();
-            int random_int_one = random.nextInt(100) + 1;
+            double random_int_one = random.nextDouble() * 100;
             if (random_int_one <= EliteSpawnRate) {
                 is_elite = true;
                 mod_number = 4;
-                int random_int_two = random.nextInt(100) + 1;
+                double random_int_two = random.nextDouble() * 100;
                 if (random_int_two <= UltraSpawnRate) {
                     is_ultra = true;
                     mod_number = 8;
-                    int random_int_three = random.nextInt(100) + 1;
+                    double random_int_three = random.nextDouble() * 100;
                     if (random_int_three <= EldritchSpawnRate) {
                         is_eldritch = true;
                         mod_number = 12;
@@ -199,7 +200,7 @@ public class ModifierComponent implements ModifierInterface {
             for(String mod_name : modifier_list){
                 ans += WordUtils.capitalize(mod_name) + " ";
             }
-            ans += WordUtils.capitalize(getEntityName());
+            ans += WordUtils.capitalize(getEntityName().replaceAll("_"," "));
         }
         return ans;
     }

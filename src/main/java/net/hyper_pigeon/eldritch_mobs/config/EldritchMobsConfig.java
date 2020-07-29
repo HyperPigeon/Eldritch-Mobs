@@ -16,14 +16,17 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("Turn off custom names")
     public boolean turnOffNames = false;
 
+    @Comment("Enable Glowing Elite/Ultra/Eldritch Mobs upon discovery")
+    public boolean turnOnGlowingMobs = false;
+
     @Comment("Out of 100 Mobs")
-    public int EliteSpawnRates = 10;
+    public double EliteSpawnRates = 10;
 
     @Comment("Out of 100 Elites")
-    public int UltraSpawnRates = 10;
+    public double UltraSpawnRates = 10;
 
     @Comment("Out of 100 Ultras")
-    public int EldritchSpawnRates = 10;
+    public double EldritchSpawnRates = 10;
 
     @ConfigEntry.Gui.CollapsibleObject
     public DisableModifiers disableModifiers = new DisableModifiers();
@@ -58,6 +61,7 @@ public class EldritchMobsConfig implements ConfigData {
         public  boolean disableWebslinging = false;
         public  boolean disableWithering = false;
         public  boolean disableSniper = false;
+        public boolean disableDuplicator = false;
     }
 
     public void removeMods(){
@@ -147,6 +151,9 @@ public class EldritchMobsConfig implements ConfigData {
         }
         if(disableModifiers.disableSniper){
             ModifierComponent.all_mods.remove("sniper");
+        }
+        if(disableModifiers.disableDuplicator) {
+            ModifierComponent.all_mods.remove("duplicator");
         }
     }
 

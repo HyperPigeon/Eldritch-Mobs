@@ -2,17 +2,31 @@ package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.CompoundTag;
 
-public class ToxicComponent implements ModifierInterface {
+import java.util.UUID;
+
+public class DuplicatorComponent implements ModifierInterface {
+
+    private final static long cooldown = 3000;
+    private long nextAbilityUse = 0L;
 
     @Override
     public void useAbility(MobEntity entity) {
-
+        if(entity.getTarget() != null) {
+            //MobEntity copy_ally = entity
+            long time = entity.getEntityWorld().getTime();
+            if (time > nextAbilityUse) {
+                nextAbilityUse = time + cooldown;
+                //copy_ally.setUuid(UUID.randomUUID());
+                //copy_ally.setPos(entity.getX()+1, entity.getY(), entity.getZ()+2);
+                //entity.getEntityWorld().spawnEntity(copy_ally);
+                entity.getType().spawn(entity.getEntityWorld(), null,null,null, entity.getBlockPos(), SpawnReason.REINFORCEMENT, true, true);
+            }
+        }
     }
 
     @Override

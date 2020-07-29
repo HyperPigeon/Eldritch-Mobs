@@ -41,11 +41,6 @@ import java.util.Random;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity implements ComponentProvider {
 
-
-    @Shadow
-    @Final
-    private DefaultedList<ItemStack> equippedArmor;
-
     @Shadow
     public native boolean addStatusEffect(StatusEffectInstance effect);
 
@@ -70,13 +65,9 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     @Unique
     private boolean eldritchMobs_hasConfiguredName = false;
 
-    private final ServerBossBar bossBar;
-
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
-        this.bossBar = (ServerBossBar)(new ServerBossBar(this.getDisplayName(), BossBar.Color.PURPLE, BossBar.Style.PROGRESS)).setDarkenSky(true);
-        this.bossBar.setVisible(false);
     }
 
     @Inject(
@@ -85,16 +76,15 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     )
     private void configureCustomName(CallbackInfo ci) {
         // only attempt to apply a custom name to the mob on their first tick
-
         if(!world.isClient && !eldritchMobs_hasConfiguredName) {
             ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
 
             // only apply custom name if the mob doesn't have one and their modifier provides one
             boolean hasCustomName = this.getCustomName() != null && this.getCustomName().asString().equals("");
             if (!modifiers.get_mod_string().equals("") && !hasCustomName) {
+                this.setCustomNameVisible(false);
                 if (!EldritchMobsMod.CONFIG.turnOffNames) {
                     this.setCustomName(new TranslatableText(modifiers.get_mod_string(), new Object[0]));
-                    this.setCustomNameVisible(true);
                 }
             }
 
@@ -189,6 +179,12 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
             if(attacker != null) {
                 if((EldritchMobsMod.isElite(this)
                         ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))) {
+                    if(!this.isCustomNameVisible()) {
+                        this.setCustomNameVisible(true);
+                    }
+                    if(EldritchMobsMod.CONFIG.turnOnGlowingMobs){
+                        this.setGlowing(true);
+                    }
                     if (EldritchMobsMod.hasMod(this, "beserk")) {
                         this.applyDamage(source, amount);
                     }
@@ -250,19 +246,19 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
 
     @Inject(at = @At("TAIL"), method = "dropLoot")
     protected void dropEldritchLoot (DamageSource source, boolean causedByPlayer, CallbackInfo info) {
-        if(EldritchMobsMod.isElite(this)){
+        if(EldritchMobsMod.isElite(this) && causedByPlayer){
             Identifier identifier = new Identifier("eldritch_mobs:entities/elite_loot");
             LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
             net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
             lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
         }
-        if(EldritchMobsMod.isUltra(this)){
+        if(EldritchMobsMod.isUltra(this) && causedByPlayer){
             Identifier identifier = LootTables.SHIPWRECK_TREASURE_CHEST;
             LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
             net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
             lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
         }
-        if(EldritchMobsMod.isEldritch(this)){
+        if(EldritchMobsMod.isEldritch(this) && causedByPlayer){
             Identifier identifier = LootTables.END_CITY_TREASURE_CHEST;
             LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
             net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
