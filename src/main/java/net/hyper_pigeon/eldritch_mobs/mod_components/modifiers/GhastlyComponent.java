@@ -11,7 +11,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class GhastlyComponent implements ModifierInterface {
 
-    private final static long cooldown = 300;
+    private final static long cooldown = 600;
     private long nextAbilityUse = 0L;
 
     @Override

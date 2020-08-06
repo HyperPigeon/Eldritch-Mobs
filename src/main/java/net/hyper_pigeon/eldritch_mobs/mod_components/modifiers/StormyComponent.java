@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class StormyComponent implements ModifierInterface {
 
-    private final static long cooldown = 300;
+    private final static long cooldown = 800;
     private long nextAbilityUse = 0L;
 
     @Override

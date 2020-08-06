@@ -5,14 +5,20 @@ import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
+import net.hyper_pigeon.eldritch_mobs.eldritch_boss_bar.EldritchBossBar;
+import net.minecraft.client.gui.hud.ClientBossBar;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.boss.BossBar;
+import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.packet.s2c.play.BossBarS2CPacket;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
 import net.minecraft.world.World;
@@ -58,6 +64,43 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
 //
 //    }
 
+//    private EldritchBossBar eldritchBossBar;
+//    private BossBarS2CPacket bossBarS2CPacket = new BossBarS2CPacket();
+    private ServerBossBar bossBar;
+    //private PlayerEntity currentPlayer;
+
+    @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
+    private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
+        this.bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.RED,
+                BossBar.Style.PROGRESS);
+    }
+
+    @Inject(at = @At("HEAD"), method = "mobTick")
+    private void mobTick(CallbackInfo info) {
+        this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
+    }
+
+
+//    @Override
+//    public void onStartedTrackingBy(ServerPlayerEntity player) {
+//        super.onStartedTrackingBy(player);
+//        System.out.println("check1");
+//        //currentPlayer = player;
+//        System.out.println((EldritchMobsMod.isElite(this)
+//                ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this)));
+//        System.out.println(player.canSee(this));
+//        if((EldritchMobsMod.isElite(this)
+//                ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))&& player.canSee(this)) {
+//            System.out.println("check2");
+//            this.bossBar.addPlayer(player);
+//        }
+//    }
+//
+//    @Override
+//    public void onStoppedTrackingBy(ServerPlayerEntity player) {
+//        super.onStoppedTrackingBy(player);
+//        this.bossBar.removePlayer(player);
+//    }
 
     @Inject(at = @At("HEAD"), method = "tick")
     public void ability_try(CallbackInfo callback) {

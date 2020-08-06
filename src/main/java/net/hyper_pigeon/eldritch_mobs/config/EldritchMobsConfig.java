@@ -16,17 +16,20 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("Turn off custom names")
     public boolean turnOffNames = false;
 
+    @Comment("Ignore named creatures and monsters")
+    public boolean ignoreNamed = true;
+
     @Comment("Enable Glowing Elite/Ultra/Eldritch Mobs upon discovery")
     public boolean turnOnGlowingMobs = false;
 
     @Comment("Out of 100 Mobs")
-    public double EliteSpawnRates = 10;
+    public double EliteSpawnRates = 1;
 
     @Comment("Out of 100 Elites")
-    public double UltraSpawnRates = 10;
+    public double UltraSpawnRates = 1;
 
     @Comment("Out of 100 Ultras")
-    public double EldritchSpawnRates = 10;
+    public double EldritchSpawnRates = 1;
 
     @ConfigEntry.Gui.CollapsibleObject
     public DisableModifiers disableModifiers = new DisableModifiers();
