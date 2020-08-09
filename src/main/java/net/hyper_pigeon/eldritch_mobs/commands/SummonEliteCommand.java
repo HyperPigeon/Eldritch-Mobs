@@ -63,8 +63,6 @@ public class SummonEliteCommand {
                 if (initialize && entity2 instanceof MobEntity) {
                     if(!EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).isElite()) {
                         EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setIs_elite(true);
-                        //EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setIs_ultra(false);
-                       //EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setIs_eldritch(false);
                         EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setMods();
                     }
 //                    if(!(config.turnOffNames)) {

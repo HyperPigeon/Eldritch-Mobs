@@ -9,10 +9,7 @@ import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.boss.WitherEntity;
 import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.mob.AmbientEntity;
-import net.minecraft.entity.mob.CreeperEntity;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.mob.WaterCreatureEntity;
+import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
@@ -33,7 +30,7 @@ public class ModifierComponent implements ModifierInterface {
 //    private AlchemyComponent alchemy = new AlchemyComponent();
 //    private BeserkComponent beserk = new BeserkComponent();
 //    private BlindingComponent blinding = new BlindingComponent();
-//    private BurningComponent burning = new BurningComponent();
+//    private BurningComponent burning = sanew BurningComponent();
 //    private CloakedComponent cloaked = new CloakedComponent();
 //    private DrainingComponent draining = new DrainingComponent();
 //    private DrowningComponent drowning = new DrowningComponent();
@@ -100,9 +97,6 @@ public class ModifierComponent implements ModifierInterface {
         mods_hashmap.put("duplicator", new DuplicatorComponent());
     }
 
-
-
-
     public ArrayList<String> modifier_list = new ArrayList<>();
 
     public LivingEntity mob;
@@ -118,7 +112,8 @@ public class ModifierComponent implements ModifierInterface {
 
     public ModifierComponent(LivingEntity entity) {
         if((!config.ignoreNamed || !entity.hasCustomName())
-                &&!(entity instanceof PassiveEntity) && !(entity instanceof PlayerEntity)
+                &&(!(entity instanceof PassiveEntity) || (entity instanceof Monster) || (entity instanceof Angerable))
+                && !(entity instanceof PlayerEntity)
         && !(entity instanceof AmbientEntity) && !(entity.getType().isIn(EldritchMobsMod.ELDRITCH_BLACKLIST))) {
             config.removeMods();
             ranged_mobs_mods.retainAll(all_mods);
@@ -135,6 +130,7 @@ public class ModifierComponent implements ModifierInterface {
                 mob = entity;
             }
             else if(!(entity instanceof WaterCreatureEntity) && !(entity instanceof WitherEntity || entity instanceof EnderDragonEntity)) {
+                System.out.println("CHECK");
                 this.setRank();
                 this.setMods();
                 mob = entity;
