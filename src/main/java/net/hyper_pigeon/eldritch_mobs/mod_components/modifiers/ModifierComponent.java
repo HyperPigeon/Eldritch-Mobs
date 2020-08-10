@@ -130,7 +130,6 @@ public class ModifierComponent implements ModifierInterface {
                 mob = entity;
             }
             else if(!(entity instanceof WaterCreatureEntity) && !(entity instanceof WitherEntity || entity instanceof EnderDragonEntity)) {
-                System.out.println("CHECK");
                 this.setRank();
                 this.setMods();
                 mob = entity;
@@ -145,17 +144,17 @@ public class ModifierComponent implements ModifierInterface {
 
     public void setIs_elite(boolean bool){
         is_elite = bool;
-        mod_number = 4;
+        mod_number = config.EliteModTotal;
     }
 
     public void setIs_ultra(boolean bool){
         is_ultra = bool;
-        mod_number = 8;
+        mod_number = config.UltraModTotal;
     }
 
     public void setIs_eldritch(boolean bool){
         is_eldritch = bool;
-        mod_number = 12;
+        mod_number = config.EldritchModTotal;
     }
 
     public void setRank() {
@@ -164,15 +163,15 @@ public class ModifierComponent implements ModifierInterface {
             double random_int_one = random.nextDouble() * 100;
             if (random_int_one <= EliteSpawnRate) {
                 is_elite = true;
-                mod_number = 4;
+                mod_number = config.EliteModTotal;
                 double random_int_two = random.nextDouble() * 100;
                 if (random_int_two <= UltraSpawnRate) {
                     is_ultra = true;
-                    mod_number = 8;
+                    mod_number = config.UltraModTotal;
                     double random_int_three = random.nextDouble() * 100;
                     if (random_int_three <= EldritchSpawnRate) {
                         is_eldritch = true;
-                        mod_number = 12;
+                        mod_number = config.EldritchModTotal;
                     }
                 }
             }

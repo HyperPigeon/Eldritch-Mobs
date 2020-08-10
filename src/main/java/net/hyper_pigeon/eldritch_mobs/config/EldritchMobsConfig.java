@@ -31,6 +31,25 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("Out of 100 Ultras")
     public double EldritchSpawnRates = 1;
 
+    @Comment("Elite Health Modifier")
+    public double EliteHealthMod = 4;
+
+    @Comment("Ultra Health Modifier")
+    public double UltraHealthMod = 6;
+
+    @Comment("Eldritch Health Modifier")
+    public double EldritchHealthMod = 8;
+
+    @Comment("# of Modifiers for Elite Mobs")
+    public int EliteModTotal = 4;
+
+    @Comment("# of Modifiers for Ultra Mobs")
+    public int UltraModTotal = 8;
+
+    @Comment("# of Modifiers for Eldritch Mobs")
+    public int EldritchModTotal = 12;
+
+
     @ConfigEntry.Gui.CollapsibleObject
     public DisableModifiers disableModifiers = new DisableModifiers();
 

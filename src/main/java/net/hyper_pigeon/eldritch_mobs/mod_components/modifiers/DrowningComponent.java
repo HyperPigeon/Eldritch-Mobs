@@ -15,7 +15,7 @@ public class DrowningComponent implements ModifierInterface {
         if(entity.getTarget() != null) {
             LivingEntity target= entity.getTarget();
             if(!(target.hasStatusEffect(StatusEffects.WATER_BREATHING))) {
-                target.damage(DamageSource.DROWN, 1);
+                target.damage(DamageSource.DROWN, 0.35f);
             }
         }
     }

@@ -6,7 +6,9 @@ import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.hyper_pigeon.eldritch_mobs.eldritch_boss_bar.EldritchBossBar;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.gui.hud.ClientBossBar;
+import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -21,6 +23,8 @@ import net.minecraft.network.packet.s2c.play.BossBarS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,6 +32,12 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Predicate;
 
 @Mixin(MobEntity.class)
 public abstract class MobEntityMixin extends LivingEntity implements ComponentProvider {
@@ -50,7 +60,21 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
 
     @Shadow protected int experiencePoints;
 
+    private ArrayList<ServerPlayerEntity> playersList= new ArrayList();
+
+    boolean nameSet = false;
+
     EldritchMobsConfig config = AutoConfig.getConfigHolder(EldritchMobsConfig.class).getConfig();
+
+    private static final Predicate<LivingEntity> PLAYER_ENTITY_FILTER = (livingEntity) -> {
+        if (livingEntity == null) {
+            return false;
+        } else if (livingEntity instanceof PlayerEntity) {
+            return true;
+        } else {
+            return false;
+        }
+    };
 
 //    @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
 //    private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
@@ -71,15 +95,108 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
 
     @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
     private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
-        this.bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.RED,
+        this.bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.GREEN,
                 BossBar.Style.PROGRESS);
     }
 
     @Inject(at = @At("HEAD"), method = "mobTick")
     private void mobTick(CallbackInfo info) {
+        if(!nameSet){
+            this.bossBar.setName(this.getDisplayName());
+            nameSet = true;
+        }
+
         this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
     }
 
+
+//    @Override
+//    public void onStartedTrackingBy(ServerPlayerEntity player) {
+//        super.onStartedTrackingBy(player);
+//        if((EldritchMobsMod.isElite(this))) {
+//            this.bossBar.addPlayer(player);
+//        }
+//    }
+//
+    @Override
+    public void onStoppedTrackingBy(ServerPlayerEntity player) {
+        super.onStoppedTrackingBy(player);
+        this.bossBar.removePlayer(player);
+    }
+
+
+//    public void onStartedTrackingBy(ServerPlayerEntity player) {
+//        super.onStartedTrackingBy(player);
+//        if((EldritchMobsMod.isElite(this))) {
+//            this.bossBar.addPlayer(player);
+//        }
+//    }
+//
+//    @Override
+//    public void onStoppedTrackingBy(ServerPlayerEntity player) {
+//        super.onStoppedTrackingBy(player);
+//        this.bossBar.removePlayer(player);
+//    }
+
+    @Inject(at = @At("HEAD"), method = "tickMovement")
+    public void addBossBar(CallbackInfo callbackInfo){
+        if(EldritchMobsMod.isElite(this)) {
+            Box box_1 = this.getBoundingBox().expand(30.0D);
+            List<ServerPlayerEntity> list = this.world.getEntities(ServerPlayerEntity.class, box_1,
+                    PLAYER_ENTITY_FILTER);
+            ArrayList<ServerPlayerEntity> removeList = new ArrayList<>();
+            playersList.addAll(list);
+
+            for (ServerPlayerEntity player : playersList) {
+                if (isPlayerStaring(player)) {
+                    bossBar.addPlayer(player);
+                } else {
+                    if (bossBar.getPlayers().contains(player)) {
+                        bossBar.removePlayer(player);
+                        removeList.add(player);
+                    }
+                }
+            }
+
+            playersList.removeAll(removeList);
+        }
+    }
+
+//    @Inject(at = @At("HEAD"), method = "tickMovement")
+//    public void addBossBar(CallbackInfo callbackInfo){
+//        Box box_1 = this.getBoundingBox().expand(30.0D);
+//        ArrayList<ServerPlayerEntity> playersList_two = new ArrayList<>();
+//        List<LivingEntity> list = this.world.getEntities(LivingEntity.class, box_1,
+//                LIVING_ENTITY_FILTER);
+//        Iterator entityIterator = list.iterator();
+//        while(entityIterator.hasNext()) {
+//            LivingEntity livingEntity = (LivingEntity) entityIterator.next();
+//            if(livingEntity instanceof PlayerEntity){
+//                playersList_two.add((ServerPlayerEntity) livingEntity);
+//                bossBar.addPlayer((ServerPlayerEntity) livingEntity);
+//            }
+//        }
+//
+//        ArrayList<ServerPlayerEntity> remove_boss_bar = new ArrayList<>();
+//        remove_boss_bar.addAll(playersList);
+//        remove_boss_bar.addAll(playersList_two);
+//        ArrayList<ServerPlayerEntity> intersection = playersList;
+//        intersection.retainAll(playersList_two);
+//        remove_boss_bar.removeAll(intersection);
+//
+//        for (ServerPlayerEntity player : remove_boss_bar) {
+//            bossBar.removePlayer(player);
+//        }
+//    }
+
+    private boolean isPlayerStaring(PlayerEntity player) {
+        Vec3d vec3d = player.getRotationVec(1.0F).normalize();
+        Vec3d vec3d2 = new Vec3d(this.getX() - player.getX(), this.getEyeY() - player.getEyeY(), this.getZ() - player.getZ());
+        double d = vec3d2.length();
+        vec3d2 = vec3d2.normalize();
+        double e = vec3d.dotProduct(vec3d2);
+        return e > 1.0D - 0.025D / d ? player.canSee(this) : false;
+    }
 
 //    @Override
 //    public void onStartedTrackingBy(ServerPlayerEntity player) {
@@ -96,11 +213,7 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
 //        }
 //    }
 //
-//    @Override
-//    public void onStoppedTrackingBy(ServerPlayerEntity player) {
-//        super.onStoppedTrackingBy(player);
-//        this.bossBar.removePlayer(player);
-//    }
+
 
     @Inject(at = @At("HEAD"), method = "tick")
     public void ability_try(CallbackInfo callback) {
@@ -108,17 +221,17 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
             ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))) {
             if(!this.hasStatusEffect(StatusEffects.HEALTH_BOOST)){
                 if(EldritchMobsMod.isEldritch(this)){
-                    int level = (int) ((this.getMaxHealth()*8)/2);
+                    int level = (int) ((this.getMaxHealth()* config.EldritchHealthMod)/2);
                     this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
                     this.heal(this.getMaxHealth()*8);
                 }
                 else if(EldritchMobsMod.isUltra(this)){
-                    int level = (int) ((this.getMaxHealth()*6)/2);
+                    int level = (int) ((this.getMaxHealth()* config.UltraHealthMod)/2);
                     this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
                     this.heal(this.getMaxHealth()*6);
                 }
                 else if(EldritchMobsMod.isElite(this)){
-                    int level = (int) ((this.getMaxHealth()*4)/2);
+                    int level = (int) ((this.getMaxHealth()*config.EliteHealthMod)/2);
                     this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
                     this.heal(this.getMaxHealth()*4);
                 }
