@@ -21,23 +21,33 @@ repositories {
 
 
 dependencies {
-	minecraft "com.mojang:minecraft:1.16.1"
-	mappings "net.fabricmc:yarn:1.16.1+build.1:v2"
-	modImplementation "net.fabricmc:fabric-loader:0.8.8+build.202"
+	minecraft "com.mojang:minecraft:1.16.2"
+	mappings "net.fabricmc:yarn:1.16.2+build.19:v2"
+	modImplementation "net.fabricmc:fabric-loader:0.9.1+build.205"
 
 	//Fabric api
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.13.1+build.370-1.16"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:0.18.0+build.397-1.16"
 
-	modApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.4.0"
-	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.4.0"
+	modApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.5.0"
+	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.5.0"
 
-	modApi "me.shedaniel.cloth:config-2:4.5.6"
-	include "me.shedaniel.cloth:config-2:4.5.6"
+	modApi "me.shedaniel.cloth:config-2:4.5.6", {
+		exclude group: "net.fabricmc.fabric-api"
+	}
+	include "me.shedaniel.cloth:config-2:4.5.6", {
+		exclude group: "net.fabricmc.fabric-api"
+	}
 
-	modApi "me.sargunvohra.mcmods:autoconfig1u:3.2.0-unstable"
-	include "me.sargunvohra.mcmods:autoconfig1u:3.2.0-unstable"
+	modApi "me.sargunvohra.mcmods:autoconfig1u:3.2.0-unstable", {
+		exclude group: "net.fabricmc.fabric-api"
+	}
+	include "me.sargunvohra.mcmods:autoconfig1u:3.2.0-unstable", {
+		exclude group: "net.fabricmc.fabric-api"
+	}
 
-	modImplementation "io.github.prospector:modmenu:1.12.2+build.17"
+	modImplementation "io.github.prospector:modmenu:1.14.6+build.31", {
+		exclude group: "net.fabricmc.fabric-api"
+	}
 
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.

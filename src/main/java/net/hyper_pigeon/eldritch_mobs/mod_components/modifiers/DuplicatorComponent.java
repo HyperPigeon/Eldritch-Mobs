@@ -6,6 +6,7 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 
 import java.util.UUID;
 
@@ -24,7 +25,7 @@ public class DuplicatorComponent implements ModifierInterface {
                 //copy_ally.setUuid(UUID.randomUUID());
                 //copy_ally.setPos(entity.getX()+1, entity.getY(), entity.getZ()+2);
                 //entity.getEntityWorld().spawnEntity(copy_ally);
-                entity.getType().spawn(entity.getEntityWorld(), null,null,null, entity.getBlockPos(), SpawnReason.REINFORCEMENT, true, true);
+                entity.getType().spawn((ServerWorld) entity.getEntityWorld(), null,null,null, entity.getBlockPos(), SpawnReason.REINFORCEMENT, true, true);
             }
         }
     }

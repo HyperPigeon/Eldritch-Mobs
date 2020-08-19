@@ -5,10 +5,6 @@ import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
-import net.hyper_pigeon.eldritch_mobs.eldritch_boss_bar.EldritchBossBar;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.gui.hud.ClientBossBar;
-import net.minecraft.entity.EntityGroup;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -19,9 +15,7 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.packet.s2c.play.BossBarS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -34,8 +28,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -142,7 +134,7 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
     public void addBossBar(CallbackInfo callbackInfo){
         if(EldritchMobsMod.isElite(this)) {
             Box box_1 = this.getBoundingBox().expand(30.0D);
-            List<ServerPlayerEntity> list = this.world.getEntities(ServerPlayerEntity.class, box_1,
+            List<ServerPlayerEntity> list = this.world.getEntitiesByClass(ServerPlayerEntity.class, box_1,
                     PLAYER_ENTITY_FILTER);
             ArrayList<ServerPlayerEntity> removeList = new ArrayList<>();
             playersList.addAll(list);
