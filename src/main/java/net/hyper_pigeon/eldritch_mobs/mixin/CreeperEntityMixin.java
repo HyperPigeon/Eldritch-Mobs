@@ -27,6 +27,7 @@ public class CreeperEntityMixin extends HostileEntity   {
             this.removeStatusEffect(StatusEffects.HEALTH_BOOST);
             this.removeStatusEffect(StatusEffects.INVISIBILITY);
             this.removeStatusEffect(StatusEffects.SPEED);
+            this.removeStatusEffect(StatusEffects.STRENGTH);
         }
 
     }

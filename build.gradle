@@ -21,15 +21,19 @@ repositories {
 
 
 dependencies {
-	minecraft "com.mojang:minecraft:1.16.2"
-	mappings "net.fabricmc:yarn:1.16.2+build.19:v2"
-	modImplementation "net.fabricmc:fabric-loader:0.9.1+build.205"
+	minecraft "com.mojang:minecraft:1.16.3"
+	mappings "net.fabricmc:yarn:1.16.3+build.11:v2"
+	modImplementation "net.fabricmc:fabric-loader:0.9.3+build.207"
 
 	//Fabric api
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.18.0+build.397-1.16"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:0.20.2+build.402-1.16"
 
-	modApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.5.0"
-	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.5.0"
+	modApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_version}"
+	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
+
+	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_version}"
+	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
+
 
 	modApi "me.shedaniel.cloth:config-2:4.5.6", {
 		exclude group: "net.fabricmc.fabric-api"
