@@ -177,7 +177,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                         ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))) {
 //                    if(!this.isCustomNameVisible()) {
 //                        this.setCustomNameVisible(true);
-//                    }
+//                    }s
                     if(EldritchMobsMod.CONFIG.turnOnGlowingMobs){
                         this.setGlowing(true);
                     }
@@ -240,7 +240,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
         }
     }
 
-    @Inject(at = @At("TAIL"), method = "dropLoot")
+    @Inject(at = @At("HEAD"), method = "dropLoot")
     protected void dropEldritchLoot (DamageSource source, boolean causedByPlayer, CallbackInfo info) {
         if(EldritchMobsMod.isElite(this) && causedByPlayer){
             Identifier identifier = new Identifier("eldritch_mobs:entities/elite_loot");
