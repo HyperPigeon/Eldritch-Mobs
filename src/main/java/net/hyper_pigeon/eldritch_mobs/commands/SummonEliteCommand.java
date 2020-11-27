@@ -47,7 +47,7 @@ public class SummonEliteCommand {
     private static int execute(ServerCommandSource source, Identifier entity, Vec3d pos, CompoundTag nbt, boolean initialize) throws CommandSyntaxException {
         EldritchMobsConfig config = AutoConfig.getConfigHolder(EldritchMobsConfig.class).getConfig();
         BlockPos blockPos = new BlockPos(pos);
-        if (!World.method_25953(blockPos)) {
+        if (!World.isValid(blockPos)) {
             throw INVALID_POSITION_EXCEPTION.create();
         } else {
             CompoundTag compoundTag = nbt.copy();

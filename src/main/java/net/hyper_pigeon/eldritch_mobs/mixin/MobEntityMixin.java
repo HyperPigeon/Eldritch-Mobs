@@ -132,25 +132,27 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
 
     @Inject(at = @At("HEAD"), method = "tickMovement")
     public void addBossBar(CallbackInfo callbackInfo){
-        if(EldritchMobsMod.isElite(this)) {
-            Box box_1 = this.getBoundingBox().expand(30.0D);
-            List<ServerPlayerEntity> list = this.world.getEntitiesByClass(ServerPlayerEntity.class, box_1,
-                    PLAYER_ENTITY_FILTER);
-            ArrayList<ServerPlayerEntity> removeList = new ArrayList<>();
-            playersList.addAll(list);
+        if(!EldritchMobsMod.CONFIG.turnOffBossBars) {
+            if (EldritchMobsMod.isElite(this)) {
+                Box box_1 = this.getBoundingBox().expand(30.0D);
+                List<ServerPlayerEntity> list = this.world.getEntitiesByClass(ServerPlayerEntity.class, box_1,
+                        PLAYER_ENTITY_FILTER);
+                ArrayList<ServerPlayerEntity> removeList = new ArrayList<>();
+                playersList.addAll(list);
 
-            for (ServerPlayerEntity player : playersList) {
-                if (isPlayerStaring(player)) {
-                    bossBar.addPlayer(player);
-                } else {
-                    if (bossBar.getPlayers().contains(player)) {
-                        bossBar.removePlayer(player);
-                        removeList.add(player);
+                for (ServerPlayerEntity player : playersList) {
+                    if (isPlayerStaring(player)) {
+                        bossBar.addPlayer(player);
+                    } else {
+                        if (bossBar.getPlayers().contains(player)) {
+                            bossBar.removePlayer(player);
+                            removeList.add(player);
+                        }
                     }
                 }
-            }
 
-            playersList.removeAll(removeList);
+                playersList.removeAll(removeList);
+            }
         }
     }
 

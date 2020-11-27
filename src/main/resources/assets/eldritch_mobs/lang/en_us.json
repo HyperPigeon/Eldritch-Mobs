@@ -3,6 +3,7 @@
   "text.autoconfig.eldritch_mobs.option.toggleEldritchWaterCreatures": "Toggle Elite/Ultra/Eldritch Water Creatures",
   "text.autoconfig.eldritch_mobs.option.toggleEldritchBossMobs": "Toggle Elite/Ultra/Eldritch Boss Mobs",
   "text.autoconfig.eldritch_mobs.option.turnOffNames": "Turn off names for Elite/Ultra/Eldritch Mobs",
+  "text.autoconfig.eldritch_mobs.option.turnOffBossBars": "Turn off boss bars for Elite/Ultra/Eldritch Mobs",
   "text.autoconfig.eldritch_mobs.option.ignoreNamed": "Turn off named mobs becoming Elite/Ultra/Eldritch Mobs",
   "text.autoconfig.eldritch_mobs.option.turnOnGlowingMobs": "Enable glowing effect",
   "text.autoconfig.eldritch_mobs.option.EliteHealthMod": "Elite Bonus Health Modifier",

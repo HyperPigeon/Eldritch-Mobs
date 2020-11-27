@@ -12,10 +12,10 @@ import net.minecraft.nbt.CompoundTag;
 public class DrowningComponent implements ModifierInterface {
     @Override
     public void useAbility(MobEntity entity) {
-        if(entity.getTarget() != null) {
+        if(entity.getTarget() != null && entity.canSee(entity.getTarget())) {
             LivingEntity target= entity.getTarget();
             if(!(target.hasStatusEffect(StatusEffects.WATER_BREATHING))) {
-                target.damage(DamageSource.DROWN, 0.35f);
+                target.damage(DamageSource.DROWN, 0.15f);
             }
         }
     }

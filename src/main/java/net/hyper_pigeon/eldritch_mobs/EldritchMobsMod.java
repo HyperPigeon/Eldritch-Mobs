@@ -32,6 +32,7 @@ public class EldritchMobsMod implements ModInitializer {
 
 	private static final Identifier ELDRITCH_BLACKLIST_ID = new Identifier("eldritch_mobs:eldritch_blacklist");
 	public static final Tag<EntityType<?>> ELDRITCH_BLACKLIST = TagRegistry.entityType(ELDRITCH_BLACKLIST_ID);
+	
 
 	public static void useAbility(ComponentProvider provider) {
 		ELDRITCH_MODIFIERS.get(provider).useAbility((MobEntity) provider);

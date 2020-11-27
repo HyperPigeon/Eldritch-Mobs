@@ -177,7 +177,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                         ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))) {
 //                    if(!this.isCustomNameVisible()) {
 //                        this.setCustomNameVisible(true);
-//                    }s
+//                    }
                     if(EldritchMobsMod.CONFIG.turnOnGlowingMobs){
                         this.setGlowing(true);
                     }

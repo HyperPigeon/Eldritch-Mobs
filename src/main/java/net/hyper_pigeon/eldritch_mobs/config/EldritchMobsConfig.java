@@ -15,6 +15,8 @@ public class EldritchMobsConfig implements ConfigData {
     public boolean toggleEldritchBossMobs = false;
     @Comment("Turn off custom names")
     public boolean turnOffNames = false;
+    @Comment("Turn off boss bars")
+    public boolean turnOffBossBars = false;
 
     @Comment("Ignore named creatures and monsters")
     public boolean ignoreNamed = true;
