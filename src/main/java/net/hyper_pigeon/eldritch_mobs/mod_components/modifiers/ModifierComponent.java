@@ -119,17 +119,12 @@ public class ModifierComponent implements ModifierInterface {
             ranged_mobs_mods.retainAll(all_mods);
             creeper_mods.retainAll(all_mods);
             mods.retainAll(all_mods);
-            if(entity instanceof  WaterCreatureEntity && config.toggleEldritchWaterCreatures){
+            if((entity instanceof WitherEntity || entity instanceof EnderDragonEntity) && config.toggleEldritchBossMobs) {
                 this.setRank();
                 this.setMods();
                 mob = entity;
             }
-            else if((entity instanceof WitherEntity || entity instanceof EnderDragonEntity) && config.toggleEldritchBossMobs) {
-                this.setRank();
-                this.setMods();
-                mob = entity;
-            }
-            else if(!(entity instanceof WaterCreatureEntity) && !(entity instanceof WitherEntity || entity instanceof EnderDragonEntity)) {
+            else if(!(entity instanceof WitherEntity || entity instanceof EnderDragonEntity)) {
                 this.setRank();
                 this.setMods();
                 mob = entity;

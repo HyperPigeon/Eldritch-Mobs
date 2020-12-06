@@ -9,8 +9,6 @@ import net.hyper_pigeon.eldritch_mobs.mod_components.modifiers.ModifierComponent
 @Config(name = "eldritch_mobs")
 public class EldritchMobsConfig implements ConfigData {
 
-    @Comment("Enable Water Creatures with Eldritch Modifiers")
-    public boolean toggleEldritchWaterCreatures = false;
     @Comment("Enable Boss Mobs with Eldritch Modifiers")
     public boolean toggleEldritchBossMobs = false;
     @Comment("Turn off custom names")
