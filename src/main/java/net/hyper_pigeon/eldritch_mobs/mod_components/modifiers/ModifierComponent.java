@@ -113,6 +113,7 @@ public class ModifierComponent implements ModifierInterface {
     public ModifierComponent(LivingEntity entity) {
         if((!config.ignoreNamed || !entity.hasCustomName())
                 &&(!(entity instanceof PassiveEntity) || (entity instanceof Monster) || (entity instanceof Angerable))
+                && (!(entity instanceof WaterCreatureEntity) || (entity instanceof Monster) || (entity instanceof Angerable))
                 && !(entity instanceof PlayerEntity)
         && !(entity instanceof AmbientEntity) && !(entity.getType().isIn(EldritchMobsMod.ELDRITCH_BLACKLIST))) {
             config.removeMods();
