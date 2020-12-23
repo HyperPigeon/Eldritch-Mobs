@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "eldritch_mobs:block/soothing_lantern"
+  }
+}
+

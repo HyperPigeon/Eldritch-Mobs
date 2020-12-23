@@ -32,6 +32,8 @@ public interface ModifierInterface extends Component {
 
     void setIs_eldritch(boolean bool);
 
+    void spawnedInLampChunk();
+
 
 
 }

@@ -76,6 +76,11 @@ public class One_UpComponent implements ModifierInterface {
     }
 
     @Override
+    public void spawnedInLampChunk() {
+
+    }
+
+    @Override
     public void fromTag(CompoundTag compoundTag) {
 
     }

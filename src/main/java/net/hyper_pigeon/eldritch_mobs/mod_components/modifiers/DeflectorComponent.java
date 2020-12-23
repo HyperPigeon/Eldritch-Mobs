@@ -98,6 +98,11 @@ public class DeflectorComponent implements ModifierInterface {
     }
 
     @Override
+    public void spawnedInLampChunk() {
+
+    }
+
+    @Override
     public void fromTag(CompoundTag compoundTag) {
 
     }

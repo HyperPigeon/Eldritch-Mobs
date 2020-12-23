@@ -3,6 +3,7 @@ package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
+import net.hyper_pigeon.eldritch_mobs.item.SoothingLantern;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RangedAttackMob;
@@ -13,6 +14,7 @@ import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.math.ChunkPos;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
@@ -49,12 +51,12 @@ public class ModifierComponent implements ModifierInterface {
 //    private WebslingingComponent webslinging = new WebslingingComponent();
 
 
-    public static ArrayList<String> all_mods = new ArrayList<>(Arrays.asList("alchemist", "beserk", "yeeter", "blinding", "burning",
+    public static ArrayList<String> all_mods = new ArrayList<>(Arrays.asList("alchemist", "berserk", "yeeter", "blinding", "burning",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
             "resistant","rust","snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering", "sniper", "duplicator"));
 
-    private ArrayList<String> mods = new ArrayList<>(Arrays.asList("alchemist", "beserk", "yeeter", "blinding", "burning",
+    private ArrayList<String> mods = new ArrayList<>(Arrays.asList("alchemist", "berserk", "yeeter", "blinding", "burning",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
             "resistant","rust","snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering","duplicator"));
@@ -75,7 +77,7 @@ public class ModifierComponent implements ModifierInterface {
     private HashMap<String, ModifierInterface> mods_hashmap = new HashMap<>();
     {
         mods_hashmap.put("alchemist", new AlchemyComponent());
-        mods_hashmap.put("beserk", new BeserkComponent());
+        mods_hashmap.put("berserk", new BeserkComponent());
         mods_hashmap.put("blinding", new BlindingComponent());
         mods_hashmap.put("burning", new BurningComponent());
         mods_hashmap.put("cloaked",new CloakedComponent());
@@ -111,11 +113,9 @@ public class ModifierComponent implements ModifierInterface {
 
 
     public ModifierComponent(LivingEntity entity) {
-        if((!config.ignoreNamed || !entity.hasCustomName())
-                &&(!(entity instanceof PassiveEntity) || (entity instanceof Monster) || (entity instanceof Angerable))
-                && (!(entity instanceof WaterCreatureEntity) || (entity instanceof Monster) || (entity instanceof Angerable))
-                && !(entity instanceof PlayerEntity)
-        && !(entity instanceof AmbientEntity) && !(entity.getType().isIn(EldritchMobsMod.ELDRITCH_BLACKLIST))) {
+        if((!config.ignoreNamed || !entity.hasCustomName()) &&
+                (entity.getType().isIn(EldritchMobsMod.ELDRITCH_ALLOWED)) && !(entity.getType().isIn(EldritchMobsMod.ELDRITCH_BLACKLIST))) {
+
             config.removeMods();
             ranged_mobs_mods.retainAll(all_mods);
             creeper_mods.retainAll(all_mods);
@@ -176,6 +176,7 @@ public class ModifierComponent implements ModifierInterface {
     }
 
     public String getEntityName(){
+        //System.out.println(mob);
         String type = mob.getType().toString();
         String[] split_string = type.split("\\.");
         return split_string[2];
@@ -303,5 +304,12 @@ public class ModifierComponent implements ModifierInterface {
 
 
         return tag;
+    }
+
+    public void spawnedInLampChunk(){
+        is_elite = false;
+        is_ultra = false;
+        is_eldritch = false;
+        modifier_list.clear();
     }
 }

@@ -26,14 +26,15 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:0.10.8"
 
 	//Fabric api
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.26.3+1.16"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modApi "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_version}"
 	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
+	modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${project.cardinal_version}"
 
 	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:${project.cardinal_version}"
 	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
-
+	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${project.cardinal_version}"
 
 	modApi "me.shedaniel.cloth:config-2:4.8.2", {
 		exclude group: "net.fabricmc.fabric-api"

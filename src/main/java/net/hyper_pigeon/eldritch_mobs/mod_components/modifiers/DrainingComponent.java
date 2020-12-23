@@ -82,6 +82,11 @@ public class DrainingComponent implements ModifierInterface {
     }
 
     @Override
+    public void spawnedInLampChunk() {
+
+    }
+
+    @Override
     public void fromTag(CompoundTag compoundTag) {
 
     }
