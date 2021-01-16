@@ -32,13 +32,13 @@ public class EldritchMobsConfig implements ConfigData {
     public double EldritchSpawnRates = 1;
 
     @Comment("Health Boost Level for Elite Mobs")
-    public double EliteHealthMod = 15;
+    public int EliteHealthMod = 15;
 
     @Comment("Health Boost Level for Ultra Mobs")
-    public double UltraHealthMod = 30;
+    public int UltraHealthMod = 30;
 
     @Comment("Health Boost Level for Eldritch Mobs")
-    public double EldritchHealthMod = 60;
+    public int EldritchHealthMod = 60;
 
 //    @Comment("Health Modifier for Elite Mobs (must be integer)")
 //    public int EliteHealthMod = 2;
@@ -57,6 +57,16 @@ public class EldritchMobsConfig implements ConfigData {
 
     @Comment("# of Modifiers for Eldritch Mobs")
     public int EldritchModTotal = 12;
+
+    @Comment("EXP multiplier for Elite Mobs")
+    public int EliteExpMult = 5;
+
+    @Comment("EXP multiplier for Ultra Mobs")
+    public int UltraExpMult = 10;
+
+    @Comment("EXP multiplier for Eldritch Mobs")
+    public int EldritchExpMult = 15;
+
 
     @Comment("Intensity: 1 - 3")
     public int intensity = 1; 
