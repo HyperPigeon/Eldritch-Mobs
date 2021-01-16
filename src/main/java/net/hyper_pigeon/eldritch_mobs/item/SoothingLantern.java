@@ -26,14 +26,14 @@ public class SoothingLantern extends Block {
 
     public void onPlaced(World world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack itemStack) {
         ChunkPos chunkPos = new ChunkPos(pos);
-        chunksPlacedData.addChunkPos(chunkPos);
+        chunksPlacedData.addChunkPos(chunkPos,pos);
     }
 
     public void afterBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity blockEntity, ItemStack stack) {
         super.afterBreak(world,  player, pos, state, blockEntity, stack);
 
-        ChunkPos chunkPos = new ChunkPos(pos);
-        chunksPlacedData.removeChunkPos(chunkPos);
+        //ChunkPos chunkPos = new ChunkPos(pos);
+        chunksPlacedData.removeChunkPos(pos);
     }
 
     public static boolean containsChunk(BlockPos blockPos){
@@ -73,13 +73,12 @@ public class SoothingLantern extends Block {
 
         }
 
-        public void addChunkPos(ChunkPos chunkPos){
-            System.out.println("lamp chunk pos: " + chunkPos.toString());
-            map.put(chunkPos.toString(),chunkPos);
+        public void addChunkPos(ChunkPos chunkPos, BlockPos blockPos){
+            map.put(blockPos.toString(),chunkPos);
         }
 
-        public void removeChunkPos(ChunkPos chunkPos){
-            map.remove(chunkPos.toString());
+        public void removeChunkPos(BlockPos pos){
+            map.remove(pos.toString());
         }
 
         public boolean containsChunk(ChunkPos chunkPos){
