@@ -44,7 +44,7 @@ public class AlchemyComponent implements ModifierInterface {
     }*/
 
     public void useAbility(MobEntity entity) {
-        if(entity.getTarget() != null) {
+        if(entity.getTarget() != null && entity.getTarget().isAlive()) {
             long time = entity.getEntityWorld().getTime();
             if (time > alchemy_nextAbilityUse) {
                 alchemy_nextAbilityUse = time + alch_cooldown;

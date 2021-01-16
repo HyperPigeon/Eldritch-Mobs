@@ -14,7 +14,7 @@ public class BurningComponent implements ModifierInterface {
 
     @Override
     public void useAbility(MobEntity entity) {
-        if(entity.getAttacking() != null) {
+        if(entity.getAttacking() != null && entity.getTarget() != null && entity.getTarget().isAlive()) {
             long time = entity.getEntityWorld().getTime();
             if(time > nextAbilityUse){
                 nextAbilityUse = time + cooldown;

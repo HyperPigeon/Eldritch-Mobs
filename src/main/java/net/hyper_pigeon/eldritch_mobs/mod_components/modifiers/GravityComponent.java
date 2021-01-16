@@ -17,7 +17,7 @@ public class GravityComponent implements ModifierInterface {
 
     @Override
     public void useAbility(MobEntity entity) {
-        if(entity.getTarget() != null && entity.canSee(entity.getTarget())) {
+        if(entity.getTarget() != null && entity.canSee(entity.getTarget()) && entity.getTarget().isAlive()) {
             long time = entity.getEntityWorld().getTime();
             if (time > nextAbilityUse) {
                 nextAbilityUse = time + cooldown;
