@@ -12,12 +12,12 @@ import net.minecraft.util.math.Vec3d;
 
 public class GravityComponent implements ModifierInterface {
 
-    private final static long cooldown = 300;
+    private final static long cooldown = 600;
     private long nextAbilityUse = 0;
 
     @Override
     public void useAbility(MobEntity entity) {
-        if(entity.getTarget() != null) {
+        if(entity.getTarget() != null && entity.canSee(entity.getTarget())) {
             long time = entity.getEntityWorld().getTime();
             if (time > nextAbilityUse) {
                 nextAbilityUse = time + cooldown;

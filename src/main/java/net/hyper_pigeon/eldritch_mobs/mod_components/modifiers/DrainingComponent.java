@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -10,17 +11,27 @@ import net.minecraft.nbt.CompoundTag;
 
 public class DrainingComponent implements ModifierInterface {
 
-    private final static long cooldown = 200;
+    private final static long cooldown = 300;
     private long nextAbilityUse = 0L;
 
     @Override
     public void useAbility(MobEntity entity) {
-        if(entity.getTarget() != null) {
+        if(entity.getTarget() != null && entity.canSee(entity.getTarget())) {
             long time = entity.getEntityWorld().getTime();
             if (time > nextAbilityUse) {
                 nextAbilityUse = time + cooldown;
                 LivingEntity target = entity.getTarget();
-                target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 150, 0));
+
+                if(EldritchMobsMod.CONFIG.intensity <= 1) {
+                    target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 125, 0));
+                }
+                else if(EldritchMobsMod.CONFIG.intensity == 2) {
+                    target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 150, 0));
+                }
+                else {
+                    target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 175, 0));
+                }
+
             }
         }
 

@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -37,7 +38,15 @@ public class YeeterComponent implements ModifierInterface {
     public void damageActivatedMod(LivingEntity entity, DamageSource source, float amount) {
         long time = source.getAttacker().getEntityWorld().getTime();
         if (time > blastoff_nextAbilityUse) {
-            entity.addVelocity(0, 1.2, 0);
+            if(EldritchMobsMod.CONFIG.intensity <= 1) {
+                entity.addVelocity(0, 0.33, 0);
+            }
+            else if(EldritchMobsMod.CONFIG.intensity == 2){
+                entity.addVelocity(0, 0.66, 0);
+            }
+            else {
+                entity.addVelocity(0, 1.0, 0);
+            }
             blastoff_nextAbilityUse = time + blastoff_cooldown;
         }
     }

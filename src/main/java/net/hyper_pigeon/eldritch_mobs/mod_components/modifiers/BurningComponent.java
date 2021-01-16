@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -8,7 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 
 public class BurningComponent implements ModifierInterface {
 
-    private final long cooldown = 525;
+    private final long cooldown = 500;
     private long nextAbilityUse = 0L;
 
     @Override
@@ -18,7 +19,18 @@ public class BurningComponent implements ModifierInterface {
             if(time > nextAbilityUse){
                 nextAbilityUse = time + cooldown;
                 LivingEntity target = entity.getAttacking();
-                target.setOnFireFor(10);
+
+                if(EldritchMobsMod.CONFIG.intensity <= 1){
+                    target.setOnFireFor(6);
+                }
+                else if(EldritchMobsMod.CONFIG.intensity == 2){
+                    target.setOnFireFor(8);
+                }
+                else {
+                    target.setOnFireFor(10);
+                }
+
+
             }
         }
     }

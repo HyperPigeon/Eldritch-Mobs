@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -11,12 +12,12 @@ import net.minecraft.util.math.Vec3d;
 
 public class GhastlyComponent implements ModifierInterface {
 
-    private final static long cooldown = 600;
+    private final static long cooldown = 700;
     private long nextAbilityUse = 0L;
 
     @Override
     public void useAbility(MobEntity entity) {
-        if(entity.getTarget() != null) {
+        if(entity.getTarget() != null && entity.canSee(entity.getTarget())) {
             long time = entity.getEntityWorld().getTime();
             if (time > nextAbilityUse) {
                 nextAbilityUse = time + cooldown;
@@ -31,7 +32,17 @@ public class GhastlyComponent implements ModifierInterface {
                 }
 
                 FireballEntity fireballEntity = new FireballEntity(entity.getEntityWorld(), entity, f, g, h);
-                fireballEntity.explosionPower = 3;
+
+                if(EldritchMobsMod.CONFIG.intensity <= 1){
+                    fireballEntity.explosionPower = 1;
+                }
+                else if(EldritchMobsMod.CONFIG.intensity == 2){
+                    fireballEntity.explosionPower = 2;
+                }
+                else {
+                    fireballEntity.explosionPower = 3;
+                }
+
                 fireballEntity.updatePosition(entity.getX() + vec3d.x * 4.0D, entity.getBodyY(0.5D) + 0.5D, fireballEntity.getZ() + vec3d.z * 4.0D);
                 entity.getEntityWorld().spawnEntity(fireballEntity);
             }

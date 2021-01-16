@@ -14,7 +14,7 @@ public class SpeedsterComponent implements ModifierInterface {
     @Override
     public void useAbility(MobEntity entity) {
         if(!entity.hasStatusEffect(StatusEffects.SPEED)) {
-            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 100000000, 6));
+            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 100000000, 4));
         }
     }
 

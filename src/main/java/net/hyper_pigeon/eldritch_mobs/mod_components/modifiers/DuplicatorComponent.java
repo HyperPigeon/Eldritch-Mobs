@@ -17,7 +17,7 @@ public class DuplicatorComponent implements ModifierInterface {
 
     @Override
     public void useAbility(MobEntity entity) {
-        if(entity.getTarget() != null) {
+        if(entity.getTarget() != null && entity.canSee(entity.getTarget())) {
             //MobEntity copy_ally = entity
             long time = entity.getEntityWorld().getTime();
             if (time > nextAbilityUse) {

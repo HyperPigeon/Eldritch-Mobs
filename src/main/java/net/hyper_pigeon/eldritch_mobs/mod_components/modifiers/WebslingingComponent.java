@@ -10,12 +10,12 @@ import net.minecraft.util.math.BlockPos;
 
 public class WebslingingComponent implements ModifierInterface {
 
-    private final static long cooldown = 600;
+    private final static long cooldown = 700;
     private long nextAbilityUse = 0L;
 
     @Override
     public void useAbility(MobEntity entity) {
-        if(entity.getTarget() != null) {
+        if(entity.getTarget() != null && entity.canSee(entity.getTarget())) {
             long time = entity.getEntityWorld().getTime();
             if (time > nextAbilityUse) {
                 nextAbilityUse = time + cooldown;

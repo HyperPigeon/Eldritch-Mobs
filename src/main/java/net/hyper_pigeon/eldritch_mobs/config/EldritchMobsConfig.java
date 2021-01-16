@@ -31,14 +31,23 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("Out of 100 Ultras")
     public double EldritchSpawnRates = 1;
 
-    @Comment("Elite Health Modifier")
-    public double EliteHealthMod = 4;
+    @Comment("Health Boost Level for Elite Mobs")
+    public double EliteHealthMod = 15;
 
-    @Comment("Ultra Health Modifier")
-    public double UltraHealthMod = 6;
+    @Comment("Health Boost Level for Ultra Mobs")
+    public double UltraHealthMod = 30;
 
-    @Comment("Eldritch Health Modifier")
-    public double EldritchHealthMod = 8;
+    @Comment("Health Boost Level for Eldritch Mobs")
+    public double EldritchHealthMod = 60;
+
+//    @Comment("Health Modifier for Elite Mobs (must be integer)")
+//    public int EliteHealthMod = 2;
+//
+//    @Comment("Health Modifier for Ultra Mobs (must be integer)")
+//    public int UltraHealthMod = 3;
+//
+//    @Comment("Health Modifier for Eldritch Mobs (must be integer)")
+//    public int EldritchHealthMod = 4;
 
     @Comment("# of Modifiers for Elite Mobs")
     public int EliteModTotal = 4;
@@ -48,6 +57,9 @@ public class EldritchMobsConfig implements ConfigData {
 
     @Comment("# of Modifiers for Eldritch Mobs")
     public int EldritchModTotal = 12;
+
+    @Comment("Intensity: 1 - 3")
+    public int intensity = 1; 
 
 
     @ConfigEntry.Gui.CollapsibleObject
@@ -91,7 +103,7 @@ public class EldritchMobsConfig implements ConfigData {
             ModifierComponent.all_mods.remove("alchemist");
         }
         if(disableModifiers.disableBeserk){
-            ModifierComponent.all_mods.remove("beserk");
+            ModifierComponent.all_mods.remove("berserk");
         }
         if(disableModifiers.disableYeeter){
             ModifierComponent.all_mods.remove("yeeter");

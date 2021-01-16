@@ -10,7 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 
 public class SprintingComponent implements ModifierInterface {
 
-    private final static long cooldown = 200;
+    private final static long cooldown = 600;
     private long nextAbilityUse = 0L;
 
 

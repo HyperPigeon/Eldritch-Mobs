@@ -11,8 +11,8 @@ import net.minecraft.nbt.CompoundTag;
 public class ResistantComponent implements ModifierInterface {
     @Override
     public void useAbility(MobEntity entity) {
-        if(entity.hasStatusEffect(StatusEffects.RESISTANCE)) {
-            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 10000000, 2));
+        if(!entity.hasStatusEffect(StatusEffects.RESISTANCE)) {
+            entity.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 10000000, 1));
         }
     }
 

@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -15,7 +16,17 @@ public class DrowningComponent implements ModifierInterface {
         if(entity.getTarget() != null && entity.canSee(entity.getTarget())) {
             LivingEntity target= entity.getTarget();
             if(!(target.hasStatusEffect(StatusEffects.WATER_BREATHING))) {
-                target.damage(DamageSource.DROWN, 0.15f);
+
+                if(EldritchMobsMod.CONFIG.intensity <= 1){
+                    target.damage(DamageSource.DROWN, 0.10f);
+                }
+                else if(EldritchMobsMod.CONFIG.intensity == 2){
+                    target.damage(DamageSource.DROWN, 0.125f);
+                }
+                else {
+                    target.damage(DamageSource.DROWN, 0.15f);
+                }
+
             }
         }
     }

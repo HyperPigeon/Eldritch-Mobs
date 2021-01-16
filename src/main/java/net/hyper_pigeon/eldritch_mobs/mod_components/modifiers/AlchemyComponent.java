@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -22,7 +23,7 @@ public class AlchemyComponent implements ModifierInterface {
     public boolean is_ultra = false;
     public boolean is_eldritch = false;*/
 
-    private final static long alch_cooldown = 150;
+    private final static long alch_cooldown = 200;
     private long alchemy_nextAbilityUse = 0L;
 
     /*public void setRank() {
@@ -57,7 +58,16 @@ public class AlchemyComponent implements ModifierInterface {
                 PotionEntity potionEntity = new PotionEntity(entity.world, entity);
                 potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
                 potionEntity.pitch -= -20.0F;
-                potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.75F, 8.0F);
+
+                if(EldritchMobsMod.CONFIG.intensity <= 1){
+                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.75F, 8.0F);
+                }
+                else if(EldritchMobsMod.CONFIG.intensity == 2){
+                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 1.00F, 4.0F);
+                }
+                else {
+                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 1.25F, 0.0F);
+                }
 
                 entity.world.spawnEntity(potionEntity);
             }

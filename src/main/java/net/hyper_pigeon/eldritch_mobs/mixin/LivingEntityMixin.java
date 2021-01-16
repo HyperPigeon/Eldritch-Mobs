@@ -169,7 +169,17 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
             if(target instanceof LivingEntity){
                 if(EldritchMobsMod.hasMod(this, "lifesteal")) {
                     LivingEntity livingTarget = (LivingEntity) target;
-                    this.heal(livingTarget.getMaxHealth() - livingTarget.getHealth());
+
+                    if(EldritchMobsMod.CONFIG.intensity <= 1){
+                        this.heal((livingTarget.getMaxHealth() - livingTarget.getHealth())/3);
+                    }
+                    else if(EldritchMobsMod.CONFIG.intensity == 2){
+                        this.heal((livingTarget.getMaxHealth() - livingTarget.getHealth())/2);
+                    }
+                    else {
+                        this.heal(livingTarget.getMaxHealth() - livingTarget.getHealth());
+                    }
+
                 }
                 if(EldritchMobsMod.hasMod(this, "rust")) {
                     Random r = new Random();
@@ -178,27 +188,75 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                     int randomInt_leggings = r.nextInt(100) + 1;
                     int randomInt_boots = r.nextInt(100) + 1;
 
+                    if(EldritchMobsMod.CONFIG.intensity <= 1) {
+                        if (randomInt_helmet <= 10) {
+                            this.sendEquipmentBreakStatus(EquipmentSlot.HEAD);
+                            this.equipStack(EquipmentSlot.HEAD, ItemStack.EMPTY);
+                        }
+                        if (randomInt_chest <= 10) {
+                            this.sendEquipmentBreakStatus(EquipmentSlot.CHEST);
+                            this.equipStack(EquipmentSlot.CHEST, ItemStack.EMPTY);
+                        }
+                        if (randomInt_leggings <= 10) {
+                            this.sendEquipmentBreakStatus(EquipmentSlot.LEGS);
+                            this.equipStack(EquipmentSlot.LEGS, ItemStack.EMPTY);
+                        }
+                        if (randomInt_boots <= 10) {
+                            this.sendEquipmentBreakStatus(EquipmentSlot.FEET);
+                            this.equipStack(EquipmentSlot.FEET, ItemStack.EMPTY);
+                        }
+                    }
+                    else if(EldritchMobsMod.CONFIG.intensity == 2) {
+                        if (randomInt_helmet <= 10) {
+                            this.sendEquipmentBreakStatus(EquipmentSlot.HEAD);
+                            this.equipStack(EquipmentSlot.HEAD, ItemStack.EMPTY);
+                        }
+                        if (randomInt_chest <= 10) {
+                            this.sendEquipmentBreakStatus(EquipmentSlot.CHEST);
+                            this.equipStack(EquipmentSlot.CHEST, ItemStack.EMPTY);
+                        }
+                        if (randomInt_leggings <= 10) {
+                            this.sendEquipmentBreakStatus(EquipmentSlot.LEGS);
+                            this.equipStack(EquipmentSlot.LEGS, ItemStack.EMPTY);
+                        }
+                        if (randomInt_boots <= 10) {
+                            this.sendEquipmentBreakStatus(EquipmentSlot.FEET);
+                            this.equipStack(EquipmentSlot.FEET, ItemStack.EMPTY);
+                        }
+                    }
+                    else {
+                        if (randomInt_helmet <= 10) {
+                            this.sendEquipmentBreakStatus(EquipmentSlot.HEAD);
+                            this.equipStack(EquipmentSlot.HEAD, ItemStack.EMPTY);
+                        }
+                        if (randomInt_chest <= 10) {
+                            this.sendEquipmentBreakStatus(EquipmentSlot.CHEST);
+                            this.equipStack(EquipmentSlot.CHEST, ItemStack.EMPTY);
+                        }
+                        if (randomInt_leggings <= 10) {
+                            this.sendEquipmentBreakStatus(EquipmentSlot.LEGS);
+                            this.equipStack(EquipmentSlot.LEGS, ItemStack.EMPTY);
+                        }
+                        if (randomInt_boots <= 10) {
+                            this.sendEquipmentBreakStatus(EquipmentSlot.FEET);
+                            this.equipStack(EquipmentSlot.FEET, ItemStack.EMPTY);
+                        }
+                    }
 
-                    if(randomInt_helmet <= 10) {
-                        this.sendEquipmentBreakStatus(EquipmentSlot.HEAD);
-                        this.equipStack(EquipmentSlot.HEAD, ItemStack.EMPTY);
-                    }
-                    if(randomInt_chest <= 10) {
-                        this.sendEquipmentBreakStatus(EquipmentSlot.CHEST);
-                        this.equipStack(EquipmentSlot.CHEST, ItemStack.EMPTY);
-                    }
-                    if(randomInt_leggings <= 10) {
-                        this.sendEquipmentBreakStatus(EquipmentSlot.LEGS);
-                        this.equipStack(EquipmentSlot.LEGS, ItemStack.EMPTY);
-                    }
-                    if(randomInt_boots <= 10) {
-                        this.sendEquipmentBreakStatus(EquipmentSlot.FEET);
-                        this.equipStack(EquipmentSlot.FEET, ItemStack.EMPTY);
-                    }
+
                 }
                 if(EldritchMobsMod.hasMod(this, "yeeter")){
                     LivingEntity livingTarget = (LivingEntity) target;
-                    livingTarget.addVelocity(0, 1.0, 0);
+
+                    if(EldritchMobsMod.CONFIG.intensity <= 1){
+                        livingTarget.addVelocity(0, 0.33, 0);
+                    }
+                    else if(EldritchMobsMod.CONFIG.intensity == 2){
+                        livingTarget.addVelocity(0, 0.66, 0);
+                    }
+                    else {
+                        livingTarget.addVelocity(0, 1.0, 0);
+                    }
                 }
             }
         }
@@ -242,13 +300,14 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                                     double diffY = entityY - targetY;
                                     double diffZ = entityZ - targetZ;
 
-                                    projectileEntity.setOwner(this);
+                                    //projectileEntity.setOwner(this);
                                     projectileEntity.addVelocity(diffX, diffY, diffZ);
                                 } else {
                                     projectileEntity.setOwner(this);
                                     projectileEntity.setVelocity(10, projectileEntity.getVelocity().getY(), 10);
                                 }
                                 callback.setReturnValue(false);
+                                //callback.cancel();
                             }
                         }
                     }
@@ -262,13 +321,30 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                         }
                     }
                     if (EldritchMobsMod.hasMod(this, "thorny")) {
-                        attacker.damage(DamageSource.MAGIC, amount/3);
+                        if(EldritchMobsMod.CONFIG.intensity <= 1){
+                            attacker.damage(DamageSource.MAGIC, amount/5);
+                        }
+                        else if(EldritchMobsMod.CONFIG.intensity == 2){
+                            attacker.damage(DamageSource.MAGIC, amount/4);
+                        }
+                        else {
+                            attacker.damage(DamageSource.MAGIC, amount/3);
+                        }
+
                     }
                     if (EldritchMobsMod.hasMod(this, "toxic") && the_attacker != null) {
-                        the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 350, 0));
+                        if(EldritchMobsMod.CONFIG.intensity <= 1){
+                            the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 250, 0));
+                        }
+                        else if(EldritchMobsMod.CONFIG.intensity == 2){
+                            the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 300, 0));
+                        }
+                        else {
+                            the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 350, 0));
+                        }
                     }
                     if (EldritchMobsMod.hasMod(this, "withering") && the_attacker != null) {
-                        the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 200, 0));
+                        the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 250, 0));
                     }
 
                     EldritchMobsMod.use_damageActivatedAbility(this, source, amount);

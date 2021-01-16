@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -11,12 +12,12 @@ import java.util.Random;
 
 public class SnatcherComponent implements ModifierInterface {
 
-    private final static long cooldown = 300;
+    private final static long cooldown = 450;
     private long nextAbilityUse = 0L;
 
     @Override
     public void useAbility(MobEntity entity) {
-        if(entity.getAttacking() != null) {
+        if(entity.getAttacking() != null && entity.canSee(entity.getTarget())) {
             long time = entity.getEntityWorld().getTime();
             if (time > nextAbilityUse) {
                 nextAbilityUse = time + cooldown;
@@ -24,9 +25,22 @@ public class SnatcherComponent implements ModifierInterface {
 
                 if(target instanceof PlayerEntity) {
                     Random random = new Random();
-                    int random_int = random.nextInt(4)+1;
-                    if(random_int <= 2) {
-                        ((PlayerEntity) target).dropSelectedItem(true);
+                    int random_int = random.nextInt(5)+1;
+
+                    if (EldritchMobsMod.CONFIG.intensity <= 1) {
+                        if(random_int <= 1) {
+                            ((PlayerEntity) target).dropSelectedItem(true);
+                        }
+                    }
+                    else if(EldritchMobsMod.CONFIG.intensity == 2){
+                        if(random_int <= 2) {
+                            ((PlayerEntity) target).dropSelectedItem(true);
+                        }
+                    }
+                    else {
+                        if(random_int <= 3) {
+                            ((PlayerEntity) target).dropSelectedItem(true);
+                        }
                     }
                 }
 

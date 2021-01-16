@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -10,16 +11,26 @@ import net.minecraft.nbt.CompoundTag;
 
 public class WeaknessComponent implements ModifierInterface {
 
-    private final static long cooldown = 200;
+    private final static long cooldown = 250;
     private long nextAbilityUse = 0L;
 
     @Override
     public void useAbility(MobEntity entity) {
-        if(entity.getTarget() != null) {
+        if(entity.getTarget() != null && entity.canSee(entity.getTarget())) {
             long time = entity.getEntityWorld().getTime();
             if (time > nextAbilityUse) {
                 nextAbilityUse = time + cooldown;
-                entity.getTarget().addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 175, 0));
+
+                if(EldritchMobsMod.CONFIG.intensity <= 1){
+                    entity.getTarget().addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 125, 0));
+                }
+                else if(EldritchMobsMod.CONFIG.intensity == 2){
+                    entity.getTarget().addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 150, 0));
+                }
+                else {
+                    entity.getTarget().addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, 175, 0));
+                }
+
             }
         }
     }

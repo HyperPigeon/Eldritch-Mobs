@@ -215,19 +215,19 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
             ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))) {
             if(!this.hasStatusEffect(StatusEffects.HEALTH_BOOST)){
                 if(EldritchMobsMod.isEldritch(this)){
-                    int level = (int) ((this.getMaxHealth()* config.EldritchHealthMod)/2);
+                    int level = (int) (config.EldritchHealthMod *(this.getHealth()/4));
                     this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
-                    this.heal(this.getMaxHealth()*8);
+                    this.heal(this.getMaxHealth()*10);
                 }
                 else if(EldritchMobsMod.isUltra(this)){
-                    int level = (int) ((this.getMaxHealth()* config.UltraHealthMod)/2);
+                    int level = (int) (config.UltraHealthMod *(this.getHealth()/4));
                     this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
-                    this.heal(this.getMaxHealth()*6);
+                    this.heal(this.getMaxHealth()*10);
                 }
                 else if(EldritchMobsMod.isElite(this)){
-                    int level = (int) ((this.getMaxHealth()*config.EliteHealthMod)/2);
+                    int level = (int) ((int) config.EliteHealthMod *(this.getHealth()/4));
                     this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
-                    this.heal(this.getMaxHealth()*4);
+                    this.heal(this.getMaxHealth()*10);
                 }
             }
             EldritchMobsMod.useAbility(this);
