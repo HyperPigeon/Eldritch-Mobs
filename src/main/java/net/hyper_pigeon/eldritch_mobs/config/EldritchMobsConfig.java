@@ -31,6 +31,13 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("Out of 100 Ultras")
     public double EldritchSpawnRates = 1;
 
+
+    @Comment
+    public boolean healthIncrease = true;
+
+    @Comment
+    public boolean healthMult = false;
+
     @Comment("Health Boost Level for Elite Mobs")
     public int EliteHealthMod = 15;
 
@@ -40,14 +47,14 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("Health Boost Level for Eldritch Mobs")
     public int EldritchHealthMod = 60;
 
-//    @Comment("Health Modifier for Elite Mobs (must be integer)")
-//    public int EliteHealthMod = 2;
-//
-//    @Comment("Health Modifier for Ultra Mobs (must be integer)")
-//    public int UltraHealthMod = 3;
-//
-//    @Comment("Health Modifier for Eldritch Mobs (must be integer)")
-//    public int EldritchHealthMod = 4;
+    @Comment("Health Multiplier for Elite Mobs")
+    public double EliteHealthMult = 4;
+
+    @Comment("Health Multiplier for Ultra Mobs")
+    public double UltraHealthMult = 8;
+
+    @Comment("Health Modifier for Eldritch Mobs")
+    public double EldritchHealthMult = 16;
 
     @Comment("# of Modifiers for Elite Mobs")
     public int EliteModTotal = 4;
@@ -86,7 +93,7 @@ public class EldritchMobsConfig implements ConfigData {
         public  boolean disableDraining = false;
         public  boolean disableDrowning = false;
         public  boolean disableEnder = false;
-        public  boolean disableGhastly = false;
+        public  boolean disableGhastly = true;
         public  boolean disableGravity = false;
         public  boolean disableLethargic = false;
         public  boolean disableLifesteal = false;

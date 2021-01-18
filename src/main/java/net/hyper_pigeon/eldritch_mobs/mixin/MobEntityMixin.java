@@ -213,23 +213,61 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
     public void ability_try(CallbackInfo callback) {
         if (this.getType() != EntityType.PLAYER && (EldritchMobsMod.isElite(this)
             ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))) {
-            if(!this.hasStatusEffect(StatusEffects.HEALTH_BOOST)){
-                if(EldritchMobsMod.isEldritch(this)){
-                    int level = (int) (config.EldritchHealthMod);
-                    this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
-                    this.heal(this.getMaxHealth()*10);
-                }
-                else if(EldritchMobsMod.isUltra(this)){
-                    int level = (int) (config.UltraHealthMod);
-                    this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
-                    this.heal(this.getMaxHealth()*10);
-                }
-                else if(EldritchMobsMod.isElite(this)){
-                    int level = (int) config.EliteHealthMod;
-                    this.addStatusEffect(new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 1000000000,level));
-                    this.heal(this.getMaxHealth()*10);
+
+            if(EldritchMobsMod.CONFIG.healthIncrease) {
+                if (!this.hasStatusEffect(StatusEffects.HEALTH_BOOST)) {
+                    if (EldritchMobsMod.isEldritch(this)) {
+                        int level = (int) (config.EldritchHealthMod);
+                        StatusEffectInstance healthBoostInstance =
+                                new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 10000000, level);
+                        //healthBoostInstance.isPermanent();
+                        this.addStatusEffect(healthBoostInstance);
+                        this.heal(this.getMaxHealth() * 10);
+                    } else if (EldritchMobsMod.isUltra(this)) {
+                        int level = (int) (config.UltraHealthMod);
+                        StatusEffectInstance healthBoostInstance =
+                                new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 10000000, level);
+                        //healthBoostInstance.isPermanent();
+                        this.addStatusEffect(healthBoostInstance);
+                        this.heal(this.getMaxHealth() * 10);
+                    } else if (EldritchMobsMod.isElite(this)) {
+                        int level = (int) config.EliteHealthMod;
+                        StatusEffectInstance healthBoostInstance =
+                                new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 10000000, level);
+                        //healthBoostInstance.isPermanent();
+                        this.addStatusEffect(healthBoostInstance);
+                        this.heal(this.getMaxHealth() * 10);
+                    }
                 }
             }
+            else if(EldritchMobsMod.CONFIG.healthMult){
+                if (!this.hasStatusEffect(StatusEffects.HEALTH_BOOST)) {
+                    if (EldritchMobsMod.isEldritch(this)) {
+                        int level = (int) (config.EldritchHealthMult*(this.getHealth()/4));
+                        StatusEffectInstance healthBoostInstance =
+                                new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 10000000, level);
+                        healthBoostInstance.isPermanent();
+                        this.addStatusEffect(healthBoostInstance);
+                        this.heal(this.getMaxHealth() * 10);
+                    } else if (EldritchMobsMod.isUltra(this)) {
+                        int level = (int) (config.UltraHealthMult*(this.getHealth()/4));
+                        StatusEffectInstance healthBoostInstance =
+                                new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 10000000, level);
+                        healthBoostInstance.isPermanent();
+                        this.addStatusEffect(healthBoostInstance);
+                        this.heal(this.getMaxHealth() * 10);
+                    } else if (EldritchMobsMod.isElite(this)) {
+                        int level = (int) (config.EliteHealthMult*(this.getHealth()/4));
+                        StatusEffectInstance healthBoostInstance =
+                                new StatusEffectInstance(StatusEffects.HEALTH_BOOST, 10000000, level);
+                        healthBoostInstance.isPermanent();
+                        this.addStatusEffect(healthBoostInstance);
+                        this.heal(this.getMaxHealth() * 10);
+                    }
+                }
+            }
+
+
             EldritchMobsMod.useAbility(this);
         }
     }
