@@ -81,7 +81,9 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     private void configureCustomNameANDremoveModifiersIfSpawnedInLampChunk(CallbackInfo ci) {
 
         //only attempt to remove modifiers and status effects from a mob on their first tick
-        if(!world.isClient && !checkedIfInLampChunk) {
+        if(!world.isClient && !checkedIfInLampChunk &&
+                (this.getType().isIn(EldritchMobsMod.ELDRITCH_ALLOWED)) &&
+                !(this.getType().isIn(EldritchMobsMod.ELDRITCH_BLACKLIST))) {
             ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
 
             if(!this.hasCustomName() && SoothingLantern.containsChunk(this.getBlockPos())){
@@ -93,7 +95,9 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
         }
 
         // only attempt to apply a custom name to the mob on their first tick
-        if(!world.isClient && !eldritchMobs_hasConfiguredName) {
+        if(!world.isClient && !eldritchMobs_hasConfiguredName
+        && (this.getType().isIn(EldritchMobsMod.ELDRITCH_ALLOWED)) &&
+                !(this.getType().isIn(EldritchMobsMod.ELDRITCH_BLACKLIST))) {
             ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
 
             // only apply custom name if the mob doesn't have one and their modifier provides one

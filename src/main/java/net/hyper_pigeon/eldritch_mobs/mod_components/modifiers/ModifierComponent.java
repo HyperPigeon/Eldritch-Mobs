@@ -250,7 +250,10 @@ public class ModifierComponent implements ModifierInterface {
     public void useAbility(MobEntity entity) {
         for(String mod_name : modifier_list){
             if(!(alt_activated_mods.contains(mod_name))) {
-                mods_hashmap.get(mod_name).useAbility(entity);
+                //System.out.println("Mob is trying to use " + mod_name + " ability!");
+                if(mods_hashmap.get(mod_name) != null) {
+                    mods_hashmap.get(mod_name).useAbility(entity);
+                }
             }
         }
     }

@@ -59,7 +59,8 @@ public class SummonUltraCommand {
             if (entity2 == null) {
                 throw FAILED_EXCEPTION.create();
             } else {
-                if (initialize && entity2 instanceof MobEntity) {
+                if (initialize && (entity2.getType().isIn(EldritchMobsMod.ELDRITCH_ALLOWED))
+                        && !(entity2.getType().isIn(EldritchMobsMod.ELDRITCH_BLACKLIST))) {
                     if(!EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).isUltra()) {
                         EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setIs_elite(true);
                         EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setIs_ultra(true);
@@ -72,6 +73,9 @@ public class SummonUltraCommand {
 //                    }
                     ((MobEntity)entity2).initialize(source.getWorld(), source.getWorld().getLocalDifficulty(entity2.getBlockPos()), SpawnReason.COMMAND, (EntityData)null, (CompoundTag)null);
 
+                }
+                else {
+                    throw FAILED_EXCEPTION.create();
                 }
 
                 source.sendFeedback(new TranslatableText("commands.summon_ultra.success", new Object[]{entity2.getDisplayName()}), true);
