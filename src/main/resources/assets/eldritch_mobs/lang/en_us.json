@@ -23,6 +23,7 @@
   "text.autoconfig.eldritch_mobs.option.EliteSpawnRates": "Proportion of allowed mobs that will spawn as Elites",
   "text.autoconfig.eldritch_mobs.option.UltraSpawnRates": "Proportion of elite mobs that will spawn as Ultras",
   "text.autoconfig.eldritch_mobs.option.EldritchSpawnRates": "Proportion of ultra mobs that will spawn as Eldritch",
+  "text.autoconfig.eldritch_mobs.option.enableCustomLoot": "Enable custom player-defined loot tables",
   "text.autoconfig.eldritch_mobs.option.disableModifiers": "Disable Modifiers",
   "text.autoconfig.eldritch_mobs.option.disableModifiers.disableAlchemist": "Disable Alchemist",
   "text.autoconfig.eldritch_mobs.option.disableModifiers.disableBeserk": "Disable Beserk",

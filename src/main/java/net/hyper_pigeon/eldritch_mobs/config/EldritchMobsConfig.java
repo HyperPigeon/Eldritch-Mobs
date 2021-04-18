@@ -74,10 +74,11 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("EXP multiplier for Eldritch Mobs")
     public int EldritchExpMult = 15;
 
-
     @Comment("Intensity: 1 - 3")
     public int intensity = 1; 
 
+    @Comment("Enable custom user defined loot")
+    public boolean enableCustomLoot = false;
 
     @ConfigEntry.Gui.CollapsibleObject
     public DisableModifiers disableModifiers = new DisableModifiers();
