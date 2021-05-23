@@ -4,6 +4,7 @@ import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
+import net.hyper_pigeon.eldritch_mobs.persistent_state.SoothingLanternPersistentState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.boss.WitherEntity;
@@ -12,6 +13,9 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.ArrayList;
@@ -102,11 +106,11 @@ public class ModifierComponent implements ModifierInterface {
 
     EldritchMobsConfig config = AutoConfig.getConfigHolder(EldritchMobsConfig.class).getConfig();
 
-    private double EliteSpawnRate = config.EliteSpawnRates;
+    private final double EliteSpawnRate = config.EliteSpawnRates;
 
-    private double UltraSpawnRate = config.UltraSpawnRates;
+    private final double UltraSpawnRate = config.UltraSpawnRates;
 
-    private double EldritchSpawnRate = config.EldritchSpawnRates;
+    private final double EldritchSpawnRate = config.EldritchSpawnRates;
 
 
     public ModifierComponent(LivingEntity entity) {
@@ -117,16 +121,19 @@ public class ModifierComponent implements ModifierInterface {
             ranged_mobs_mods.retainAll(all_mods);
             creeper_mods.retainAll(all_mods);
             mods.retainAll(all_mods);
-            if((entity instanceof WitherEntity || entity instanceof EnderDragonEntity) && config.toggleEldritchBossMobs) {
+
+            mob = entity;
+            if(entity instanceof EnderDragonEntity || entity instanceof WitherEntity) {
+                if(config.toggleEldritchBossMobs) {
+                    this.setRank();
+                    this.setMods();
+                }
+            }
+            else {
                 this.setRank();
                 this.setMods();
-                mob = entity;
             }
-            else if(!(entity instanceof WitherEntity || entity instanceof EnderDragonEntity)) {
-                this.setRank();
-                this.setMods();
-                mob = entity;
-            }
+
 
         }
     }
@@ -173,7 +180,6 @@ public class ModifierComponent implements ModifierInterface {
     }
 
     public String getEntityName(){
-        //System.out.println(mob);
         String type = mob.getType().toString();
         String[] split_string = type.split("\\.");
         return split_string[2];
@@ -201,8 +207,8 @@ public class ModifierComponent implements ModifierInterface {
                 if(mod_number > ranged_mobs_mods.size()){
                     mod_number = ranged_mobs_mods.size();
                 }
-                for (int i = 0; i < mod_number; i++) {
-                    String random_mod = ranged_mobs_mods.get(new Random().nextInt(mods.size()));
+                for (int i = 0; i < MathHelper.clamp(mod_number,0,ranged_mobs_mods.size()); i++) {
+                    String random_mod = ranged_mobs_mods.get((int) (Math.random() * ranged_mobs_mods.size()));
                     ranged_mobs_mods.remove(random_mod);
                     modifier_list.add(random_mod);
                 }
@@ -211,8 +217,8 @@ public class ModifierComponent implements ModifierInterface {
                 if(mod_number > creeper_mods.size()){
                     mod_number = creeper_mods.size();
                 }
-                for (int i = 0; i < mod_number; i++) {
-                    String random_mod = creeper_mods.get(new Random().nextInt(mods.size()));
+                for (int i = 0; i < MathHelper.clamp(mod_number,0,creeper_mods.size()); i++) {
+                    String random_mod = creeper_mods.get((int) (Math.random() * creeper_mods.size()));
                     creeper_mods.remove(random_mod);
                     modifier_list.add(random_mod);
                 }
@@ -221,8 +227,8 @@ public class ModifierComponent implements ModifierInterface {
                 if(mod_number > mods.size()){
                     mod_number = mods.size();
                 }
-                for (int i = 0; i < mod_number; i++) {
-                    String random_mod = mods.get(new Random().nextInt(mods.size()));
+                for (int i = 0; i < MathHelper.clamp(mod_number,0,mods.size()); i++) {
+                    String random_mod = mods.get((int) (Math.random() * mods.size()));
                     mods.remove(random_mod);
                     modifier_list.add(random_mod);
                 }

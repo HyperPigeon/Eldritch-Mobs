@@ -87,14 +87,25 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
 
     @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
     private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
-        this.bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.GREEN,
-                BossBar.Style.PROGRESS);
+        if(this.getCustomName() != null) {
+            this.bossBar = new ServerBossBar(this.getCustomName(), BossBar.Color.GREEN,
+                    BossBar.Style.PROGRESS);
+        }
+        else {
+            this.bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.GREEN,
+                    BossBar.Style.PROGRESS);
+        }
     }
 
     @Inject(at = @At("HEAD"), method = "mobTick")
     private void mobTick(CallbackInfo info) {
         if(!nameSet){
-            this.bossBar.setName(this.getDisplayName());
+            if(this.getCustomName() != null) {
+                this.bossBar.setName(this.getCustomName());
+            }
+            else {
+                this.bossBar.setName(this.getDisplayName());
+            }
             nameSet = true;
         }
 

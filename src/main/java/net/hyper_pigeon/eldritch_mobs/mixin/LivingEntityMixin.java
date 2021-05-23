@@ -4,6 +4,7 @@ import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.item.SoothingLantern;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
+import net.hyper_pigeon.eldritch_mobs.persistent_state.SoothingLanternPersistentState;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -14,16 +15,20 @@ import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -68,7 +73,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     private boolean eldritchMobs_hasConfiguredName = false;
 
     @Unique
-    private boolean checkedIfInLampChunk = false;
+    private boolean checkedIfInLampChunk;
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -78,21 +83,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
             method = "tick",
             at = @At("HEAD")
     )
-    private void configureCustomNameANDremoveModifiersIfSpawnedInLampChunk(CallbackInfo ci) {
-
-        //only attempt to remove modifiers and status effects from a mob on their first tick
-        if(!world.isClient && !checkedIfInLampChunk &&
-                (this.getType().isIn(EldritchMobsMod.ELDRITCH_ALLOWED)) &&
-                !(this.getType().isIn(EldritchMobsMod.ELDRITCH_BLACKLIST))) {
-            ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
-
-            if(!this.hasCustomName() && SoothingLantern.containsChunk(this.getBlockPos())){
-                modifiers.spawnedInLampChunk();
-                this.clearStatusEffects();
-            }
-
-            checkedIfInLampChunk = true;
-        }
+    private void configureCustomName(CallbackInfo ci) {
 
         // only attempt to apply a custom name to the mob on their first tick
         if(!world.isClient && !eldritchMobs_hasConfiguredName
@@ -103,6 +94,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
             // only apply custom name if the mob doesn't have one and their modifier provides one
             boolean hasCustomName = this.getCustomName() != null && this.getCustomName().asString().equals("");
             if (!modifiers.get_mod_string().equals("") && !hasCustomName) {
+                System.out.println("check");
                 this.setCustomNameVisible(false);
                 if (!EldritchMobsMod.CONFIG.turnOffNames) {
                     this.setCustomName(new TranslatableText(modifiers.get_mod_string(), new Object[0]));
@@ -113,25 +105,69 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
         }
     }
 
+   @Inject(
+            method = "tick",
+            at = @At("TAIL")
+    )
+    private void removeModifiersIfInLampChunk(CallbackInfo callbackInfo){
+        //only attempt to remove modifiers and status effects from a mob on their first tick
+        if(!world.isClient && !checkedIfInLampChunk &&
+                (this.getType().isIn(EldritchMobsMod.ELDRITCH_ALLOWED)) &&
+                !(this.getType().isIn(EldritchMobsMod.ELDRITCH_BLACKLIST))) {
+
+            ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
+            if(SoothingLanternPersistentState.get
+                            ((ServerWorld) this.getEntityWorld()).
+                            containsChunk(new ChunkPos(this.getBlockPos()))){
+                modifiers.spawnedInLampChunk();
+                this.clearStatusEffects();
+                this.setCustomName(null);
+            }
+            checkedIfInLampChunk = true;
+        }
+    }
+
+    @Inject(method = "writeCustomDataToTag", at = @At("TAIL"))
+    public void writeCheckedIfInLampChunkToTag(CompoundTag compoundTag, CallbackInfo callbackInfo){
+        compoundTag.putBoolean("checkedIfInLampChunk", checkedIfInLampChunk);
+    }
+
+    @Inject(method = "readCustomDataFromTag", at = @At("TAIL"))
+    public void readCheckedIfInLampChunkToTag(CompoundTag tag, CallbackInfo callbackInfo){
+        checkedIfInLampChunk = tag.getBoolean("checkedIfInLampChunk");
+    }
+
 //    @Inject(
 //            method = "tick",
-//            at = @At("HEAD"),
-//            priority = 500
+//            at = @At("HEAD")
 //    )
 //    private void removeSpecialModifiersIfInLampChunk(CallbackInfo ci) {
 //        // only attempt to apply a custom name to the mob on their first tick
 //        if(!world.isClient && !checkedIfInLampChunk) {
 //            ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
 //
-//            if(SoothingLantern.containsChunk(this.getBlockPos())){
+//            if(SoothingLanternPersistentState.get((ServerWorld) this.getEntityWorld()).containsChunk(new ChunkPos(this.getBlockPos()))){
 //                modifiers.spawnedInLampChunk();
 //                this.clearStatusEffects();
+//                this.setCustomName(null);
 //            }
 //
 //            checkedIfInLampChunk = true;
 //        }
 //    }
 
+//    protected void afterSpawn(){
+//        if(!world.isClient) {
+//            System.out.println("Check1");
+//            ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
+//            if(SoothingLanternPersistentState.get((ServerWorld) this.getEntityWorld()).containsChunk(new ChunkPos(this.getBlockPos()))){
+//                System.out.println("Check2");
+//                modifiers.spawnedInLampChunk();
+//                this.clearStatusEffects();
+//                //this.setCustomName(null);
+//            }
+//        }
+//    }
 
     private boolean teleportTo(double x, double y, double z) {
         BlockPos.Mutable mutable = new BlockPos.Mutable(x, y, z);
@@ -287,8 +323,8 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                     }
                     if (EldritchMobsMod.hasMod(this, "deflector")) {
                         if (amount >= 0.0F) {
-                            if (source instanceof ProjectileDamageSource) {
-                                ProjectileEntity projectileEntity = (ProjectileEntity) source.getSource();
+                            if (source instanceof ProjectileDamageSource && (source.getSource() instanceof PersistentProjectileEntity)) {
+                                PersistentProjectileEntity projectileEntity = (PersistentProjectileEntity ) source.getSource();
 
                                 if (projectileEntity.getOwner() != null) {
                                     Entity owner = projectileEntity.getOwner();
@@ -316,7 +352,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                         }
                     }
                     if (EldritchMobsMod.hasMod(this, "ender")) {
-                        if (source instanceof ProjectileDamageSource) {
+                        if ((source instanceof ProjectileDamageSource) && (source.getSource() instanceof PersistentProjectileEntity)) {
                             for(int i = 0; i < 32; ++i) {
                                 if (this.teleportRandomly()) {
                                     callback.setReturnValue(false);
@@ -363,6 +399,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     protected void dropEldritchLoot (DamageSource source, boolean causedByPlayer, CallbackInfo info) {
         if(!EldritchMobsMod.CONFIG.enableCustomLoot) {
             if (EldritchMobsMod.isElite(this) && causedByPlayer) {
+                System.out.println("check");
                 Identifier identifier = new Identifier("eldritch_mobs:entity/elite_loot");
                 LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
                 net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);

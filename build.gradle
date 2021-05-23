@@ -14,16 +14,19 @@ group = project.maven_group
 repositories {
 	maven {
 		name = "Ladysnake Libs"
-		url = 'https://dl.bintray.com/ladysnake/libs'
+		url = 'https://ladysnake.jfrog.io/artifactory/mods'
+	}
+	maven {
+		url "https://maven.terraformersmc.com/"
 	}
 
 }
 
 
 dependencies {
-	minecraft "com.mojang:minecraft:1.16.4"
-	mappings "net.fabricmc:yarn:1.16.4+build.7:v2"
-	modImplementation "net.fabricmc:fabric-loader:0.10.8"
+	minecraft "com.mojang:minecraft:1.16.5"
+	mappings "net.fabricmc:yarn:1.16.5+build.9:v2"
+	modImplementation "net.fabricmc:fabric-loader:0.11.3"
 
 	//Fabric api
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
@@ -50,10 +53,7 @@ dependencies {
 		exclude group: "net.fabricmc.fabric-api"
 	}
 
-	modImplementation "io.github.prospector:modmenu:1.14.6+build.31", {
-		exclude group: "net.fabricmc.fabric-api"
-	}
-
+	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
