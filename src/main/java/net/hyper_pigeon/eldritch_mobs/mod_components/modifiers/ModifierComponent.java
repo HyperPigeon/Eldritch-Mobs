@@ -1,6 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
-import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
+import me.shedaniel.autoconfig.AutoConfig;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;

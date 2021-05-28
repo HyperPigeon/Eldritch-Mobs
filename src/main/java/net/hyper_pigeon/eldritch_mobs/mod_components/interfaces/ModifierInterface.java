@@ -1,6 +1,5 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.interfaces;
 
-import nerdhub.cardinal.components.api.component.Component;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
