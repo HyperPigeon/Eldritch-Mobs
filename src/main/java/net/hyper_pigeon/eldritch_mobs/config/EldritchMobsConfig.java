@@ -3,7 +3,7 @@ package net.hyper_pigeon.eldritch_mobs.config;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import blue.endless.jankson.Comment;
+import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import net.hyper_pigeon.eldritch_mobs.mod_components.modifiers.ModifierComponent;
 
 @Config(name = "eldritch_mobs")

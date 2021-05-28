@@ -74,12 +74,12 @@ public class RustComponent implements ModifierInterface {
     }
 
     @Override
-    public void fromTag(CompoundTag compoundTag) {
+    public void readFromNbt(CompoundTag compoundTag) {
 
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compoundTag) {
-        return null;
+    public void writeToNbt(CompoundTag compoundTag) {
+
     }
 }

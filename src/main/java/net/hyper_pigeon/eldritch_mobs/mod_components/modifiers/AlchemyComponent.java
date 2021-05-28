@@ -138,13 +138,13 @@ public class AlchemyComponent implements ModifierInterface {
 
 
     @Override
-    public void fromTag(CompoundTag compoundTag) {
+    public void readFromNbt(CompoundTag compoundTag) {
 
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag compoundTag) {
-        return compoundTag;
+    public void writeToNbt(CompoundTag compoundTag) {
+
     }
 
 

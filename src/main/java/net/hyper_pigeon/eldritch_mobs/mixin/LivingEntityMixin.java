@@ -1,6 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mixin;
 
-import nerdhub.cardinal.components.api.component.ComponentProvider;
+import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.item.SoothingLantern;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
