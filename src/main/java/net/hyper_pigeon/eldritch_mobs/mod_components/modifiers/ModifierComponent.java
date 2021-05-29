@@ -159,19 +159,36 @@ public class ModifierComponent implements ModifierInterface {
 
     public void setRank() {
         if(!rank_decided) {
-            Random random = new Random();
-            double random_int_one = random.nextDouble() * 100;
-            if (random_int_one <= EliteSpawnRate) {
+            if(mob.getType().isIn(EldritchMobsMod.ALWAYS_ELITE)){
                 is_elite = true;
                 mod_number = config.EliteModTotal;
-                double random_int_two = random.nextDouble() * 100;
-                if (random_int_two <= UltraSpawnRate) {
-                    is_ultra = true;
-                    mod_number = config.UltraModTotal;
-                    double random_int_three = random.nextDouble() * 100;
-                    if (random_int_three <= EldritchSpawnRate) {
-                        is_eldritch = true;
-                        mod_number = config.EldritchModTotal;
+            }
+            else if(mob.getType().isIn(EldritchMobsMod.ALWAYS_ULTRA)){
+                is_elite = true;
+                is_ultra = true;
+                mod_number = config.UltraModTotal;
+            }
+            else if(mob.getType().isIn(EldritchMobsMod.ALWAYS_ELDRITCH)){
+                is_elite = true;
+                is_ultra = true;
+                is_eldritch = true;
+                mod_number = config.EldritchModTotal;
+            }
+            else {
+                Random random = new Random();
+                double random_int_one = random.nextDouble() * 100;
+                if (random_int_one <= EliteSpawnRate) {
+                    is_elite = true;
+                    mod_number = config.EliteModTotal;
+                    double random_int_two = random.nextDouble() * 100;
+                    if (random_int_two <= UltraSpawnRate) {
+                        is_ultra = true;
+                        mod_number = config.UltraModTotal;
+                        double random_int_three = random.nextDouble() * 100;
+                        if (random_int_three <= EldritchSpawnRate) {
+                            is_eldritch = true;
+                            mod_number = config.EldritchModTotal;
+                        }
                     }
                 }
             }

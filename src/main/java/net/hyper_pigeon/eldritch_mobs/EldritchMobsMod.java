@@ -47,6 +47,15 @@ public class EldritchMobsMod implements ModInitializer {
 	public static final Identifier UserDefinedUltraLootID = new Identifier("eldritch_mobs:entity/custom_ultra_loot");
 	public static final Identifier UserDefinedEldritchLootID = new Identifier("eldritch_mobs:entity/custom_eldritch_loot");
 
+	private static final Identifier ALWAYS_ELITE_ID = new Identifier("eldritch_mobs:always_elite");
+	public static final Tag<EntityType<?>> ALWAYS_ELITE = TagRegistry.entityType(ALWAYS_ELITE_ID);
+
+	private static final Identifier ALWAYS_ULTRA_ID = new Identifier("eldritch_mobs:always_ultra");
+	public static final Tag<EntityType<?>> ALWAYS_ULTRA = TagRegistry.entityType(ALWAYS_ULTRA_ID);
+
+	private static final Identifier ALWAYS_ELDRITCH_ID = new Identifier("eldritch_mobs:always_eldritch");
+	public static final Tag<EntityType<?>> ALWAYS_ELDRITCH = TagRegistry.entityType(ALWAYS_ELDRITCH_ID);
+
 	public static final SoothingLantern SOOTHING_LANTERN = new SoothingLantern(AbstractBlock.Settings.of(Material.METAL).requiresTool().strength(1.5F).sounds(BlockSoundGroup.METAL).luminance((state) -> {
 		return 10;
 	}).nonOpaque());
