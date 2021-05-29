@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.4-SNAPSHOT'
+	id 'fabric-loom' version '0.7-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -13,12 +13,17 @@ group = project.maven_group
 
 repositories {
 	maven {
-		name = "Ladysnake Libs"
+		name = "Ladysnake Mods"
 		url = 'https://ladysnake.jfrog.io/artifactory/mods'
+		content {
+			includeGroup 'io.github.ladysnake'
+			includeGroupByRegex 'io\\.github\\.onyxstudios.*'
+		}
 	}
 	maven {
 		url "https://maven.terraformersmc.com/"
 	}
+	maven { url "https://maven.shedaniel.me/" }
 
 }
 
@@ -39,18 +44,8 @@ dependencies {
 	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:${project.cardinal_version}"
 	include "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-chunk:${project.cardinal_version}"
 
-	modApi "me.shedaniel.cloth:config-2:4.8.2", {
-		exclude group: "net.fabricmc.fabric-api"
-	}
-	include "me.shedaniel.cloth:config-2:4.8.2", {
-		exclude group: "net.fabricmc.fabric-api"
-	}
-
-	modApi "me.sargunvohra.mcmods:autoconfig1u:3.2.2", {
-		exclude group: "net.fabricmc.fabric-api"
-	}
-	include "me.sargunvohra.mcmods:autoconfig1u:3.2.2", {
-		exclude group: "net.fabricmc.fabric-api"
+	modApi("me.shedaniel.cloth:cloth-config-fabric:4.11.26") {
+		exclude(group: "net.fabricmc.fabric-api")
 	}
 
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"

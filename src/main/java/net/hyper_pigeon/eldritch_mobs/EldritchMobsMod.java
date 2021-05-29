@@ -1,11 +1,10 @@
 package net.hyper_pigeon.eldritch_mobs;
 
-import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
-import me.sargunvohra.mcmods.autoconfig1u.serializer.JanksonConfigSerializer;
-import nerdhub.cardinal.components.api.ComponentRegistry;
-import nerdhub.cardinal.components.api.ComponentType;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
-import nerdhub.cardinal.components.api.event.EntityComponentCallback;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
+import dev.onyxstudios.cca.api.v3.component.ComponentKey;
+import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.tag.TagRegistry;
@@ -32,9 +31,8 @@ import net.minecraft.util.registry.Registry;
 
 public class EldritchMobsMod implements ModInitializer {
 
-	public static final ComponentType<ModifierInterface> ELDRITCH_MODIFIERS =
-			ComponentRegistry.INSTANCE.registerIfAbsent(new Identifier("eldritch_mobs:eldritch_modifiers"), ModifierInterface.class)
-			.attach(EntityComponentCallback.event(LivingEntity.class), ModifierComponent::new);
+	public static final ComponentKey<ModifierInterface> ELDRITCH_MODIFIERS =
+			ComponentRegistry.getOrCreate(new Identifier("eldritch_mobs:eldritch_modifiers"), ModifierInterface.class);
 
 
 	public static final EldritchMobsConfig CONFIG = AutoConfig.register(EldritchMobsConfig.class, JanksonConfigSerializer::new).getConfig();

@@ -1,6 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
-import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
+import me.shedaniel.autoconfig.AutoConfig;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
@@ -278,7 +278,7 @@ public class ModifierComponent implements ModifierInterface {
 
 
     @Override
-    public void fromTag(CompoundTag tag) {
+    public void readFromNbt(CompoundTag tag) {
         this.setIs_elite(tag.getBoolean("elite"));
         this.setIs_ultra(tag.getBoolean("ultra"));
         this.setIs_eldritch(tag.getBoolean("eldritch"));
@@ -295,7 +295,7 @@ public class ModifierComponent implements ModifierInterface {
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
+    public void writeToNbt(CompoundTag tag) {
         tag.putBoolean("elite", this.is_elite);
         tag.putBoolean("ultra", this.is_ultra);
         tag.putBoolean("eldritch", this.is_eldritch);
@@ -308,8 +308,6 @@ public class ModifierComponent implements ModifierInterface {
 
         tag.put("saved_mods", saved_mods);
 
-
-        return tag;
     }
 
     public void spawnedInLampChunk(){

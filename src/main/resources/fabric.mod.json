@@ -21,6 +21,9 @@
     "main": [
       "net.hyper_pigeon.eldritch_mobs.EldritchMobsMod"
     ],
+	"cardinal-components-entity": [
+      "net.hyper_pigeon.eldritch_mobs.mod_components.EldritchMobsComponents"
+	],
     "modmenu": [
       "net.hyper_pigeon.eldritch_mobs.config.ModMenuIntegration"
     ]
@@ -36,5 +39,10 @@
   },
   "suggests": {
     "flamingo": "*"
+  },
+  "custom": {
+	"cardinal-components": [
+	  "eldritch_mobs:eldritch_modifiers"
+	]
   }
 }
