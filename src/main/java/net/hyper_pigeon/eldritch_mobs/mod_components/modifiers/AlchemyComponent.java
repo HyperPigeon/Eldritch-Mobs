@@ -8,7 +8,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.projectile.thrown.PotionEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
@@ -53,11 +53,11 @@ public class AlchemyComponent implements ModifierInterface {
                 double d = target.getX() + vec3d.x - entity.getX();
                 double e = target.getEyeY() - 1.100000023841858D - entity.getY();
                 double f = target.getZ() + vec3d.z - entity.getZ();
-                float g = MathHelper.sqrt(d * d + f * f);
+                float g = MathHelper.sqrt((float) (d * d + f * f));
                 Potion potion = Potions.STRONG_HARMING;
                 PotionEntity potionEntity = new PotionEntity(entity.world, entity);
                 potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
-                potionEntity.pitch -= -20.0F;
+                potionEntity.setPitch(potionEntity.getPitch()-20);
 
                 if(EldritchMobsMod.CONFIG.intensity <= 1){
                     potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.75F, 8.0F);
@@ -138,12 +138,12 @@ public class AlchemyComponent implements ModifierInterface {
 
 
     @Override
-    public void readFromNbt(CompoundTag compoundTag) {
+    public void readFromNbt(NbtCompound compoundTag) {
 
     }
 
     @Override
-    public void writeToNbt(CompoundTag compoundTag) {
+    public void writeToNbt(NbtCompound compoundTag) {
 
     }
 

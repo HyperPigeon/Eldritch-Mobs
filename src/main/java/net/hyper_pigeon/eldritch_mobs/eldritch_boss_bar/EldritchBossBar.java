@@ -26,10 +26,10 @@ public class EldritchBossBar extends ServerBossBar {
         return player.canSee(owner);
     }
 
-    private void sendPacket(BossBarS2CPacket.Type type, ServerPlayerEntity player) {
-            BossBarS2CPacket bossBarS2CPacket = new BossBarS2CPacket(type, this);
-            if(isPlayerStaring(player)){
-                player.networkHandler.sendPacket(bossBarS2CPacket);
-            }
-    }
+//    private void sendPacket(BossBarS2CPacket.Type type, ServerPlayerEntity player) {
+//            BossBarS2CPacket bossBarS2CPacket = new BossBarS2CPacket(type, this);
+//            if(isPlayerStaring(player)){
+//                player.networkHandler.sendPacket(bossBarS2CPacket);
+//            }
+//    }
 }

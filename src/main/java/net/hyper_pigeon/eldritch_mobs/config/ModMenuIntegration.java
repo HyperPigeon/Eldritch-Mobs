@@ -10,7 +10,7 @@ import net.minecraft.client.gui.screen.Screen;
 @Environment(EnvType.CLIENT)
 public class ModMenuIntegration implements ModMenuApi {
 
-    @Override
+
     public String getModId() {
         return "eldritch_mobs";
     }

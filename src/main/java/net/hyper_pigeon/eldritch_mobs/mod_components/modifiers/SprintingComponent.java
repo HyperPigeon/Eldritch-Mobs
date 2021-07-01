@@ -1,12 +1,13 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class SprintingComponent implements ModifierInterface {
 
@@ -20,7 +21,16 @@ public class SprintingComponent implements ModifierInterface {
             long time = entity.getEntityWorld().getTime();
             if (time > nextAbilityUse) {
                 nextAbilityUse = time + cooldown;
-                entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED,100,10));
+
+                if (EldritchMobsMod.CONFIG.intensity == 1) {
+                    entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED,100,6));
+                }
+                else if (EldritchMobsMod.CONFIG.intensity == 2) {
+                    entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED,100,8));
+                }
+                else {
+                    entity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED,100,10));
+                }
             }
         }
     }
@@ -86,12 +96,12 @@ public class SprintingComponent implements ModifierInterface {
     }
 
     @Override
-    public void readFromNbt(CompoundTag compoundTag) {
+    public void readFromNbt(NbtCompound compoundTag) {
 
     }
 
     @Override
-    public void writeToNbt(CompoundTag compoundTag) {
+    public void writeToNbt(NbtCompound compoundTag) {
 
     }
 }

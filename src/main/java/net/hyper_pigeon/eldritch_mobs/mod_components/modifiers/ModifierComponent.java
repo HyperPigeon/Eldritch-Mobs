@@ -4,7 +4,6 @@ import me.shedaniel.autoconfig.AutoConfig;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
-import net.hyper_pigeon.eldritch_mobs.persistent_state.SoothingLanternPersistentState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RangedAttackMob;
 import net.minecraft.entity.boss.WitherEntity;
@@ -12,9 +11,7 @@ import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -295,13 +292,13 @@ public class ModifierComponent implements ModifierInterface {
 
 
     @Override
-    public void readFromNbt(CompoundTag tag) {
+    public void readFromNbt(NbtCompound tag) {
         this.setIs_elite(tag.getBoolean("elite"));
         this.setIs_ultra(tag.getBoolean("ultra"));
         this.setIs_eldritch(tag.getBoolean("eldritch"));
         this.setRank_decided(tag.getBoolean("rank"));
 
-        CompoundTag saved_mods = tag.getCompound("saved_mods");
+        NbtCompound saved_mods = tag.getCompound("saved_mods");
 
         modifier_list.clear();
         for (String mod : saved_mods.getKeys()) {
@@ -312,13 +309,13 @@ public class ModifierComponent implements ModifierInterface {
     }
 
     @Override
-    public void writeToNbt(CompoundTag tag) {
+    public void writeToNbt(NbtCompound tag) {
         tag.putBoolean("elite", this.is_elite);
         tag.putBoolean("ultra", this.is_ultra);
         tag.putBoolean("eldritch", this.is_eldritch);
         tag.putBoolean("rank", this.rank_decided);
 
-        CompoundTag saved_mods = new CompoundTag();
+        NbtCompound saved_mods = new NbtCompound();
         for(String mod_name : modifier_list){
             saved_mods.putString(mod_name,mod_name);
         }

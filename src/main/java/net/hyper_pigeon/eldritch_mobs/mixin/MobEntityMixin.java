@@ -1,8 +1,8 @@
 package net.hyper_pigeon.eldritch_mobs.mixin;
 
 
+import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import me.shedaniel.autoconfig.AutoConfig;
-import nerdhub.cardinal.components.api.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.entity.EntityType;
@@ -283,7 +283,7 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "getCurrentExperience", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "getXpToDrop", cancellable = true)
     protected void getCurrentExperience(PlayerEntity player, CallbackInfoReturnable<Integer> callback) {
         if(EldritchMobsMod.isElite(this)){
             if(EldritchMobsMod.isUltra(this)){
