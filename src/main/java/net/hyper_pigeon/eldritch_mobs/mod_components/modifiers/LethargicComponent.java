@@ -7,7 +7,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class LethargicComponent implements ModifierInterface {
     private final static long cooldown = 250;
@@ -96,12 +96,12 @@ public class LethargicComponent implements ModifierInterface {
     }
 
     @Override
-    public void readFromNbt(CompoundTag compoundTag) {
+    public void readFromNbt(NbtCompound compoundTag) {
 
     }
 
     @Override
-    public void writeToNbt(CompoundTag compoundTag) {
+    public void writeToNbt(NbtCompound compoundTag) {
 
     }
 }

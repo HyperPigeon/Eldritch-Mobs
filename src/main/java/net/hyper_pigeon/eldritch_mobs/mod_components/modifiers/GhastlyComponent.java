@@ -7,7 +7,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Vec3d;
 
 public class GhastlyComponent implements ModifierInterface {
@@ -31,16 +31,16 @@ public class GhastlyComponent implements ModifierInterface {
                     entity.getEntityWorld().syncWorldEvent((PlayerEntity)null, 1016, entity.getBlockPos(), 0);
                 }
 
-                FireballEntity fireballEntity = new FireballEntity(entity.getEntityWorld(), entity, f, g, h);
+                FireballEntity fireballEntity;
 
                 if(EldritchMobsMod.CONFIG.intensity <= 1){
-                    fireballEntity.explosionPower = 1;
+                    fireballEntity = new FireballEntity(entity.getEntityWorld(), entity, f, g, h, 1);
                 }
                 else if(EldritchMobsMod.CONFIG.intensity == 2){
-                    fireballEntity.explosionPower = 2;
+                    fireballEntity = new FireballEntity(entity.getEntityWorld(), entity, f, g, h, 2);
                 }
                 else {
-                    fireballEntity.explosionPower = 3;
+                    fireballEntity = new FireballEntity(entity.getEntityWorld(), entity, f, g, h, 3);
                 }
 
                 fireballEntity.updatePosition(entity.getX() + vec3d.x * 4.0D, entity.getBodyY(0.5D) + 0.5D, fireballEntity.getZ() + vec3d.z * 4.0D);
@@ -110,12 +110,12 @@ public class GhastlyComponent implements ModifierInterface {
     }
 
     @Override
-    public void readFromNbt(CompoundTag compoundTag) {
+    public void readFromNbt(NbtCompound compoundTag) {
 
     }
 
     @Override
-    public void writeToNbt(CompoundTag compoundTag) {
+    public void writeToNbt(NbtCompound compoundTag) {
 
     }
 }

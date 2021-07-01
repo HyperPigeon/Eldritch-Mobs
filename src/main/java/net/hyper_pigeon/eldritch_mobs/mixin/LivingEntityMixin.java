@@ -21,7 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.context.LootContextTypes;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.FluidTags;
@@ -127,13 +127,13 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
         }
     }
 
-    @Inject(method = "writeCustomDataToTag", at = @At("TAIL"))
-    public void writeCheckedIfInLampChunkToTag(CompoundTag compoundTag, CallbackInfo callbackInfo){
+    @Inject(method = "writeCustomDataToNbt", at = @At("TAIL"))
+    public void writeCheckedIfInLampChunkToTag(NbtCompound compoundTag, CallbackInfo callbackInfo){
         compoundTag.putBoolean("checkedIfInLampChunk", checkedIfInLampChunk);
     }
 
-    @Inject(method = "readCustomDataFromTag", at = @At("TAIL"))
-    public void readCheckedIfInLampChunkToTag(CompoundTag tag, CallbackInfo callbackInfo){
+    @Inject(method = "readCustomDataFromNbt", at = @At("TAIL"))
+    public void readCheckedIfInLampChunkToTag(NbtCompound tag, CallbackInfo callbackInfo){
         checkedIfInLampChunk = tag.getBoolean("checkedIfInLampChunk");
     }
 

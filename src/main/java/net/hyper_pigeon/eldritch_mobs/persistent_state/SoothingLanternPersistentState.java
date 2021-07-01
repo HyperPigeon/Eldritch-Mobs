@@ -1,35 +1,46 @@
 package net.hyper_pigeon.eldritch_mobs.persistent_state;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.PersistentState;
 
 import java.util.HashMap;
 import java.util.Iterator;
 
-public class SoothingLanternPersistentState extends net.minecraft.world.PersistentState{
+public class SoothingLanternPersistentState extends PersistentState {
     private HashMap<String, ChunkPos> soothingLanternChunks = new HashMap<>();
+    public final String key;
 
     public SoothingLanternPersistentState(String key) {
-        super(key);
+        super();
+        this.key = key;
     }
 
-    @Override
-    public void fromTag(CompoundTag tag) {
-        CompoundTag compoundTag = tag.getCompound("contents");
+    public SoothingLanternPersistentState(){
+        this("LampChunkInfo");
+    }
+
+    public static SoothingLanternPersistentState readNbt(NbtCompound tag) {
+
+        SoothingLanternPersistentState soothingLanternPersistentState = new SoothingLanternPersistentState();
+        NbtCompound compoundTag = tag.getCompound("contents");
         Iterator var3 = compoundTag.getKeys().iterator();
+
 
         while(var3.hasNext()) {
             String string = (String)var3.next();
-            this.soothingLanternChunks.put(string, new ChunkPos(compoundTag.getLong(string)));
+            soothingLanternPersistentState.soothingLanternChunks.put(string, new ChunkPos(compoundTag.getLong(string)));
         }
-        this.markDirty();
+        soothingLanternPersistentState.markDirty();
+
+        return soothingLanternPersistentState;
     }
 
     @Override
-    public CompoundTag toTag(CompoundTag tag) {
-        CompoundTag compoundTag = new CompoundTag();
+    public NbtCompound writeNbt(NbtCompound tag) {
+        NbtCompound compoundTag = new NbtCompound();
 
         this.soothingLanternChunks.forEach((string, chunkPos) -> {
             compoundTag.putLong(string,chunkPos.toLong());
@@ -61,7 +72,9 @@ public class SoothingLanternPersistentState extends net.minecraft.world.Persiste
     }
 
     public static SoothingLanternPersistentState get(ServerWorld world) {
-        return world.getPersistentStateManager().getOrCreate(() -> new SoothingLanternPersistentState("LampChunkInfo"), "LampChunkInfo");
+        return (SoothingLanternPersistentState) world.getPersistentStateManager().getOrCreate((nbtCompound) -> {
+            return readNbt(nbtCompound);
+        },SoothingLanternPersistentState::new, "LampChunkInfo");
     }
 
     public void printSoothingLanternChunks(){
