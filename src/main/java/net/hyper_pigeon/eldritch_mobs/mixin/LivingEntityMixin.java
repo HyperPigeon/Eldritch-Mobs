@@ -399,7 +399,6 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     protected void dropEldritchLoot (DamageSource source, boolean causedByPlayer, CallbackInfo info) {
         if(!EldritchMobsMod.CONFIG.enableCustomLoot) {
             if (EldritchMobsMod.isElite(this) && causedByPlayer) {
-                System.out.println("check");
                 Identifier identifier = new Identifier("eldritch_mobs:entity/elite_loot");
                 LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
                 net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
