@@ -102,7 +102,7 @@ public class EldritchMobsConfig implements ConfigData {
         public  boolean disableRegen = false;
         public  boolean disableResistant = false;
         public  boolean disableRust = false;
-        public  boolean disableSnatcher = false;
+//        public  boolean disableSnatcher = false;
         public  boolean disableSpeedster = false;
         public  boolean disableSprinter = false;
         public  boolean disableStarving = false;
@@ -171,9 +171,9 @@ public class EldritchMobsConfig implements ConfigData {
         if(disableModifiers.disableRust){
             ModifierComponent.all_mods.remove("rust");
         }
-        if(disableModifiers.disableSnatcher){
-            ModifierComponent.all_mods.remove("snatcher");
-        }
+//        if(disableModifiers.disableSnatcher){
+//            ModifierComponent.all_mods.remove("snatcher");
+//        }
         if(disableModifiers.disableSpeedster){
             ModifierComponent.all_mods.remove("speedster");
         }
