@@ -38,14 +38,14 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment
     public boolean healthMult = false;
 
-    @Comment("Health Boost Level for Elite Mobs")
-    public int EliteHealthMod = 15;
+    @Comment("Number of extra hearts for Elite Mobs")
+    public int EliteHealthMod = 60;
 
-    @Comment("Health Boost Level for Ultra Mobs")
-    public int UltraHealthMod = 30;
+    @Comment("Number of extra hearts for Ultra Mobs")
+    public int UltraHealthMod = 120;
 
-    @Comment("Health Boost Level for Eldritch Mobs")
-    public int EldritchHealthMod = 60;
+    @Comment("Number of extra hearts for Eldritch Mobs")
+    public int EldritchHealthMod = 240;
 
     @Comment("Health Multiplier for Elite Mobs")
     public double EliteHealthMult = 4;
