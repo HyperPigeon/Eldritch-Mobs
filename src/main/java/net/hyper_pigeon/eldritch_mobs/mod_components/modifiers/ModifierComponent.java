@@ -51,22 +51,22 @@ public class ModifierComponent implements ModifierInterface {
 
     public static ArrayList<String> all_mods = new ArrayList<>(Arrays.asList("alchemist", "berserk", "yeeter", "blinding", "burning",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
-            "resistant","rust","snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
+            "resistant","rust", "speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering", "sniper", "duplicator"));
 
     private ArrayList<String> mods = new ArrayList<>(Arrays.asList("alchemist", "berserk", "yeeter", "blinding", "burning",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
-            "resistant","rust","snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
+            "resistant","rust", "speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering","duplicator"));
 
     private ArrayList<String> ranged_mobs_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
-            "resistant", "snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
+            "resistant", "sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering","sniper", "duplicator"));
 
     public ArrayList<String> creeper_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
-            "resistant", "snatcher","speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
+            "resistant", "speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering", "duplicator"));
 
     private ArrayList<String> alt_activated_mods = new ArrayList<>(Arrays.asList("yeeter", "deflector","rust","ender","lifesteal","one_up","thorny","toxic",

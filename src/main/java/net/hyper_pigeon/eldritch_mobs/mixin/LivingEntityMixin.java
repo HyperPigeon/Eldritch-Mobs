@@ -94,7 +94,6 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
             // only apply custom name if the mob doesn't have one and their modifier provides one
             boolean hasCustomName = this.getCustomName() != null && this.getCustomName().asString().equals("");
             if (!modifiers.get_mod_string().equals("") && !hasCustomName) {
-                System.out.println("check");
                 this.setCustomNameVisible(false);
                 if (!EldritchMobsMod.CONFIG.turnOffNames) {
                     this.setCustomName(new TranslatableText(modifiers.get_mod_string(), new Object[0]));
@@ -399,7 +398,6 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     protected void dropEldritchLoot (DamageSource source, boolean causedByPlayer, CallbackInfo info) {
         if(!EldritchMobsMod.CONFIG.enableCustomLoot) {
             if (EldritchMobsMod.isElite(this) && causedByPlayer) {
-                System.out.println("check");
                 Identifier identifier = new Identifier("eldritch_mobs:entity/elite_loot");
                 LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
                 net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
