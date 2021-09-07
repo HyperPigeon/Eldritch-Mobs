@@ -40,10 +40,6 @@
     "minecraft:panda",
     "minecraft:ender_dragon",
     "minecraft:wither",
-    "minecraft:piglin_brute",
-    "minecraft:pillager",
-    "minecraft:phantom",
-    "minecraft:zombie_villager",
-    "minecraft:axolotl"
+    "minecraft:piglin_brute"
   ]
 }

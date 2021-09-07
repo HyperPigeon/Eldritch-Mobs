@@ -6,7 +6,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 
 
@@ -28,24 +27,20 @@ public class SnatcherComponent implements ModifierInterface {
                 if(target instanceof PlayerEntity) {
                     Random random = new Random();
                     int random_int = random.nextInt(5)+1;
-                    ItemStack stack = target.getMainHandStack();
-                    
+
                     if (EldritchMobsMod.CONFIG.intensity <= 1) {
                         if(random_int <= 1) {
-                            if(stack != null)
-                                ((PlayerEntity) target).dropSelectedItem(true);
+                            ((PlayerEntity) target).dropSelectedItem(true);
                         }
                     }
                     else if(EldritchMobsMod.CONFIG.intensity == 2){
                         if(random_int <= 2) {
-                            if(stack != null)
-                                ((PlayerEntity) target).dropSelectedItem(true);
+                            ((PlayerEntity) target).dropSelectedItem(true);
                         }
                     }
                     else {
                         if(random_int <= 3) {
-                            if(stack != null)
-                                ((PlayerEntity) target).dropSelectedItem(true);
+                            ((PlayerEntity) target).dropSelectedItem(true);
                         }
                     }
                 }
