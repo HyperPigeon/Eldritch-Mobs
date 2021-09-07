@@ -54,22 +54,34 @@ public class AlchemyComponent implements ModifierInterface {
                 double e = target.getEyeY() - 1.100000023841858D - entity.getY();
                 double f = target.getZ() + vec3d.z - entity.getZ();
                 float g = MathHelper.sqrt((float) (d * d + f * f));
-                Potion potion = Potions.STRONG_HARMING;
-                PotionEntity potionEntity = new PotionEntity(entity.world, entity);
-                potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
-                potionEntity.setPitch(potionEntity.getPitch()-20);
+                Potion potion;
 
                 if(EldritchMobsMod.CONFIG.intensity <= 1){
-                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.75F, 8.0F);
+                    potion = Potions.HARMING;
+                    PotionEntity potionEntity = new PotionEntity(entity.world, entity);
+                    potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
+                    potionEntity.setPitch(potionEntity.getPitch()-20);
+                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.5F, 8.0F);
+                    entity.world.spawnEntity(potionEntity);
                 }
                 else if(EldritchMobsMod.CONFIG.intensity == 2){
-                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 1.00F, 4.0F);
+                    potion = Potions.HARMING;
+                    PotionEntity potionEntity = new PotionEntity(entity.world, entity);
+                    potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
+                    potionEntity.setPitch(potionEntity.getPitch()-20);
+                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.75F, 4.0F);
+                    entity.world.spawnEntity(potionEntity);
                 }
                 else {
-                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 1.25F, 0.0F);
+                    potion = Potions.STRONG_HARMING;
+                    PotionEntity potionEntity = new PotionEntity(entity.world, entity);
+                    potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
+                    potionEntity.setPitch(potionEntity.getPitch()-20);
+                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 1.00F, 0.0F);
+                    entity.world.spawnEntity(potionEntity);
                 }
 
-                entity.world.spawnEntity(potionEntity);
+
             }
 
         }

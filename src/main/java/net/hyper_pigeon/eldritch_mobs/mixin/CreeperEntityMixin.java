@@ -21,16 +21,16 @@ public class CreeperEntityMixin extends HostileEntity   {
     }
 
 
-    @Inject(at = @At("HEAD"), method = "explode")
-    public void removeEffects(CallbackInfo ci){
-        if (!this.world.isClient && EldritchMobsMod.isElite((ComponentProvider) this)) {
-            this.removeStatusEffect(StatusEffects.HEALTH_BOOST);
-            this.removeStatusEffect(StatusEffects.INVISIBILITY);
-            this.removeStatusEffect(StatusEffects.SPEED);
-            this.removeStatusEffect(StatusEffects.STRENGTH);
-        }
-
-    }
+//    @Inject(at = @At("HEAD"), method = "explode")
+//    public void removeEffects(CallbackInfo ci){
+//        if (!this.world.isClient && EldritchMobsMod.isElite((ComponentProvider) this)) {
+//            this.removeStatusEffect(StatusEffects.HEALTH_BOOST);
+//            this.removeStatusEffect(StatusEffects.INVISIBILITY);
+//            this.removeStatusEffect(StatusEffects.SPEED);
+//            this.removeStatusEffect(StatusEffects.STRENGTH);
+//        }
+//
+//    }
 
 
 }

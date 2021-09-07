@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -8,6 +9,9 @@ import net.minecraft.nbt.NbtCompound;
 
 
 public class WitheringComponent implements ModifierInterface {
+
+    public static int withering_duration = (EldritchMobsMod.CONFIG.intensity == 1) ?  60 : ((EldritchMobsMod.CONFIG.intensity == 2) ? 80 : 100);
+
     @Override
     public void useAbility(MobEntity entity) {
 

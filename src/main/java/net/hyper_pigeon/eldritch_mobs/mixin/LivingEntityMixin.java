@@ -4,6 +4,9 @@ import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.item.SoothingLantern;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
+import net.hyper_pigeon.eldritch_mobs.mod_components.modifiers.ThornyComponent;
+import net.hyper_pigeon.eldritch_mobs.mod_components.modifiers.ToxicComponent;
+import net.hyper_pigeon.eldritch_mobs.mod_components.modifiers.WitheringComponent;
 import net.hyper_pigeon.eldritch_mobs.persistent_state.SoothingLanternPersistentState;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -94,7 +97,6 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
             // only apply custom name if the mob doesn't have one and their modifier provides one
             boolean hasCustomName = this.getCustomName() != null && this.getCustomName().asString().equals("");
             if (!modifiers.get_mod_string().equals("") && !hasCustomName) {
-                System.out.println("check");
                 this.setCustomNameVisible(false);
                 if (!EldritchMobsMod.CONFIG.turnOffNames) {
                     this.setCustomName(new TranslatableText(modifiers.get_mod_string(), new Object[0]));
@@ -361,30 +363,33 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                         }
                     }
                     if (EldritchMobsMod.hasMod(this, "thorny")) {
-                        if(EldritchMobsMod.CONFIG.intensity <= 1){
-                            attacker.damage(DamageSource.MAGIC, amount/5);
-                        }
-                        else if(EldritchMobsMod.CONFIG.intensity == 2){
-                            attacker.damage(DamageSource.MAGIC, amount/4);
-                        }
-                        else {
-                            attacker.damage(DamageSource.MAGIC, amount/3);
-                        }
+//                        if(EldritchMobsMod.CONFIG.intensity <= 1){
+//                            attacker.damage(DamageSource.MAGIC, amount/5);
+//                        }
+//                        else if(EldritchMobsMod.CONFIG.intensity == 2){
+//                            attacker.damage(DamageSource.MAGIC, amount/4);
+//                        }
+//                        else {
+//                            attacker.damage(DamageSource.MAGIC, amount/3);
+//                        }
+
+                        attacker.damage(DamageSource.MAGIC, (float) (amount*ThornyComponent.thorny_damage));
 
                     }
                     if (EldritchMobsMod.hasMod(this, "toxic") && the_attacker != null) {
-                        if(EldritchMobsMod.CONFIG.intensity <= 1){
-                            the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 250, 0));
-                        }
-                        else if(EldritchMobsMod.CONFIG.intensity == 2){
-                            the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 300, 0));
-                        }
-                        else {
-                            the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 350, 0));
-                        }
+//                        if(EldritchMobsMod.CONFIG.intensity <= 1){
+//                            the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 250, 0));
+//                        }
+//                        else if(EldritchMobsMod.CONFIG.intensity == 2){
+//                            the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 300, 0));
+//                        }
+//                        else {
+//                            the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, 350, 0));
+//                        }
+                        the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, ToxicComponent.toxic_duration, 0));
                     }
                     if (EldritchMobsMod.hasMod(this, "withering") && the_attacker != null) {
-                        the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, 250, 0));
+                        the_attacker.addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, WitheringComponent.withering_duration, 0));
                     }
 
                     EldritchMobsMod.use_damageActivatedAbility(this, source, amount);
@@ -399,7 +404,6 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     protected void dropEldritchLoot (DamageSource source, boolean causedByPlayer, CallbackInfo info) {
         if(!EldritchMobsMod.CONFIG.enableCustomLoot) {
             if (EldritchMobsMod.isElite(this) && causedByPlayer) {
-                System.out.println("check");
                 Identifier identifier = new Identifier("eldritch_mobs:entity/elite_loot");
                 LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
                 net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);

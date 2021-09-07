@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.mod_components.modifiers;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -9,6 +10,8 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.nbt.NbtCompound;
 
 public class ToxicComponent implements ModifierInterface {
+
+    public static int toxic_duration = (EldritchMobsMod.CONFIG.intensity == 1) ?  100 : ((EldritchMobsMod.CONFIG.intensity == 2) ? 120 : 140);
 
     @Override
     public void useAbility(MobEntity entity) {
