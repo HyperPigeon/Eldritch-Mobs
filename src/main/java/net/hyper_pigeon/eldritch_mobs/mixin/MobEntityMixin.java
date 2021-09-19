@@ -13,8 +13,11 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.ServerBossBar;
+import net.minecraft.entity.boss.WitherEntity;
+import net.minecraft.entity.boss.dragon.EnderDragonEntity;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.ElderGuardianEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -77,6 +80,16 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
             return false;
         }
     };
+
+//    private static final Predicate<LivingEntity> BOSS_MOB_ENTITY_FILTER = (livingEntity) -> {
+//        if (livingEntity == null) {
+//            return false;
+//        } else if (livingEntity instanceof WitherEntity || livingEntity instanceof EnderDragonEntity || livingEntity instanceof ElderGuardianEntity) {
+//            return true;
+//        } else {
+//            return false;
+//        }
+//    };
 
 //    @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
 //    private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
@@ -333,7 +346,8 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
             ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))) {
 
             if(EldritchMobsMod.CONFIG.healthIncrease) {
-                if (!this.hasStatusEffect(StatusEffects.HEALTH_BOOST)) {
+                if (!this.hasStatusEffect(StatusEffects.HEALTH_BOOST) && !this.getType().equals(EntityType.ENDER_DRAGON)
+                && !this.getType().equals(EntityType.WITHER)) {
                     if (EldritchMobsMod.isEldritch(this)) {
                         int level = (int) (config.EldritchHealthMod);
                         StatusEffectInstance healthBoostInstance =
@@ -359,7 +373,8 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
                 }
             }
             else if(EldritchMobsMod.CONFIG.healthMult){
-                if (!this.hasStatusEffect(StatusEffects.HEALTH_BOOST)) {
+                if (!this.hasStatusEffect(StatusEffects.HEALTH_BOOST) && !this.getType().equals(EntityType.ENDER_DRAGON)
+                        && !this.getType().equals(EntityType.WITHER)) {
                     if (EldritchMobsMod.isEldritch(this)) {
                         int level = (int) (config.EldritchHealthMult*(this.getHealth()/4));
                         StatusEffectInstance healthBoostInstance =
