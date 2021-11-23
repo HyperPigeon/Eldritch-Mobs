@@ -44,7 +44,7 @@ public class AlchemyComponent implements ModifierInterface {
     }*/
 
     public void useAbility(MobEntity entity) {
-        if(entity.getTarget() != null && entity.getTarget().isAlive()) {
+        if((entity.getTarget() != null && entity.getTarget().isAlive())) {
             long time = entity.getEntityWorld().getTime();
             if (time > alchemy_nextAbilityUse) {
                 alchemy_nextAbilityUse = time + alch_cooldown;
@@ -61,7 +61,7 @@ public class AlchemyComponent implements ModifierInterface {
                     PotionEntity potionEntity = new PotionEntity(entity.world, entity);
                     potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
                     potionEntity.setPitch(potionEntity.getPitch()-20);
-                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.5F, 8.0F);
+                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.25F, 8.0F);
                     entity.world.spawnEntity(potionEntity);
                 }
                 else if(EldritchMobsMod.CONFIG.intensity == 2){
@@ -69,7 +69,7 @@ public class AlchemyComponent implements ModifierInterface {
                     PotionEntity potionEntity = new PotionEntity(entity.world, entity);
                     potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
                     potionEntity.setPitch(potionEntity.getPitch()-20);
-                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.75F, 4.0F);
+                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.5F, 4.0F);
                     entity.world.spawnEntity(potionEntity);
                 }
                 else {
@@ -77,15 +77,13 @@ public class AlchemyComponent implements ModifierInterface {
                     PotionEntity potionEntity = new PotionEntity(entity.world, entity);
                     potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
                     potionEntity.setPitch(potionEntity.getPitch()-20);
-                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 1.00F, 0.0F);
+                    potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.75F, 0.0F);
                     entity.world.spawnEntity(potionEntity);
                 }
 
 
             }
-
         }
-
     }
 
     @Override

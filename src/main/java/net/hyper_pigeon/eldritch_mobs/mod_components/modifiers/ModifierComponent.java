@@ -87,7 +87,6 @@ public class ModifierComponent implements ModifierInterface {
         mods_hashmap.put("one_up",new One_UpComponent());
         mods_hashmap.put("regen",new RegeneratingComponent());
         mods_hashmap.put("resistant",new ResistantComponent());
-        mods_hashmap.put("snatcher",new SnatcherComponent());
         mods_hashmap.put("speedster",new SpeedsterComponent());
         mods_hashmap.put("sprinter",new SprintingComponent());
         mods_hashmap.put("starving",new StarvingComponent());
@@ -111,7 +110,7 @@ public class ModifierComponent implements ModifierInterface {
 
 
     public ModifierComponent(LivingEntity entity) {
-        if((!config.ignoreNamed || !entity.hasCustomName()) &&
+        if(!is_elite && (!config.ignoreNamed || !entity.hasCustomName()) &&
                 (entity.getType().isIn(EldritchMobsMod.ELDRITCH_ALLOWED)) && !(entity.getType().isIn(EldritchMobsMod.ELDRITCH_BLACKLIST))) {
 
             config.removeMods();
@@ -268,11 +267,13 @@ public class ModifierComponent implements ModifierInterface {
 
 
     public void useAbility(MobEntity entity) {
-        for(String mod_name : modifier_list){
-            if(!(alt_activated_mods.contains(mod_name))) {
-                //System.out.println("Mob is trying to use " + mod_name + " ability!");
-                if(mods_hashmap.get(mod_name) != null) {
-                    mods_hashmap.get(mod_name).useAbility(entity);
+        if(entity.isAlive()) {
+            for (String mod_name : modifier_list) {
+                if (!(alt_activated_mods.contains(mod_name))) {
+                    //System.out.println("Mob is trying to use " + mod_name + " ability!");
+                    if (mods_hashmap.get(mod_name) != null) {
+                        mods_hashmap.get(mod_name).useAbility(entity);
+                    }
                 }
             }
         }
@@ -302,7 +303,6 @@ public class ModifierComponent implements ModifierInterface {
 
         modifier_list.clear();
         for (String mod : saved_mods.getKeys()) {
-
             modifier_list.add(mod);
         }
 

@@ -34,6 +34,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -42,6 +43,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Collection;
 import java.util.Random;
 
 @Mixin(LivingEntity.class)
@@ -71,6 +73,14 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     @Shadow public abstract boolean removeStatusEffect(StatusEffect type);
 
     @Shadow public abstract boolean clearStatusEffects();
+
+    @Shadow public float sidewaysSpeed;
+
+    @Shadow @Nullable public abstract StatusEffectInstance getStatusEffect(StatusEffect effect);
+
+    @Shadow public abstract boolean hasStatusEffect(StatusEffect effect);
+
+    @Shadow public abstract Collection<StatusEffectInstance> getStatusEffects();
 
     @Unique
     private boolean eldritchMobs_hasConfiguredName = false;
@@ -300,6 +310,11 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                         livingTarget.addVelocity(0, 1.0, 0);
                     }
                 }
+                if(EldritchMobsMod.hasMod(this,"berserk")){
+                    int damage = (this.hasStatusEffect(StatusEffects.STRENGTH)) ? (this.getStatusEffect(StatusEffects.STRENGTH).getAmplifier()+1)*2:0;
+                    LivingEntity livingTarget = (LivingEntity) target;
+                    livingTarget.damage(DamageSource.MAGIC,damage);
+                }
             }
         }
     }
@@ -308,7 +323,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
 
     @Inject(at = @At("HEAD"), method = "damage", cancellable = true)
     public void applyModifiers(DamageSource source, float amount, CallbackInfoReturnable<Boolean> callback) {
-        if(this.isAlive() && this != null && (this.getType() != EntityType.PLAYER)) {
+        if(this.isAlive() && this.getType() != EntityType.PLAYER) {
             Entity attacker = source.getAttacker();
             LivingEntity the_attacker = this.getAttacker();
             if(attacker != null) {
@@ -401,47 +416,126 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     }
 
     @Inject(at = @At("HEAD"), method = "dropLoot")
-    protected void dropEldritchLoot (DamageSource source, boolean causedByPlayer, CallbackInfo info) {
-        if(!EldritchMobsMod.CONFIG.enableCustomLoot) {
-            if (EldritchMobsMod.isElite(this) && causedByPlayer) {
-                Identifier identifier = new Identifier("eldritch_mobs:entity/elite_loot");
-                LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
-                net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
-                lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+    protected void dropBonusLoot (DamageSource source, boolean causedByPlayer, CallbackInfo info) {
+
+        if(causedByPlayer || !EldritchMobsMod.CONFIG.onlyDropLootIfPlayerKilled){
+            if(!EldritchMobsMod.CONFIG.enableCustomLoot) {
+                if(EldritchMobsMod.CONFIG.disableCombinedDrops){
+                    dropSingleLoot(source,causedByPlayer);
+                }
+                else {
+                    dropCombinedLoot(source,causedByPlayer);
+                }
             }
-            if (EldritchMobsMod.isUltra(this) && causedByPlayer) {
-                Identifier identifier = LootTables.SHIPWRECK_TREASURE_CHEST;
-                LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
-                net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
-                lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
-            }
-            if (EldritchMobsMod.isEldritch(this) && causedByPlayer) {
-                Identifier identifier = LootTables.END_CITY_TREASURE_CHEST;
-                LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
-                net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
-                lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+            else {
+                if(EldritchMobsMod.CONFIG.disableCombinedDrops){
+                    dropCustomSingleLoot(source,causedByPlayer);
+                }
+                else {
+                    dropCustomCombinedLoot(source,causedByPlayer);
+                }
             }
         }
-        else {
-            if (EldritchMobsMod.isElite(this) && causedByPlayer) {
-                Identifier identifier = EldritchMobsMod.UserDefinedEliteLootID;
-                LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
-                net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
-                lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
-            }
-            if (EldritchMobsMod.isUltra(this) && causedByPlayer) {
-                Identifier identifier = EldritchMobsMod.UserDefinedUltraLootID;
-                LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
-                net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
-                lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
-            }
-            if (EldritchMobsMod.isEldritch(this) && causedByPlayer) {
-                Identifier identifier = EldritchMobsMod.UserDefinedEldritchLootID;
-                LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
-                net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
-                lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
-            }
+
+    }
+
+    public void dropCombinedLoot(DamageSource source, boolean causedByPlayer){
+        if (EldritchMobsMod.isEldritch(this)){
+            dropEliteLoot(source,causedByPlayer);
+            dropUltraLoot(source, causedByPlayer);
+            dropEldritchLoot(source,causedByPlayer);
+        }
+        else if(EldritchMobsMod.isUltra(this)){
+            dropUltraLoot(source, causedByPlayer);
+            dropEldritchLoot(source,causedByPlayer);
+        }
+        else if(EldritchMobsMod.isElite(this)){
+            dropEliteLoot(source, causedByPlayer);
         }
     }
+
+    public void dropCustomCombinedLoot(DamageSource source, boolean causedByPlayer){
+        if (EldritchMobsMod.isEldritch(this)){
+            dropCustomEliteLoot(source,causedByPlayer);
+            dropCustomUltraLoot(source, causedByPlayer);
+            dropCustomEldritchLoot(source,causedByPlayer);
+        }
+        else if(EldritchMobsMod.isUltra(this)){
+            dropCustomUltraLoot(source, causedByPlayer);
+            dropCustomEldritchLoot(source,causedByPlayer);
+        }
+        else if(EldritchMobsMod.isElite(this)){
+            dropCustomEliteLoot(source, causedByPlayer);
+        }
+    }
+
+    public void dropSingleLoot(DamageSource source, boolean causedByPlayer){
+        if (EldritchMobsMod.isEldritch(this)){
+           dropEldritchLoot(source, causedByPlayer);
+        }
+        else if(EldritchMobsMod.isUltra(this)){
+            dropUltraLoot(source, causedByPlayer);
+        }
+        else if(EldritchMobsMod.isElite(this)){
+            dropEliteLoot(source, causedByPlayer);
+        }
+    }
+
+    public void dropCustomSingleLoot(DamageSource source, boolean causedByPlayer){
+        if (EldritchMobsMod.isEldritch(this)){
+            dropCustomEldritchLoot(source, causedByPlayer);
+        }
+        else if(EldritchMobsMod.isUltra(this)){
+            dropCustomUltraLoot(source, causedByPlayer);
+        }
+        else if(EldritchMobsMod.isElite(this)){
+            dropCustomEliteLoot(source, causedByPlayer);
+        }
+    }
+
+    public void dropEliteLoot(DamageSource source, boolean causedByPlayer){
+        Identifier identifier = new Identifier("eldritch_mobs:entity/elite_loot");
+        LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
+        net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
+        lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+    }
+
+    public void dropUltraLoot(DamageSource source, boolean causedByPlayer){
+        Identifier identifier = LootTables.SHIPWRECK_TREASURE_CHEST;
+        LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
+        net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
+        lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+    }
+
+    public void dropEldritchLoot(DamageSource source, boolean causedByPlayer){
+        Identifier identifier = LootTables.END_CITY_TREASURE_CHEST;
+        LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
+        net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
+        lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+    }
+
+    public void dropCustomEliteLoot(DamageSource source, boolean causedByPlayer){
+        Identifier identifier = EldritchMobsMod.UserDefinedEliteLootID;
+        LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
+        net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
+        lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+    }
+
+    public void dropCustomUltraLoot(DamageSource source, boolean causedByPlayer){
+        Identifier identifier = EldritchMobsMod.UserDefinedUltraLootID;
+        LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
+        net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
+        lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+    }
+
+    public void dropCustomEldritchLoot(DamageSource source, boolean causedByPlayer){
+        Identifier identifier = EldritchMobsMod.UserDefinedEldritchLootID;
+        LootTable lootTable = this.world.getServer().getLootManager().getTable(identifier);
+        net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
+        lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+    }
+
+
+
 
 }

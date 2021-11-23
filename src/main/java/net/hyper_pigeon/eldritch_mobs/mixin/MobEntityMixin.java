@@ -8,16 +8,11 @@ import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.ServerBossBar;
-import net.minecraft.entity.boss.WitherEntity;
-import net.minecraft.entity.boss.dragon.EnderDragonEntity;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.ElderGuardianEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -28,7 +23,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -36,8 +30,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 import java.util.function.Predicate;
 
 @Mixin(MobEntity.class)
@@ -61,13 +53,10 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
 
     @Shadow protected int experiencePoints;
 
-    @Unique private boolean healthConfigured = false;
-
-    private ArrayList<ServerPlayerEntity> playersList= new ArrayList();
+    private final ArrayList<ServerPlayerEntity> playersList= new ArrayList();
 
     boolean nameSet = false;
 
-    //private final UUID healthIncreaseUUID = UUID.randomUUID();
 
     EldritchMobsConfig config = AutoConfig.getConfigHolder(EldritchMobsConfig.class).getConfig();
 
@@ -81,32 +70,7 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
         }
     };
 
-//    private static final Predicate<LivingEntity> BOSS_MOB_ENTITY_FILTER = (livingEntity) -> {
-//        if (livingEntity == null) {
-//            return false;
-//        } else if (livingEntity instanceof WitherEntity || livingEntity instanceof EnderDragonEntity || livingEntity instanceof ElderGuardianEntity) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//    };
-
-//    @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
-//    private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
-//        if(!EldritchMobsMod.get_mod_list(this).equals("")){
-//            //System.out.println(EldritchMobsMod.get_mod_list(this));
-//            if(!(entityType == EntityType.WITHER) && !config.turnOffNames) {
-//                this.setCustomName(new TranslatableText(EldritchMobsMod.get_mod_list(this), new Object[0]));
-//            }
-//            //this.setCustomNameVisible(true);
-//        }
-//
-//    }
-
-//    private EldritchBossBar eldritchBossBar;
-//    private BossBarS2CPacket bossBarS2CPacket = new BossBarS2CPacket();
     private ServerBossBar bossBar;
-    //private PlayerEntity currentPlayer;
 
     @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
     private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
@@ -135,34 +99,11 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
         this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
     }
 
-
-//    @Override
-//    public void onStartedTrackingBy(ServerPlayerEntity player) {
-//        super.onStartedTrackingBy(player);
-//        if((EldritchMobsMod.isElite(this))) {
-//            this.bossBar.addPlayer(player);
-//        }
-//    }
-//
     @Override
     public void onStoppedTrackingBy(ServerPlayerEntity player) {
         super.onStoppedTrackingBy(player);
         this.bossBar.removePlayer(player);
     }
-
-
-//    public void onStartedTrackingBy(ServerPlayerEntity player) {
-//        super.onStartedTrackingBy(player);
-//        if((EldritchMobsMod.isElite(this))) {
-//            this.bossBar.addPlayer(player);
-//        }
-//    }
-//
-//    @Override
-//    public void onStoppedTrackingBy(ServerPlayerEntity player) {
-//        super.onStoppedTrackingBy(player);
-//        this.bossBar.removePlayer(player);
-//    }
 
     @Inject(at = @At("HEAD"), method = "tickMovement")
     public void addBossBar(CallbackInfo callbackInfo){
@@ -175,7 +116,7 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
                 playersList.addAll(list);
 
                 for (ServerPlayerEntity player : playersList) {
-                    if (isPlayerStaring(player)) {
+                    if (isPlayerStaring(player) && this.isAlive()) {
                         bossBar.addPlayer(player);
                     } else {
                         if (bossBar.getPlayers().contains(player)) {
@@ -183,6 +124,13 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
                             removeList.add(player);
                         }
                     }
+                    //removes boss bar from player hud if they are not within 30 blocks of the mob
+//                    if(!box_1.intersects(player.getBoundingBox())){
+//                        if (bossBar.getPlayers().contains(player)) {
+//                            bossBar.removePlayer(player);
+//                            removeList.add(player);
+//                        }
+//                    }
                 }
 
                 playersList.removeAll(removeList);
@@ -190,32 +138,7 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
         }
     }
 
-//    @Inject(at = @At("HEAD"), method = "tickMovement")
-//    public void addBossBar(CallbackInfo callbackInfo){
-//        Box box_1 = this.getBoundingBox().expand(30.0D);
-//        ArrayList<ServerPlayerEntity> playersList_two = new ArrayList<>();
-//        List<LivingEntity> list = this.world.getEntities(LivingEntity.class, box_1,
-//                LIVING_ENTITY_FILTER);
-//        Iterator entityIterator = list.iterator();
-//        while(entityIterator.hasNext()) {
-//            LivingEntity livingEntity = (LivingEntity) entityIterator.next();
-//            if(livingEntity instanceof PlayerEntity){
-//                playersList_two.add((ServerPlayerEntity) livingEntity);
-//                bossBar.addPlayer((ServerPlayerEntity) livingEntity);
-//            }
-//        }
-//
-//        ArrayList<ServerPlayerEntity> remove_boss_bar = new ArrayList<>();
-//        remove_boss_bar.addAll(playersList);
-//        remove_boss_bar.addAll(playersList_two);
-//        ArrayList<ServerPlayerEntity> intersection = playersList;
-//        intersection.retainAll(playersList_two);
-//        remove_boss_bar.removeAll(intersection);
-//
-//        for (ServerPlayerEntity player : remove_boss_bar) {
-//            bossBar.removePlayer(player);
-//        }
-//    }
+
 
     private boolean isPlayerStaring(PlayerEntity player) {
         Vec3d vec3d = player.getRotationVec(1.0F).normalize();
@@ -223,127 +146,21 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
         double d = vec3d2.length();
         vec3d2 = vec3d2.normalize();
         double e = vec3d.dotProduct(vec3d2);
-        return e > 1.0D - 0.025D / d ? player.canSee(this) : false;
+        return e > 1.0D - 0.3D / (d) && player.canSee(this);
     }
-
-//    @Override
-//    public void onStartedTrackingBy(ServerPlayerEntity player) {
-//        super.onStartedTrackingBy(player);
-//        System.out.println("check1");
-//        //currentPlayer = player;
-//        System.out.println((EldritchMobsMod.isElite(this)
-//                ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this)));
-//        System.out.println(player.canSee(this));
-//        if((EldritchMobsMod.isElite(this)
-//                ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))&& player.canSee(this)) {
-//            System.out.println("check2");
-//            this.bossBar.addPlayer(player);
-//        }
-//    }
-//
-
-//    @Inject(
-//            method = "tick",
-//            at = @At("HEAD")
-//    )
-//    private void configureCustomHealth(CallbackInfo ci) {
-//        if(!world.isClient && !healthConfigured){
-//            if (this.getType() != EntityType.PLAYER && (EldritchMobsMod.isElite(this)
-//                    ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))) {
-//
-//                if(EldritchMobsMod.CONFIG.healthIncrease) {
-//                        if (EldritchMobsMod.isEldritch(this)) {
-//                            int level = (config.EldritchHealthMod);
-//
-//                            EntityAttributeModifier healthIncrease = new EntityAttributeModifier(healthIncreaseUUID, "health_increase", level,
-//                                    EntityAttributeModifier.Operation.ADDITION);
-//
-//                            if(!Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).
-//                                    hasModifier(healthIncrease)){
-//                                Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).addPersistentModifier
-//                                        (new EntityAttributeModifier("health_increase", 240,
-//                                                EntityAttributeModifier.Operation.ADDITION));
-//                                this.heal(config.EldritchHealthMod);
-//                            }
-//
-//
-//                            //healthBoostInstance.isPermanent();
-//                        } else if (EldritchMobsMod.isUltra(this)) {
-//                            int level = (config.UltraHealthMod);
-//
-//                            EntityAttributeModifier healthIncrease = new EntityAttributeModifier(healthIncreaseUUID,"health_increase", level,
-//                                    EntityAttributeModifier.Operation.ADDITION);
-//
-//                            if(!Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).
-//                                    hasModifier(healthIncrease)){
-//                                Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).addPersistentModifier
-//                                        (healthIncrease);
-//                                this.heal(config.UltraHealthMod);
-//                            }
-//
-//                            //healthBoostInstance.isPermanent();
-//                        } else if (EldritchMobsMod.isElite(this)) {
-//                            int level = config.EliteHealthMod;
-//                            EntityAttributeModifier healthIncrease = new EntityAttributeModifier(healthIncreaseUUID,"health_increase", level,
-//                                    EntityAttributeModifier.Operation.ADDITION);
-//
-//                            if(!Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).
-//                                    hasModifier(healthIncrease)){
-//                                Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).addPersistentModifier
-//                                        (healthIncrease);
-//                                this.heal(config.EliteHealthMod);
-//                            }
-//                        }
-//                }
-//                else if(EldritchMobsMod.CONFIG.healthMult){
-//                        if (EldritchMobsMod.isEldritch(this)) {
-//                            int level = (int) config.EldritchHealthMult;
-//                            EntityAttributeModifier healthIncrease = new EntityAttributeModifier(healthIncreaseUUID,"health_increase", level,
-//                                    EntityAttributeModifier.Operation.MULTIPLY_BASE);
-//
-//                            if(!Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).
-//                                    hasModifier(healthIncrease)){
-//                                Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).addPersistentModifier
-//                                        (healthIncrease);
-//                                this.heal(this.getMaxHealth()*level);
-//                            }
-//                        } else if (EldritchMobsMod.isUltra(this)) {
-//                            int level = (int) (config.UltraHealthMult);
-//                            EntityAttributeModifier healthIncrease = new EntityAttributeModifier(healthIncreaseUUID,"health_increase", level,
-//                                    EntityAttributeModifier.Operation.MULTIPLY_BASE);
-//
-//                            if(!Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).
-//                                    hasModifier(healthIncrease)){
-//                                Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).addPersistentModifier
-//                                        (healthIncrease);
-//                                this.heal(this.getMaxHealth()*level);
-//                            }
-//                        } else if (EldritchMobsMod.isElite(this)) {
-//                            int level = (int) (config.EliteHealthMult);
-//                            EntityAttributeModifier healthIncrease = new EntityAttributeModifier(healthIncreaseUUID,"health_increase", level,
-//                                    EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
-//
-//                            if(!Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).
-//                                    hasModifier(healthIncrease)){
-//                                Objects.requireNonNull(this.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH)).addPersistentModifier
-//                                        (healthIncrease);
-//                                this.heal(this.getMaxHealth()*level);
-//                            }
-//                        }
-//                }
-//
-//
-//
-//            }
-//            healthConfigured = true;
-//        }
-//
-//    }
 
     @Inject(at = @At("HEAD"), method = "tick")
     public void ability_try(CallbackInfo callback) {
         if (this.getType() != EntityType.PLAYER && (EldritchMobsMod.isElite(this)
             ||EldritchMobsMod.isUltra(this)||EldritchMobsMod.isEldritch(this))) {
+
+            if(EldritchMobsMod.CONFIG.damageModifier != 0){
+                if(!this.hasStatusEffect(StatusEffects.STRENGTH)) {
+                    StatusEffectInstance strengthBoost = new StatusEffectInstance(StatusEffects.STRENGTH,
+                            1000000000, EldritchMobsMod.CONFIG.damageModifier);
+                    this.addStatusEffect(strengthBoost);
+                }
+            }
 
             if(EldritchMobsMod.CONFIG.healthIncrease) {
                 if (!this.hasStatusEffect(StatusEffects.HEALTH_BOOST) && !this.getType().equals(EntityType.ENDER_DRAGON)
@@ -420,8 +237,11 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
     }
 
 
-
-
-
+    //removes boss bar after death
+    public void onDeath(DamageSource source) {
+        super.onDeath(source);
+        bossBar.setVisible(false);
+        bossBar.clearPlayers();
+    }
 
 }

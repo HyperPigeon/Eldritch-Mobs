@@ -200,8 +200,71 @@
               ]
             }
           ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:golden_helmet",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "enchant_randomly",
+              "enchantments": [
+                "protection",
+                "blast_protection",
+                "fire_protection",
+                "aqua_affinity"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:chainmail_helmet",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "enchant_randomly",
+              "enchantments": [
+                "protection",
+                "blast_protection",
+                "fire_protection",
+                "aqua_affinity"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:iron_helmet",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "enchant_randomly",
+              "enchantments": [
+                "protection",
+                "blast_protection",
+                "fire_protection",
+                "aqua_affinity"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "item",
+          "name": "minecraft:diamond_helmet",
+          "weight": 1,
+          "functions": [
+            {
+              "function": "enchant_randomly",
+              "enchantments": [
+                "protection",
+                "blast_protection",
+                "fire_protection",
+                "aqua_affinity"
+              ]
+            }
+          ]
         }
-
       ]
     }
   ]

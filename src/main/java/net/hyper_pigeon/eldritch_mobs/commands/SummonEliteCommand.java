@@ -72,7 +72,6 @@ public class SummonEliteCommand {
 //                    }
                     //System.out.println(EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).get_mod_string());
                     ((MobEntity)entity2).initialize(source.getWorld(), source.getWorld().getLocalDifficulty(entity2.getBlockPos()), SpawnReason.COMMAND, (EntityData)null, (NbtCompound)null);
-
                 }
                 else {
                     throw FAILED_EXCEPTION.create();

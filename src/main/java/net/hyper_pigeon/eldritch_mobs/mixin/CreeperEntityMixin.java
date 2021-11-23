@@ -3,6 +3,7 @@ package net.hyper_pigeon.eldritch_mobs.mixin;
 import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.CreeperEntity;
 import net.minecraft.entity.mob.HostileEntity;
@@ -21,16 +22,15 @@ public class CreeperEntityMixin extends HostileEntity   {
     }
 
 
-//    @Inject(at = @At("HEAD"), method = "explode")
-//    public void removeEffects(CallbackInfo ci){
-//        if (!this.world.isClient && EldritchMobsMod.isElite((ComponentProvider) this)) {
-//            this.removeStatusEffect(StatusEffects.HEALTH_BOOST);
-//            this.removeStatusEffect(StatusEffects.INVISIBILITY);
-//            this.removeStatusEffect(StatusEffects.SPEED);
-//            this.removeStatusEffect(StatusEffects.STRENGTH);
-//        }
-//
-//    }
+    @Inject(at = @At("HEAD"), method = "explode")
+    public void removeEffects(CallbackInfo ci){
+        if (!this.world.isClient && EldritchMobsMod.isElite((ComponentProvider) this)) {
+            for(StatusEffectInstance statusEffectInstance : this.getStatusEffects()){
+                this.removeStatusEffect(statusEffectInstance.getEffectType());
+            }
+        }
+
+    }
 
 
 }

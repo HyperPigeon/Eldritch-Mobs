@@ -31,7 +31,6 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("Out of 100 Ultras")
     public double EldritchSpawnRates = 1;
 
-
     @Comment
     public boolean healthIncrease = true;
 
@@ -39,13 +38,13 @@ public class EldritchMobsConfig implements ConfigData {
     public boolean healthMult = false;
 
     @Comment("Number of extra hearts for Elite Mobs")
-    public int EliteHealthMod = 60;
+    public int EliteHealthMod = 40;
 
     @Comment("Number of extra hearts for Ultra Mobs")
-    public int UltraHealthMod = 120;
+    public int UltraHealthMod = 80;
 
     @Comment("Number of extra hearts for Eldritch Mobs")
-    public int EldritchHealthMod = 240;
+    public int EldritchHealthMod = 160;
 
     @Comment("Health Multiplier for Elite Mobs")
     public double EliteHealthMult = 4;
@@ -74,11 +73,18 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("EXP multiplier for Eldritch Mobs")
     public int EldritchExpMult = 15;
 
-    @Comment("Intensity: 1 - 3")
-    public int intensity = 1; 
+    @Comment("Difficulty increases with intensity. Intensity ranges from 1-3.")
+    public int intensity = 1;
 
-    @Comment("Enable custom user defined loot")
+    @Comment("Level of strength applied to mobs")
+    public int damageModifier = 0;
+
+    //@Comment("Enable custom user defined loot")
     public boolean enableCustomLoot = false;
+
+    public boolean disableCombinedDrops = false;
+
+    public boolean onlyDropLootIfPlayerKilled=true;
 
     @ConfigEntry.Gui.CollapsibleObject
     public DisableModifiers disableModifiers = new DisableModifiers();
