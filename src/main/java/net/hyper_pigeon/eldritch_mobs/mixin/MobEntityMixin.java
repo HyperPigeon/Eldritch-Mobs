@@ -5,6 +5,7 @@ import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
+import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -17,6 +18,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Arm;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -79,22 +81,47 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
                     BossBar.Style.PROGRESS);
         }
         else {
-            this.bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.GREEN,
-                    BossBar.Style.PROGRESS);
+            if(EldritchMobsMod.isElite(this)){
+                ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
+                this.bossBar = new ServerBossBar(new TranslatableText(modifiers.get_mod_string()), BossBar.Color.GREEN,
+                        BossBar.Style.PROGRESS);
+            }
+            else {
+                this.bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.GREEN,
+                        BossBar.Style.PROGRESS);
+            }
         }
     }
 
     @Inject(at = @At("HEAD"), method = "mobTick")
     private void mobTick(CallbackInfo info) {
-        if(!nameSet){
-            if(this.getCustomName() != null) {
-                this.bossBar.setName(this.getCustomName());
-            }
-            else {
-                this.bossBar.setName(this.getDisplayName());
-            }
-            nameSet = true;
-        }
+
+//        if(EldritchMobsMod.isElite(this)){
+//            if(this.getCustomName() != null){
+//                ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
+//                if (this.getCustomName().
+//                        equals(new TranslatableText(modifiers.get_mod_string(), new Object[0]))){
+//                    this.bossBar.setName(new TranslatableText(modifiers.get_mod_string(), new Object[0]));
+//                }
+//            }
+//        }
+
+
+        //ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
+//        if(!nameSet){
+//            if(this.getCustomName() != null) {
+//                this.bossBar.setName(this.getCustomName());
+//            }
+//            else {
+//                this.bossBar.setName(this.getDisplayName());
+//            }
+//            nameSet = true;
+//        }
+//
+//        if(EldritchMobsMod.isElite(this) && !this.hasCustomName()){
+//            ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
+//            this.bossBar.setName(new TranslatableText(modifiers.get_mod_string(), new Object[0]));
+//        }
 
         this.bossBar.setPercent(this.getHealth() / this.getMaxHealth());
     }

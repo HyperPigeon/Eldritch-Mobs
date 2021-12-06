@@ -50,26 +50,26 @@ public class ModifierComponent implements ModifierInterface {
 
 
     public static ArrayList<String> all_mods = new ArrayList<>(Arrays.asList("alchemist", "berserk", "yeeter", "blinding", "burning",
-            "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
+            "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one up","regen",
             "resistant","rust", "speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering", "sniper", "duplicator"));
 
     private ArrayList<String> mods = new ArrayList<>(Arrays.asList("alchemist", "berserk", "yeeter", "blinding", "burning",
-            "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
+            "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one up","regen",
             "resistant","rust", "speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering","duplicator"));
 
     private ArrayList<String> ranged_mobs_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
-            "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
+            "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one up","regen",
             "resistant", "sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering","sniper", "duplicator"));
 
     public ArrayList<String> creeper_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
-            "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one_up","regen",
+            "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one up","regen",
             "resistant", "speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering", "duplicator"));
 
-    private ArrayList<String> alt_activated_mods = new ArrayList<>(Arrays.asList("yeeter", "deflector","rust","ender","lifesteal","one_up","thorny","toxic",
+    private ArrayList<String> alt_activated_mods = new ArrayList<>(Arrays.asList("yeeter", "deflector","rust","ender","lifesteal","one up","thorny","toxic",
             "withering","sniper"));
 
     private HashMap<String, ModifierInterface> mods_hashmap = new HashMap<>();
@@ -84,7 +84,7 @@ public class ModifierComponent implements ModifierInterface {
         mods_hashmap.put("ghastly",new GhastlyComponent());
         mods_hashmap.put("gravity",new GravityComponent());
         mods_hashmap.put("lethargic",new LethargicComponent());
-        mods_hashmap.put("one_up",new One_UpComponent());
+        mods_hashmap.put("one up",new One_UpComponent());
         mods_hashmap.put("regen",new RegeneratingComponent());
         mods_hashmap.put("resistant",new ResistantComponent());
         mods_hashmap.put("speedster",new SpeedsterComponent());
@@ -259,8 +259,8 @@ public class ModifierComponent implements ModifierInterface {
         if(modifier_list.contains("drowning")){
             mods_hashmap.get("drowning").damageActivatedMod(entity,source,amount);
         }
-        if(modifier_list.contains("one_up")){
-            mods_hashmap.get("one_up").damageActivatedMod(entity,source,amount);
+        if(modifier_list.contains("one up")){
+            mods_hashmap.get("one up").damageActivatedMod(entity,source,amount);
         }
 
     }
