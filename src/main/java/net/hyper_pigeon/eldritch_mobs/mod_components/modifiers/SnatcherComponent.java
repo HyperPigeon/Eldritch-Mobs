@@ -33,19 +33,19 @@ public class SnatcherComponent implements ModifierInterface {
                     if (EldritchMobsMod.CONFIG.intensity <= 1) {
                         if(random_int <= 1) {
                             if(stack != null)
-                                ((PlayerEntity) target).dropSelectedItem(true);
+                                ((PlayerEntity) target).getInventory().dropSelectedItem(true);
                         }
                     }
                     else if(EldritchMobsMod.CONFIG.intensity == 2){
                         if(random_int <= 2) {
                             if(stack != null)
-                                ((PlayerEntity) target).dropSelectedItem(true);
+                                ((PlayerEntity) target).getInventory().dropSelectedItem(true);
                         }
                     }
                     else {
                         if(random_int <= 3) {
                             if(stack != null)
-                                ((PlayerEntity) target).dropSelectedItem(true);
+                                ((PlayerEntity) target).getInventory().dropSelectedItem(true);
                         }
                     }
                 }
