@@ -54,22 +54,22 @@ public class ModifierComponent implements ModifierInterface {
             "resistant","rust", "speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering", "sniper", "duplicator"));
 
-    private ArrayList<String> mods = new ArrayList<>(Arrays.asList("alchemist", "berserk", "yeeter", "blinding", "burning",
+    private final ArrayList<String> mods = new ArrayList<>(Arrays.asList("alchemist", "berserk", "yeeter", "blinding", "burning",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one up","regen",
             "resistant","rust", "speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering","duplicator"));
 
-    private ArrayList<String> ranged_mobs_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
+    private final ArrayList<String> ranged_mobs_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one up","regen",
             "resistant", "sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering","sniper", "duplicator"));
 
-    public ArrayList<String> creeper_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
+    public final ArrayList<String> creeper_mods = new ArrayList<>(Arrays.asList("alchemist", "blinding",
             "cloaked","deflector","draining","drowning","ender","ghastly", "gravity","lethargic","lifesteal","one up","regen",
             "resistant", "speedster","sprinter","starving","stormy","thorny","toxic","weakness","webslinging",
             "withering", "duplicator"));
 
-    private ArrayList<String> alt_activated_mods = new ArrayList<>(Arrays.asList("yeeter", "deflector","rust","ender","lifesteal","one up","thorny","toxic",
+    private final ArrayList<String> alt_activated_mods = new ArrayList<>(Arrays.asList("yeeter", "deflector","rust","ender","lifesteal","one up","thorny","toxic",
             "withering","sniper"));
 
     private HashMap<String, ModifierInterface> mods_hashmap = new HashMap<>();

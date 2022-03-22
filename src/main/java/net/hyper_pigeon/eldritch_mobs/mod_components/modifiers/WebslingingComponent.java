@@ -22,10 +22,15 @@ public class WebslingingComponent implements ModifierInterface {
                 LivingEntity target = entity.getTarget();
 
                 double x = target.getX();
-                double y = target.getY();
+                double y = target.getY()+1;
                 double z = target.getZ();
 
-                target.getEntityWorld().setBlockState(new BlockPos(x,y,z), Blocks.COBWEB.getDefaultState());
+                if(target.getEntityWorld().getBlockState(new BlockPos(x,y,z)).getBlock().equals(Blocks.AIR) ||
+                        target.getEntityWorld().getBlockState(new BlockPos(x,y,z)).getBlock().equals(Blocks.CAVE_AIR)
+                || target.getEntityWorld().getBlockState(new BlockPos(x,y,z)).getBlock().equals(Blocks.VOID_AIR)) {
+                    target.getEntityWorld().setBlockState(new BlockPos(x,y,z), Blocks.COBWEB.getDefaultState());
+                }
+
             }
         }
     }

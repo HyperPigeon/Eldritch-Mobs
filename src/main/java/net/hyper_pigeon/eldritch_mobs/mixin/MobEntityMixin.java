@@ -76,26 +76,16 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
 
     @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V")
     private void constructor(EntityType<? extends LivingEntity> entityType, World world, CallbackInfo ci){
-        if(this.getCustomName() != null) {
-            this.bossBar = new ServerBossBar(this.getCustomName(), BossBar.Color.GREEN,
-                    BossBar.Style.PROGRESS);
-        }
-        else {
-            if(EldritchMobsMod.isElite(this)){
-                ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
-                this.bossBar = new ServerBossBar(new TranslatableText(modifiers.get_mod_string()), BossBar.Color.GREEN,
-                        BossBar.Style.PROGRESS);
-            }
-            else {
-                this.bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.GREEN,
-                        BossBar.Style.PROGRESS);
-            }
-        }
+        this.bossBar = new ServerBossBar(this.getDisplayName(), BossBar.Color.GREEN,
+                BossBar.Style.PROGRESS);
     }
 
     @Inject(at = @At("HEAD"), method = "mobTick")
     private void mobTick(CallbackInfo info) {
-
+        if(EldritchMobsMod.isElite(this) && !nameSet && this.hasCustomName()) {
+            bossBar.setName(this.getCustomName());
+            nameSet = true;
+        }
 //        if(EldritchMobsMod.isElite(this)){
 //            if(this.getCustomName() != null){
 //                ModifierInterface modifiers = EldritchMobsMod.ELDRITCH_MODIFIERS.get(this);
