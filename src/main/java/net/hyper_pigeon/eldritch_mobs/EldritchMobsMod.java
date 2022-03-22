@@ -1,20 +1,18 @@
 package net.hyper_pigeon.eldritch_mobs;
 
-import me.shedaniel.autoconfig.AutoConfig;
-import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
-import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
+import dev.onyxstudios.cca.api.v3.component.ComponentRegistry;
+import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.hyper_pigeon.eldritch_mobs.commands.SummonEldritchCommand;
 import net.hyper_pigeon.eldritch_mobs.commands.SummonEliteCommand;
 import net.hyper_pigeon.eldritch_mobs.commands.SummonUltraCommand;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.hyper_pigeon.eldritch_mobs.item.SoothingLantern;
 import net.hyper_pigeon.eldritch_mobs.mod_components.interfaces.ModifierInterface;
-import net.hyper_pigeon.eldritch_mobs.mod_components.modifiers.ModifierComponent;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Material;
 import net.minecraft.entity.EntityType;
@@ -25,7 +23,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -38,23 +36,23 @@ public class EldritchMobsMod implements ModInitializer {
 	public static final EldritchMobsConfig CONFIG = AutoConfig.register(EldritchMobsConfig.class, JanksonConfigSerializer::new).getConfig();
 
 	private static final Identifier ELDRITCH_BLACKLIST_ID = new Identifier("eldritch_mobs:eldritch_blacklist");
-	public static final Tag<EntityType<?>> ELDRITCH_BLACKLIST = TagRegistry.entityType(ELDRITCH_BLACKLIST_ID);
+	public static final TagKey<EntityType<?>> ELDRITCH_BLACKLIST = TagKey.of(Registry.ENTITY_TYPE_KEY,ELDRITCH_BLACKLIST_ID);
 
 	private static final Identifier ELDRITCH_ALLOWED_ID = new Identifier("eldritch_mobs:eldritch_allowed");
-	public static final Tag<EntityType<?>> ELDRITCH_ALLOWED = TagRegistry.entityType(ELDRITCH_ALLOWED_ID);
+	public static final TagKey<EntityType<?>> ELDRITCH_ALLOWED = TagKey.of(Registry.ENTITY_TYPE_KEY, ELDRITCH_ALLOWED_ID);
 
 	public static final Identifier UserDefinedEliteLootID = new Identifier("eldritch_mobs:entity/custom_elite_loot");
 	public static final Identifier UserDefinedUltraLootID = new Identifier("eldritch_mobs:entity/custom_ultra_loot");
 	public static final Identifier UserDefinedEldritchLootID = new Identifier("eldritch_mobs:entity/custom_eldritch_loot");
 
 	private static final Identifier ALWAYS_ELITE_ID = new Identifier("eldritch_mobs:always_elite");
-	public static final Tag<EntityType<?>> ALWAYS_ELITE = TagRegistry.entityType(ALWAYS_ELITE_ID);
+	public static final TagKey<EntityType<?>> ALWAYS_ELITE = TagKey.of(Registry.ENTITY_TYPE_KEY,ALWAYS_ELITE_ID);
 
 	private static final Identifier ALWAYS_ULTRA_ID = new Identifier("eldritch_mobs:always_ultra");
-	public static final Tag<EntityType<?>> ALWAYS_ULTRA = TagRegistry.entityType(ALWAYS_ULTRA_ID);
+	public static final TagKey<EntityType<?>> ALWAYS_ULTRA = TagKey.of(Registry.ENTITY_TYPE_KEY,ALWAYS_ULTRA_ID);
 
 	private static final Identifier ALWAYS_ELDRITCH_ID = new Identifier("eldritch_mobs:always_eldritch");
-	public static final Tag<EntityType<?>> ALWAYS_ELDRITCH = TagRegistry.entityType(ALWAYS_ELDRITCH_ID);
+	public static final TagKey<EntityType<?>> ALWAYS_ELDRITCH = TagKey.of(Registry.ENTITY_TYPE_KEY,ALWAYS_ELDRITCH_ID);
 
 	public static final SoothingLantern SOOTHING_LANTERN = new SoothingLantern(AbstractBlock.Settings.of(Material.METAL).requiresTool().strength(1.5F).sounds(BlockSoundGroup.METAL).luminance((state) -> {
 		return 10;
