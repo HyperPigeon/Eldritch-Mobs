@@ -1,0 +1,44 @@
+package net.hyper_pigeon.eldritch_mobs.ability.data;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.hyper_pigeon.eldritch_mobs.ability.AbilityHelper;
+import net.minecraft.entity.EntityType;
+import net.minecraft.resource.JsonDataLoader;
+import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.profiler.Profiler;
+import net.minecraft.util.registry.Registry;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class AbilityBlacklistManager extends JsonDataLoader implements IdentifiableResourceReloadListener {
+    public AbilityBlacklistManager() {
+        super(new Gson(), "ability_blacklist");
+    }
+
+    @Override
+    public Identifier getFabricId() {
+        return new Identifier("ability_blacklist");
+    }
+
+    @Override
+    protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
+        prepared.forEach((id, element) -> {
+            JsonObject jsonObject = element.getAsJsonObject();
+            String name = jsonObject.get("name").getAsString();
+
+            List<EntityType<?>> entityTypeList = new ArrayList<>();
+            for (var entry : element.getAsJsonObject().get("entities").getAsJsonArray()) {
+                entityTypeList.add(Registry.ENTITY_TYPE.get(new Identifier(entry.toString())));
+            }
+
+            AbilityHelper.addBlacklist(name, entityTypeList);
+
+        });
+    }
+}
