@@ -34,7 +34,14 @@ public class AbilityBlacklistManager extends JsonDataLoader implements Identifia
 
             List<EntityType<?>> entityTypeList = new ArrayList<>();
             for (var entry : element.getAsJsonObject().get("entities").getAsJsonArray()) {
-                entityTypeList.add(Registry.ENTITY_TYPE.get(new Identifier(entry.toString())));
+                String namespace = entry.getAsString();
+                if(namespace.contains("minecraft:")){
+                    String[] split_namespace = namespace.split(":");
+                    entityTypeList.add(Registry.ENTITY_TYPE.get(Identifier.tryParse(split_namespace[1])));
+                }
+                else {
+                    entityTypeList.add(Registry.ENTITY_TYPE.get(Identifier.tryParse(namespace)));
+                }
             }
 
             AbilityHelper.addBlacklist(name, entityTypeList);
