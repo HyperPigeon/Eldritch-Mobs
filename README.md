@@ -1,9 +1,10 @@
-# Fabric Example Mod
+# Eldritch Mobs
 
-## Setup
+## Description
 
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
+A port of Infernal Mobs that was originally developed for ModFest 1.16 2020.
 
 ## License
 
 This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+
