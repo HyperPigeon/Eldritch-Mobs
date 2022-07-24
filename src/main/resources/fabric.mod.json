@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "id": "eldritch_mobs",
+  "version": "${version}",
+
+  "name": "EldritchMobs",
+  "description": "A mod that randomly imbues Minecraft mobs with special powers that make them more difficult and rewarding to defeat.",
+  "authors": [
+    "CyborgPigeon"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/eldritch_mobs/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.hyper_pigeon.eldritch_mobs.EldritchMobsMod"
+    ],
+    "cardinal-components-entity": [
+      "net.hyper_pigeon.eldritch_mobs.register.EldritchMobsComponents"
+    ],
+    "modmenu": [
+      "net.hyper_pigeon.eldritch_mobs.config.EldritchMobsModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "eldritch_mobs.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.18.*",
+    "java": ">=17"
+  },
+  "suggests": {
+    "another-mod": "*"
+  },
+  "custom": {
+    "cardinal-components": [
+      "eldritch_mobs:eldritch_modifiers"
+    ]
+  }
+}
