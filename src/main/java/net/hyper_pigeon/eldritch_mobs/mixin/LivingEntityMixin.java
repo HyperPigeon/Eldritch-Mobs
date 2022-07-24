@@ -12,6 +12,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContextTypes;
@@ -44,7 +45,10 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     }
 
     private boolean notNormal(ComponentProvider componentProvider){
-        return EldritchMobsMod.getRank(componentProvider) != MobRank.NONE && EldritchMobsMod.getRank(componentProvider) != MobRank.UNDECIDED;
+        if(componentProvider instanceof MobEntity) {
+            return EldritchMobsMod.getRank(componentProvider) != MobRank.NONE && EldritchMobsMod.getRank(componentProvider) != MobRank.UNDECIDED;
+        }
+        return false;
     }
 
 
