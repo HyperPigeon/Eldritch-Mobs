@@ -44,16 +44,16 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
         }
     }
 
-    @Inject(at = @At("RETURN"), method = "getXpToDrop", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "getXpToDrop", cancellable = true)
     protected void multiplyXpDrop(CallbackInfoReturnable<Integer> cir) {
         if(EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank() != MobRank.NONE && EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank() != MobRank.UNDECIDED){
             switch (EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank()){
-                case ELITE: cir.setReturnValue(experiencePoints*EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteXpMultiplier);
-                            break;
-                case ULTRA: cir.setReturnValue(experiencePoints*EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraXpMultiplier);
-                            break;
-                case ELDRITCH: cir.setReturnValue(experiencePoints*EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchXpMultiplier);
-                            break;
+                case ELITE: this.experiencePoints = experiencePoints*EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteXpMultiplier;
+                    break;
+                case ULTRA: this.experiencePoints = experiencePoints*EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraXpMultiplier;
+                    break;
+                case ELDRITCH: this.experiencePoints = experiencePoints*EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchXpMultiplier;
+                    break;
                 default: break;
             }
 
