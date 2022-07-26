@@ -136,13 +136,26 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                 LootTable lootTable = this.world.getServer().getLootManager().getTable(EldritchMobsLootTables.UltraLootID);
                 net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
                 lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+                if(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.combinedLootDrop){
+                    LootTable eliteLootTable = this.world.getServer().getLootManager().getTable(EldritchMobsLootTables.EliteLootID);
+                    eliteLootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+                }
             }
             else if(EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank() == MobRank.ELDRITCH){
                 LootTable lootTable = this.world.getServer().getLootManager().getTable(EldritchMobsLootTables.EldritchLootID);
                 net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
                 lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+                if(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.combinedLootDrop){
+                    LootTable eliteLootTable = this.world.getServer().getLootManager().getTable(EldritchMobsLootTables.EliteLootID);
+                    eliteLootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+
+                    LootTable ultraLootTable = this.world.getServer().getLootManager().getTable(EldritchMobsLootTables.UltraLootID);
+                    ultraLootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+                }
             }
         }
     }
+
+
 
 }
