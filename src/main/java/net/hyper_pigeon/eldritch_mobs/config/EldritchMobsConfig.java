@@ -46,6 +46,12 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("If true, buffed mobs only drop loot when killed by players")
     public boolean onlyDropLootIfKilledByPlayers = true;
 
+    @Comment("Buffed mobs also drop the loot of the tier below them + the loot of their tier.")
+    public boolean combinedLootDrop = true;
+
+    @Comment("Buffed mobs have generic titles w/o abilities")
+    public boolean genericTitles = false;
+
 
     @ConfigEntry.Gui.CollapsibleObject
     public AlchemistConfig alchemistConfig = new AlchemistConfig();

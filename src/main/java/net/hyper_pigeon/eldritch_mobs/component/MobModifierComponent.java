@@ -72,7 +72,7 @@ public class MobModifierComponent implements ModifierComponent {
                 setRank(MobRank.ULTRA);
             }
             else if(provider.getType().isIn(EldritchMobTagKeys.ALWAYS_ELDRITCH) || value <= EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchSpawnRates){
-               setRank(MobRank.ELDRITCH);
+                setRank(MobRank.ELDRITCH);
             }
         }
 
@@ -89,25 +89,40 @@ public class MobModifierComponent implements ModifierComponent {
     public void setTitle(){
         if(!provider.hasCustomName() && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.turnOffTitles && rank != MobRank.NONE) {
             String output = "";
+            if(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.genericTitles) {
+                String tier = getRank().name().toLowerCase();
+                output += tier.substring(0,1).toUpperCase() + tier.substring(1) + " " + provider.getDisplayName().getString();
+                provider.setCustomName(Text.of(output));
+            }
+            else {
 
-            for (Ability ability: modifiers){
-                output += ability.getName() + " ";
+                for (Ability ability: modifiers){
+                    output += ability.getName() + " ";
+                }
+
+                output += provider.getDisplayName().getString();
+
+                provider.setCustomName(Text.of(output));
             }
 
-            output += provider.getDisplayName().getString();
-
-            provider.setCustomName(Text.of(output));
         }
     }
 
     public Text getTitle(){
         String output = "";
 
-        for (Ability ability: modifiers){
-            output += ability.getName() + " ";
+        if(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.genericTitles) {
+            String tier = getRank().name().toLowerCase();
+            output += tier.substring(0,1).toUpperCase() + tier.substring(1) + " " + provider.getDisplayName().getString();
+        }
+        else {
+            for (Ability ability: modifiers){
+                output += ability.getName() + " ";
+            }
+
+            output += provider.getDisplayName().getString();
         }
 
-        output += provider.getDisplayName().getString();
 
         return (Text.of(output));
     }
@@ -132,12 +147,15 @@ public class MobModifierComponent implements ModifierComponent {
         this.rank = mobRank;
         if(mobRank == MobRank.ELITE){
             numMaxAbilities = AbilityHelper.random.nextInt(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteMinModifiers,EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteMaxModifiers+1);
+            this.bossBar.setColor(BossBar.Color.YELLOW);
         }
         else if(mobRank == MobRank.ULTRA){
             numMaxAbilities = AbilityHelper.random.nextInt(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraMinModifiers,EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraMaxModifiers+1);
+            this.bossBar.setColor(BossBar.Color.RED);
         }
         else if(mobRank == MobRank.ELDRITCH){
             numMaxAbilities = AbilityHelper.random.nextInt(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchMinModifiers,EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchMaxModifiers+1);
+            this.bossBar.setColor(BossBar.Color.PURPLE);
         }
     }
 
@@ -188,12 +206,15 @@ public class MobModifierComponent implements ModifierComponent {
         }
         else if(numMaxAbilities <= 4 && numMaxAbilities >= 1){
             rank = MobRank.ELITE;
+            this.bossBar.setColor(BossBar.Color.YELLOW);
         }
         else if(numMaxAbilities <= 8 && numMaxAbilities >= 5){
             rank = MobRank.ULTRA;
+            this.bossBar.setColor(BossBar.Color.RED);
         }
         else if(numMaxAbilities <= 12 && numMaxAbilities >= 9){
             rank = MobRank.ULTRA;
+            this.bossBar.setColor(BossBar.Color.PURPLE);
         }
 
         NbtCompound abilities = tag.getCompound("abilities");
@@ -249,7 +270,7 @@ public class MobModifierComponent implements ModifierComponent {
 
         if(getRank() != MobRank.NONE) {
             if(!EldritchMobsMod.ELDRITCH_MOBS_CONFIG.turnOffBossBars) {
-                if(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.turnOffTitles && !provider.hasCustomName()) {
+                if(!provider.hasCustomName()) {
                     this.bossBar.setName(getTitle());
                 }
                 else {
