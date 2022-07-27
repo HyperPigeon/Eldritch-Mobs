@@ -53,7 +53,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
 
 
 
-    @Inject(method = "onAttacking", at = @At(value = "FIELD", target = "net/minecraft/entity/LivingEntity.attacking : Lnet/minecraft/entity/LivingEntity;",opcode = Opcodes.PUTFIELD,ordinal = 0, shift = At.Shift.AFTER))
+    @Inject(method = "onAttacking", at = @At(value = "FIELD", target = "net/minecraft/entity/LivingEntity.attacking : Lnet/minecraft/entity/LivingEntity;",opcode = Opcodes.PUTFIELD,ordinal = 0, shift = At.Shift.AFTER), cancellable = true)
     private void applyOnAttackAbilities(Entity target, CallbackInfo ci){
         if(target instanceof LivingEntity && this.getType() != EntityType.PLAYER
         && notNormal(this)) {

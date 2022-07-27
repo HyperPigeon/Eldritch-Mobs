@@ -1,23 +1,23 @@
 package net.hyper_pigeon.eldritch_mobs.register;
 
+import net.fabricmc.fabric.api.tag.TagFactory;
 import net.minecraft.entity.EntityType;
-import net.minecraft.tag.TagKey;
+import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class EldritchMobTagKeys {
     private static final Identifier BLACKLIST_ID = new Identifier("eldritch_mobs:blacklist");
-    public static final TagKey<EntityType<?>> BLACKLIST = TagKey.of(Registry.ENTITY_TYPE_KEY,BLACKLIST_ID);
+    public static final Tag<EntityType<?>> BLACKLIST = TagFactory.ENTITY_TYPE.create(BLACKLIST_ID);
 
     private static final Identifier ALLOWED_ID = new Identifier("eldritch_mobs:allowed");
-    public static final TagKey<EntityType<?>> ALLOWED = TagKey.of(Registry.ENTITY_TYPE_KEY, ALLOWED_ID);
+    public static final Tag<EntityType<?>> ALLOWED = TagFactory.ENTITY_TYPE.create(ALLOWED_ID);
 
     private static final Identifier ALWAYS_ELITE_ID = new Identifier("eldritch_mobs:always_elite");
-    public static final TagKey<EntityType<?>> ALWAYS_ELITE = TagKey.of(Registry.ENTITY_TYPE_KEY,ALWAYS_ELITE_ID);
+    public static final Tag<EntityType<?>> ALWAYS_ELITE = TagFactory.ENTITY_TYPE.create(ALWAYS_ELITE_ID);
 
     private static final Identifier ALWAYS_ULTRA_ID = new Identifier("eldritch_mobs:always_ultra");
-    public static final TagKey<EntityType<?>> ALWAYS_ULTRA = TagKey.of(Registry.ENTITY_TYPE_KEY,ALWAYS_ULTRA_ID);
+    public static final Tag<EntityType<?>> ALWAYS_ULTRA = TagFactory.ENTITY_TYPE.create(ALWAYS_ULTRA_ID);
 
     private static final Identifier ALWAYS_ELDRITCH_ID = new Identifier("eldritch_mobs:always_eldritch");
-    public static final TagKey<EntityType<?>> ALWAYS_ELDRITCH = TagKey.of(Registry.ENTITY_TYPE_KEY,ALWAYS_ELDRITCH_ID);
+    public static final Tag<EntityType<?>> ALWAYS_ELDRITCH = TagFactory.ENTITY_TYPE.create(ALWAYS_ELDRITCH_ID);
 }

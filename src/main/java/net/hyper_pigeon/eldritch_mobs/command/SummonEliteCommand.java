@@ -81,7 +81,7 @@ public class SummonEliteCommand {
 
                 }
 
-                if (!serverWorld.spawnNewEntityAndPassengers(entity2)) {
+                if (!serverWorld.shouldCreateNewEntityWithPassenger(entity2)) {
                     throw FAILED_UUID_EXCEPTION.create();
                 } else {
                     source.sendFeedback(new TranslatableText("commands.summon_elite.success", new Object[]{entity2.getDisplayName()}), true);

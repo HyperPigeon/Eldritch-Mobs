@@ -7,7 +7,6 @@ import net.hyper_pigeon.eldritch_mobs.ability.passive.defensive.*;
 import net.hyper_pigeon.eldritch_mobs.ability.passive.offensive.*;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.entity.EntityType;
-import net.minecraft.tag.TagKey;
 
 import java.util.*;
 
