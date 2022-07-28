@@ -18,6 +18,7 @@
   "text.autoconfig.eldritch_mobs.option.EldritchMaxModifiers": "Maximum number of modifiers for Eldritch mobs",
   "text.autoconfig.eldritch_mobs.option.ignoreNamedMobs": "Ignore named mobs",
   "text.autoconfig.eldritch_mobs.option.turnOffBossBars": "Turn off boss bars",
+  "text.autoconfig.eldritch_mobs.option.crosshairBossBars": "Enable crosshair boss bars",
   "text.autoconfig.eldritch_mobs.option.turnOffTitles": "Turn off custom names for buffed mobs",
   "text.autoconfig.eldritch_mobs.option.genericTitles": "Enable generic titles",
   "text.autoconfig.eldritch_mobs.option.turnOnGlowingMobs": "Buffed mobs glow after being damaged",

@@ -40,6 +40,9 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("Turn off boss bars")
     public boolean turnOffBossBars = false;
 
+    @Comment("Boss bars appears when placing crosshair on buffed mob")
+    public boolean crosshairBossBars = true;
+
     @Comment("Buffed mobs are highlighted after being damaged")
     public boolean turnOnGlowingMobs = false;
 
@@ -51,6 +54,8 @@ public class EldritchMobsConfig implements ConfigData {
 
     @Comment("Buffed mobs have generic titles w/o abilities")
     public boolean genericTitles = false;
+
+
 
 
     @ConfigEntry.Gui.CollapsibleObject

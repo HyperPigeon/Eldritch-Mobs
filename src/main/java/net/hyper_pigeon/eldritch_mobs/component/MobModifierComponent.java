@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.component;
 
+import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityHelper;
@@ -8,19 +9,25 @@ import net.hyper_pigeon.eldritch_mobs.persistent_state.SoothingLanternPersistent
 import net.hyper_pigeon.eldritch_mobs.rank.MobRank;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobTagKeys;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsAttributeModifiers;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.projectile.ProjectileUtil;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.hit.EntityHitResult;
+import net.minecraft.util.hit.HitResult;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class MobModifierComponent implements ModifierComponent {
 
@@ -256,6 +263,23 @@ public class MobModifierComponent implements ModifierComponent {
         this.bossBar.clearPlayers();
     }
 
+    boolean isPlayerStaring(ServerPlayerEntity player) {
+        Vec3d vec3d = player.getEyePos();
+        Vec3d vec3d2 = player.getRotationVec(1.0F);
+        Vec3d vec3d3 = vec3d.add(vec3d2.x * 100.0D, vec3d2.y * 100.0D, vec3d2.z * 100.0D);
+        EntityHitResult entityHitResult = ProjectileUtil.getEntityCollision(player.world, player, vec3d, vec3d3, (new Box(vec3d, vec3d3)).expand(1.0D), (entityx) -> {
+            return !entityx.isSpectator() && entityx instanceof MobEntity;
+        }, 0.0F);
+        if (entityHitResult != null && entityHitResult.getType() == HitResult.Type.ENTITY) {
+            MobEntity mobEntity = (MobEntity) entityHitResult.getEntity();
+           if(mobEntity.equals(provider)){
+               return true;
+           }
+        }
+        return false;
+    }
+
+
 
     @Override
     public void serverTick() {
@@ -277,6 +301,16 @@ public class MobModifierComponent implements ModifierComponent {
                     this.bossBar.setName(provider.getCustomName());
                 }
                 this.bossBar.setPercent(provider.getHealth() / provider.getMaxHealth());
+
+                if(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.crosshairBossBars) {
+                    List<ServerPlayerEntity> bossBarPlayers = bossBar.getPlayers().stream().toList();
+                    bossBarPlayers.stream().forEach(player -> {
+                        if(!isPlayerStaring(player)) {
+                            bossBar.removePlayer(player);
+                        }
+                    });
+                }
+
             }
             increaseHealth();
         }

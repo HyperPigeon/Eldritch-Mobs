@@ -29,7 +29,7 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
         super.onStartedTrackingBy(player);
 
         if(EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank() != MobRank.NONE && EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank() != MobRank.UNDECIDED
-        && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.turnOffBossBars){
+        && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.turnOffBossBars && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.crosshairBossBars){
             EldritchMobsMod.ELDRITCH_MODIFIERS.get((MobEntity)(Object)this).getBossBar().addPlayer(player);
         }
 
@@ -39,7 +39,7 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
         super.onStoppedTrackingBy(player);
 
         if(EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank() != MobRank.NONE && EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank() != MobRank.UNDECIDED
-                && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.turnOffBossBars){
+                && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.turnOffBossBars && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.crosshairBossBars){
             EldritchMobsMod.ELDRITCH_MODIFIERS.get((MobEntity)(Object)this).getBossBar().removePlayer(player);
         }
     }
