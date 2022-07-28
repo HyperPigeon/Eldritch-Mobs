@@ -37,7 +37,7 @@ public class SprinterAbility implements Ability {
 
     @Override
     public boolean canUseAbilty(MobEntity mobEntity) {
-        return mobEntity.getWorld().getTime() > nextUseTime;
+        return mobEntity.getEntityWorld().getTime() > nextUseTime;
     }
 
     @Override

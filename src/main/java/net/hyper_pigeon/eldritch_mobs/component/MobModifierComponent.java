@@ -146,15 +146,21 @@ public class MobModifierComponent implements ModifierComponent {
     public void setRank(MobRank mobRank){
         this.rank = mobRank;
         if(mobRank == MobRank.ELITE){
-            numMaxAbilities = AbilityHelper.random.nextInt(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteMinModifiers,EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteMaxModifiers+1);
+            numMaxAbilities = AbilityHelper.random
+                    .nextInt(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteMaxModifiers + 1 - EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteMinModifiers)
+                    + EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteMinModifiers;
             this.bossBar.setColor(BossBar.Color.YELLOW);
         }
         else if(mobRank == MobRank.ULTRA){
-            numMaxAbilities = AbilityHelper.random.nextInt(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraMinModifiers,EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraMaxModifiers+1);
+            numMaxAbilities = AbilityHelper.random
+                    .nextInt(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraMaxModifiers + 1 - EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraMinModifiers)
+                    + EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraMinModifiers;
             this.bossBar.setColor(BossBar.Color.RED);
         }
         else if(mobRank == MobRank.ELDRITCH){
-            numMaxAbilities = AbilityHelper.random.nextInt(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchMinModifiers,EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchMaxModifiers+1);
+            numMaxAbilities = AbilityHelper.random
+                    .nextInt(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchMaxModifiers + 1 - EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchMinModifiers)
+                    + EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchMinModifiers;
             this.bossBar.setColor(BossBar.Color.PURPLE);
         }
     }

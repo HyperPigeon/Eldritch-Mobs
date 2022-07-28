@@ -77,7 +77,7 @@ public class SummonUltraCommand{
                     //EldritchMobsMod.ELDRITCH_MODIFIERS.get(entity2).setTitle();
                 }
 
-                if (!serverWorld.spawnNewEntityAndPassengers(entity2)) {
+                if (!serverWorld.shouldCreateNewEntityWithPassenger(entity2)) {
                     throw FAILED_UUID_EXCEPTION.create();
                 } else {
                     source.sendFeedback(new TranslatableText("commands.summon_ultra.success", new Object[]{entity2.getDisplayName()}), true);
