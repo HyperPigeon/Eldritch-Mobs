@@ -51,5 +51,6 @@
   "text.autoconfig.eldritch_mobs.option.weaknessConfig" : "Weakness",
   "text.autoconfig.eldritch_mobs.option.webslingingConfig" : "Webslinging",
   "text.autoconfig.eldritch_mobs.option.witheringConfig" : "Withering",
-  "text.autoconfig.eldritch_mobs.option.yeeterConfig" : "Yeeter"
+  "text.autoconfig.eldritch_mobs.option.yeeterConfig" : "Yeeter",
+  "text.autoconfig.eldritch_mobs.option.disableLootDrops" : "Disable loot drops"
 }

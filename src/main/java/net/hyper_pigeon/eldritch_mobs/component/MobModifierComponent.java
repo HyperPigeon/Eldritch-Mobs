@@ -1,6 +1,5 @@
 package net.hyper_pigeon.eldritch_mobs.component;
 
-import dev.onyxstudios.cca.api.v3.component.ComponentProvider;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityHelper;
@@ -9,15 +8,12 @@ import net.hyper_pigeon.eldritch_mobs.persistent_state.SoothingLanternPersistent
 import net.hyper_pigeon.eldritch_mobs.rank.MobRank;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobTagKeys;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsAttributeModifiers;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.boss.BossBar;
 import net.minecraft.entity.boss.ServerBossBar;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
@@ -27,7 +23,10 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 public class MobModifierComponent implements ModifierComponent {
 
