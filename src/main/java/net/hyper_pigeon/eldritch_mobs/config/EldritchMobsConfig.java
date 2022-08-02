@@ -46,6 +46,9 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("Buffed mobs are highlighted after being damaged")
     public boolean turnOnGlowingMobs = false;
 
+    @Comment("Turn off loot for buffed mobs")
+    public boolean disableLootDrops = false;
+
     @Comment("If true, buffed mobs only drop loot when killed by players")
     public boolean onlyDropLootIfKilledByPlayers = true;
 

@@ -126,7 +126,8 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     @Inject(at = @At("TAIL"), method = "dropLoot")
     protected void dropBonusLoot (DamageSource source, boolean causedByPlayer, CallbackInfo info) {
         if(this.getType() != EntityType.PLAYER && notNormal(this)
-                && (causedByPlayer || !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.onlyDropLootIfKilledByPlayers)){
+                && (causedByPlayer || !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.onlyDropLootIfKilledByPlayers)
+        && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.disableLootDrops){
             if(EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank() == MobRank.ELITE){
                 LootTable lootTable = this.world.getServer().getLootManager().getTable(EldritchMobsLootTables.EliteLootID);
                 net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);

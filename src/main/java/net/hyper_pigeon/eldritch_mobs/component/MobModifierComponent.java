@@ -37,7 +37,7 @@ public class MobModifierComponent implements ModifierComponent {
     private final ServerBossBar bossBar;
     private boolean healthIncreased = false;
     private boolean checkedIfSpawnedInSoothingLanternChunk = false;
-
+    private boolean titleSet = false;
 
     public MobModifierComponent(MobEntity provider){
         this.provider = provider;
@@ -45,9 +45,7 @@ public class MobModifierComponent implements ModifierComponent {
 
         if(canBeBuffed(provider)){
             randomlySetRank();
-            //maybe move these two methods to server tick for optimization?
             randomlySetModifiers();
-            setTitle();
         }
         else {
             this.rank = MobRank.NONE;
@@ -206,6 +204,7 @@ public class MobModifierComponent implements ModifierComponent {
         healthIncreased = tag.getBoolean("healthIncreased");
         numMaxAbilities = tag.getInt("numMaxAbilities");
         checkedIfSpawnedInSoothingLanternChunk = tag.getBoolean("checkedIfSpawnedInSoothingLanternChunk");
+        titleSet = tag.getBoolean("titleSet");
 
         if(numMaxAbilities == 0){
             rank = MobRank.NONE;
@@ -240,6 +239,7 @@ public class MobModifierComponent implements ModifierComponent {
         tag.putBoolean("healthIncreased", healthIncreased);
         tag.putInt("numMaxAbilities",numMaxAbilities);
         tag.putBoolean("checkedIfSpawnedInSoothingLanternChunk",checkedIfSpawnedInSoothingLanternChunk);
+        tag.putBoolean("titleSet",titleSet);
 
         NbtCompound mobAbilities = new NbtCompound();
 
@@ -262,7 +262,6 @@ public class MobModifierComponent implements ModifierComponent {
         this.bossBar.clearPlayers();
     }
 
-
     boolean isPlayerStaring(ServerPlayerEntity player) {
         Vec3d vec3d = player.getEyePos();
         Vec3d vec3d2 = player.getRotationVec(1.0F);
@@ -280,6 +279,7 @@ public class MobModifierComponent implements ModifierComponent {
     }
 
 
+
     @Override
     public void serverTick() {
         if(!checkedIfSpawnedInSoothingLanternChunk)
@@ -292,6 +292,12 @@ public class MobModifierComponent implements ModifierComponent {
         }
 
         if(getRank() != MobRank.NONE) {
+
+            if(!provider.hasCustomName() && !titleSet &&!EldritchMobsMod.ELDRITCH_MOBS_CONFIG.turnOffTitles){
+                setTitle();
+                titleSet = true;
+            }
+
             if(!EldritchMobsMod.ELDRITCH_MOBS_CONFIG.turnOffBossBars) {
                 if(!provider.hasCustomName()) {
                     this.bossBar.setName(getTitle());
@@ -309,6 +315,7 @@ public class MobModifierComponent implements ModifierComponent {
                         }
                     });
                 }
+
             }
             increaseHealth();
         }
