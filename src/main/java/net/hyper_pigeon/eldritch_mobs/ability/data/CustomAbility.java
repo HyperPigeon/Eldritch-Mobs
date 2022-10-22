@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.ability.data;
 
+import com.mojang.brigadier.ParseResults;
 import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilitySubType;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityType;
@@ -7,6 +8,10 @@ import net.hyper_pigeon.eldritch_mobs.ability.ActivationType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.command.CommandManager;
+import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.world.ServerWorld;
 
 import java.util.Objects;
 
@@ -66,7 +71,9 @@ public class CustomAbility  implements Ability {
         if(activationType == ActivationType.hasTarget && canUseAbilty(mobEntity)){
             String parsedCommand = this.command.replaceAll("\\{target\\}",mobEntity.getTarget().getUuidAsString());
             parsedCommand = parsedCommand.replaceAll("\\{self\\}", mobEntity.getUuidAsString());
-            mobEntity.getServer().getCommandManager().execute(mobEntity.getServer().getCommandSource(),parsedCommand);
+            ServerCommandSource commandSource = mobEntity.getServer().getCommandSource();
+            ParseResults parseResults = mobEntity.getServer().getCommandManager().getDispatcher().parse(parsedCommand,commandSource);
+            mobEntity.getServer().getCommandManager().execute(parseResults,parsedCommand);
             nextUseTime = mobEntity.getEntityWorld().getTime() + getCooldown();
         }
     }
@@ -75,9 +82,13 @@ public class CustomAbility  implements Ability {
     public void onDamaged(LivingEntity entity, DamageSource source, float amount) {
         if(activationType == ActivationType.onDamage){
             String parsedCommand = this.command.replaceAll("\\{self\\}", entity.getUuidAsString());
+            MinecraftServer minecraftServer = entity.getServer();
+            ServerCommandSource commandSource = minecraftServer.getCommandSource();
+            CommandManager commandManager = minecraftServer.getCommandManager();
             if(source.getAttacker() != null && source.getAttacker() instanceof LivingEntity)
                 parsedCommand = this.command.replaceAll("\\{attacker\\}", source.getAttacker().getUuidAsString());
-            Objects.requireNonNull(entity.getServer()).getCommandManager().execute(entity.getServer().getCommandSource(),parsedCommand);
+            ParseResults parseResults = commandManager.getDispatcher().parse(parsedCommand,commandSource);
+            Objects.requireNonNull(entity.getServer()).getCommandManager().execute(parseResults,parsedCommand);
         }
     }
 
@@ -86,7 +97,12 @@ public class CustomAbility  implements Ability {
         if(activationType == ActivationType.onDamageToTarget){
             String parsedCommand = this.command.replaceAll("\\{self\\}", attacker.getUuidAsString());
             parsedCommand = parsedCommand.replaceAll("\\{target\\}", target.getUuidAsString());
-            Objects.requireNonNull(attacker.getServer()).getCommandManager().execute(attacker.getServer().getCommandSource(),parsedCommand);
+
+            MinecraftServer minecraftServer = attacker.getServer();
+            ServerCommandSource commandSource = minecraftServer.getCommandSource();
+            CommandManager commandManager = minecraftServer.getCommandManager();
+            ParseResults parseResults = commandManager.getDispatcher().parse(parsedCommand, commandSource);
+            Objects.requireNonNull(attacker.getServer()).getCommandManager().execute(parseResults,parsedCommand);
         }
     }
 
@@ -95,7 +111,13 @@ public class CustomAbility  implements Ability {
         if(activationType == ActivationType.onAttack){
             String parsedCommand = this.command.replaceAll("\\{target\\}", target.getUuidAsString());
             parsedCommand = parsedCommand.replaceAll("\\{self\\}", attacker.getUuidAsString());
-            Objects.requireNonNull(target.getServer()).getCommandManager().execute(target.getServer().getCommandSource(),parsedCommand);
+
+            MinecraftServer minecraftServer = target.getServer();
+            ServerCommandSource commandSource = minecraftServer.getCommandSource();
+            CommandManager commandManager = minecraftServer.getCommandManager();
+            ParseResults parseResults = commandManager.getDispatcher().parse(parsedCommand, commandSource);
+
+            Objects.requireNonNull(target.getServer()).getCommandManager().execute(parseResults,parsedCommand);
         }
     }
 
@@ -105,7 +127,13 @@ public class CustomAbility  implements Ability {
             String parsedCommand = this.command.replaceAll("\\{self\\}", livingEntity.getUuidAsString());
             if(damageSource.getAttacker() != null)
                 parsedCommand = parsedCommand.replaceAll("\\{killer\\}", damageSource.getAttacker().getUuidAsString());
-            Objects.requireNonNull(livingEntity.getServer()).getCommandManager().execute(livingEntity.getServer().getCommandSource(),parsedCommand);
+
+            MinecraftServer minecraftServer = livingEntity.getServer();
+            ServerCommandSource commandSource = minecraftServer.getCommandSource();
+            CommandManager commandManager = minecraftServer.getCommandManager();
+            ParseResults parseResults = commandManager.getDispatcher().parse(parsedCommand, commandSource);
+
+            Objects.requireNonNull(livingEntity.getServer()).getCommandManager().execute(parseResults,parsedCommand);
         }
     }
 
@@ -113,7 +141,13 @@ public class CustomAbility  implements Ability {
     public void passiveApply(MobEntity mobEntity) {
         if(activationType == ActivationType.tick){
             String parsedCommand = this.command.replaceAll("\\{self\\}", mobEntity.getUuidAsString());
-            Objects.requireNonNull(mobEntity.getServer()).getCommandManager().execute(mobEntity.getServer().getCommandSource(),parsedCommand);
+
+            MinecraftServer minecraftServer = mobEntity.getServer();
+            ServerCommandSource commandSource = minecraftServer.getCommandSource();
+            CommandManager commandManager = minecraftServer.getCommandManager();
+            ParseResults parseResults = commandManager.getDispatcher().parse(parsedCommand, commandSource);
+
+            Objects.requireNonNull(mobEntity.getServer()).getCommandManager().execute(parseResults,parsedCommand);
         }
     }
 }
