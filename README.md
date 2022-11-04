@@ -1,5 +1,6 @@
 # Eldritch Mobs
 
+[![Discord](https://img.shields.io/discord/1000201909669478481)](https://discord.gg/QNbcbB8r)
 [![CurseForge]( https://cf.way2muchnoise.eu/392015.svg)](https://www.curseforge.com/minecraft/mc-mods/eldritch-mobs)
 
 ## Description
