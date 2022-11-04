@@ -1,8 +1,7 @@
 # Eldritch Mobs
 
 [![Discord](https://img.shields.io/discord/736508692182073355?color=blue&label=Discord)](https://discord.gg/QNbcbB8r)
-[![CurseForge](http://cf.way2muchnoise.eu/full_397698_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/eldritch-mobs)
-[![Modrinth](https://img.shields.io/modrinth/dt/eldritch-mobs)]
+[![CurseForge]( https://cf.way2muchnoise.eu/392015.svg)](https://www.curseforge.com/minecraft/mc-mods/eldritch-mobs)
 
 ## Description
 
