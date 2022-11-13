@@ -53,7 +53,7 @@ public class GravityAbility implements Ability {
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
                 LivingEntity target = mobEntity.getTarget();
-                if(target instanceof PlayerEntity){
+                if(target instanceof ServerPlayerEntity){
                     double targetX = target.getX();
                     double targetY = target.getY();
                     double targetZ = target.getZ();

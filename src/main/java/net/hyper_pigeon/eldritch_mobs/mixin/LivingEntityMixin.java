@@ -16,6 +16,7 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 import org.objectweb.asm.Opcodes;
@@ -83,7 +84,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     @Inject(method="damage", at = @At("TAIL"))
     private void applyOnDamageToTarget(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir){
         if(source.getAttacker() != null && source.getAttacker() instanceof LivingEntity &&
-                !(source.getAttacker() instanceof PlayerEntity) && notNormal((ComponentProvider) source.getAttacker())) {
+                !(source.getAttacker() instanceof ServerPlayerEntity) && notNormal((ComponentProvider) source.getAttacker())) {
             ActionResult result = onDamageToTargetCallback.ON_DAMAGE_TO_TARGET.invoker().onDamageToTarget((LivingEntity) source.getAttacker(),
                     (LivingEntity)(Object)this, source, amount);
             if(result == ActionResult.FAIL) {
