@@ -8,11 +8,9 @@ import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityHelper;
-import net.hyper_pigeon.eldritch_mobs.ability.data.CustomAbilityManager;
 import net.hyper_pigeon.eldritch_mobs.component.interfaces.ModifierComponent;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.hyper_pigeon.eldritch_mobs.rank.MobRank;
-import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsBlocks;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsCommands;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsDataRegistry;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsEventListeners;
@@ -42,7 +40,6 @@ public class EldritchMobsMod implements ModInitializer {
 		EldritchMobsEventListeners.init();
 		EldritchMobsCommands.init();
 		EldritchMobsDataRegistry.init();
-		EldritchMobsBlocks.init();
 		AbilityHelper.removeDisabledAbilities();
 	}
 

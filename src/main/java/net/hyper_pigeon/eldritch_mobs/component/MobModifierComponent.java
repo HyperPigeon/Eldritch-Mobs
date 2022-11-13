@@ -4,7 +4,6 @@ import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityHelper;
 import net.hyper_pigeon.eldritch_mobs.component.interfaces.ModifierComponent;
-import net.hyper_pigeon.eldritch_mobs.persistent_state.SoothingLanternPersistentState;
 import net.hyper_pigeon.eldritch_mobs.rank.MobRank;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobTagKeys;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsAttributeModifiers;
@@ -16,7 +15,6 @@ import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -36,7 +34,6 @@ public class MobModifierComponent implements ModifierComponent {
     private int numMaxAbilities = 0;
     private final ServerBossBar bossBar;
     private boolean healthIncreased = false;
-    private boolean checkedIfSpawnedInSoothingLanternChunk = false;
     private boolean titleSet = false;
 
     public MobModifierComponent(MobEntity provider){
@@ -203,7 +200,6 @@ public class MobModifierComponent implements ModifierComponent {
 
         healthIncreased = tag.getBoolean("healthIncreased");
         numMaxAbilities = tag.getInt("numMaxAbilities");
-        checkedIfSpawnedInSoothingLanternChunk = tag.getBoolean("checkedIfSpawnedInSoothingLanternChunk");
         titleSet = tag.getBoolean("titleSet");
 
         if(numMaxAbilities == 0){
@@ -238,7 +234,6 @@ public class MobModifierComponent implements ModifierComponent {
     public void writeToNbt(NbtCompound tag) {
         tag.putBoolean("healthIncreased", healthIncreased);
         tag.putInt("numMaxAbilities",numMaxAbilities);
-        tag.putBoolean("checkedIfSpawnedInSoothingLanternChunk",checkedIfSpawnedInSoothingLanternChunk);
         tag.putBoolean("titleSet",titleSet);
 
         NbtCompound mobAbilities = new NbtCompound();
@@ -282,14 +277,6 @@ public class MobModifierComponent implements ModifierComponent {
 
     @Override
     public void serverTick() {
-        if(!checkedIfSpawnedInSoothingLanternChunk)
-        {
-            if(this.rank != MobRank.NONE && !provider.getEntityWorld().isClient() &&
-                    SoothingLanternPersistentState.get((ServerWorld) provider.getEntityWorld()).containsChunk(provider.getChunkPos())){
-                makeMobNormal();
-            }
-            checkedIfSpawnedInSoothingLanternChunk = true;
-        }
 
         if(getRank() != MobRank.NONE) {
 

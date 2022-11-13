@@ -16,7 +16,7 @@
   "license": "CC0-1.0",
   "icon": "assets/eldritch_mobs/icon.png",
 
-  "environment": "*",
+  "environment": "server",
   "entrypoints": {
     "main": [
       "net.hyper_pigeon.eldritch_mobs.EldritchMobsMod"
@@ -37,9 +37,6 @@
     "fabric": "*",
     "minecraft": "~1.19",
     "java": ">=17"
-  },
-  "suggests": {
-    "another-mod": "*"
   },
   "custom": {
     "cardinal-components": [
