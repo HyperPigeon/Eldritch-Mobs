@@ -1,9 +1,9 @@
 package net.hyper_pigeon.eldritch_mobs.ability.active.offensive;
 
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
+import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilitySubType;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityType;
-import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.mob.MobEntity;
@@ -11,8 +11,8 @@ import net.minecraft.server.world.ServerWorld;
 
 public class DuplicatorAbility implements Ability {
 
-    private EldritchMobsConfig.DuplicatorConfig duplicatorConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.duplicatorConfig;
-    private final  long cooldown = duplicatorConfig.cooldown;
+    private final EldritchMobsConfig.DuplicatorConfig duplicatorConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.duplicatorConfig;
+    private final long cooldown = duplicatorConfig.cooldown;
     private long nextUseTime = 0;
 
     @Override
@@ -31,19 +31,16 @@ public class DuplicatorAbility implements Ability {
     }
 
     @Override
-    public boolean canUseAbilty(MobEntity mobEntity) {
-        if(mobEntity.world.getTime() > nextUseTime && mobEntity.getTarget() != null){
-            return true;
-        }
-        return false;
+    public boolean canUseAbility(MobEntity mobEntity) {
+        return mobEntity.world.getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     public void onAbilityUse(MobEntity entity) {
-        if(entity.getTarget() != null && entity.canSee(entity.getTarget()) && entity.getTarget().isAlive()) {
+        if (entity.getTarget() != null && entity.canSee(entity.getTarget()) && entity.getTarget().isAlive()) {
             long time = entity.getEntityWorld().getTime();
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
-                entity.getType().spawn((ServerWorld) entity.getEntityWorld(), null,null,null, entity.getBlockPos(), SpawnReason.REINFORCEMENT, true, true);
+                entity.getType().spawn((ServerWorld) entity.getEntityWorld(), null, null, null, entity.getBlockPos(), SpawnReason.REINFORCEMENT, true, true);
             }
         }
     }

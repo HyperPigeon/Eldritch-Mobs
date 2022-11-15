@@ -9,10 +9,10 @@ import net.minecraft.util.ActionResult;
 public interface onDeathCallback {
     Event<onDeathCallback> ON_DEATH = EventFactory.createArrayBacked(onDeathCallback.class,
             (listeners) -> (livingEntity, damageSource) -> {
-                for(onDeathCallback listener : listeners ) {
+                for (onDeathCallback listener : listeners) {
                     ActionResult result = listener.onDeath(livingEntity, damageSource);
 
-                    if(result != ActionResult.PASS) {
+                    if (result != ActionResult.PASS) {
                         return result;
                     }
                 }
@@ -20,7 +20,6 @@ public interface onDeathCallback {
                 return ActionResult.PASS;
             }
     );
-
 
 
     ActionResult onDeath(LivingEntity livingEntity, DamageSource damageSource);

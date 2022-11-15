@@ -9,10 +9,10 @@ import net.minecraft.util.ActionResult;
 public interface onDamageToTargetCallback {
     Event<onDamageToTargetCallback> ON_DAMAGE_TO_TARGET = EventFactory.createArrayBacked(onDamageToTargetCallback.class,
             (listeners) -> (attacker, target, source, amount) -> {
-                for(onDamageToTargetCallback listener : listeners ) {
+                for (onDamageToTargetCallback listener : listeners) {
                     ActionResult result = listener.onDamageToTarget(attacker, target, source, amount);
 
-                    if(result != ActionResult.PASS) {
+                    if (result != ActionResult.PASS) {
                         return result;
                     }
                 }
@@ -20,7 +20,6 @@ public interface onDamageToTargetCallback {
                 return ActionResult.PASS;
             }
     );
-
 
 
     ActionResult onDamageToTarget(LivingEntity attacker, LivingEntity target, DamageSource source, float amount);

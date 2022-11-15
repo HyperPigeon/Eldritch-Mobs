@@ -32,18 +32,26 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     //mixin into player tick and check if the server player entity is looking at a buffed entity
     @Inject(method = "tick", at = @At("TAIL"))
     public void isLookingAtBuffedEntity(CallbackInfo ci) {
-        if(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.crosshairBossBars && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.turnOffBossBars){
+        if (EldritchMobsMod.ELDRITCH_MOBS_CONFIG.crosshairBossBars && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.turnOffBossBars) {
             Vec3d vec3d = getEyePos();
             Vec3d vec3d2 = getRotationVec(1.0F);
             Vec3d vec3d3 = vec3d.add(vec3d2.x * 100.0D, vec3d2.y * 100.0D, vec3d2.z * 100.0D);
-            EntityHitResult entityHitResult = ProjectileUtil.getEntityCollision(world, (ServerPlayerEntity)(Object)this, vec3d, vec3d3, (new Box(vec3d, vec3d3)).expand(1.0D), (entityx) -> {
-                return !entityx.isSpectator() && entityx instanceof MobEntity && EldritchMobsMod.getRank((ComponentProvider) entityx) != MobRank.NONE && EldritchMobsMod.getRank((ComponentProvider) entityx) != MobRank.UNDECIDED;
-            }, 0.0F);
+            EntityHitResult entityHitResult = ProjectileUtil.getEntityCollision(
+                    world,
+                    (ServerPlayerEntity) (Object) this,
+                    vec3d,
+                    vec3d3,
+                    new Box(vec3d, vec3d3).expand(1.0D),
+                    (entityX) -> !entityX.isSpectator()
+                            && entityX instanceof MobEntity
+                            && EldritchMobsMod.getRank((ComponentProvider) entityX) != MobRank.NONE
+                            && EldritchMobsMod.getRank((ComponentProvider) entityX) != MobRank.UNDECIDED,
+                    0.0F
+            );
             if (entityHitResult != null && entityHitResult.getType() == HitResult.Type.ENTITY) {
                 MobEntity mobEntity = (MobEntity) entityHitResult.getEntity();
-                EldritchMobsMod.ELDRITCH_MODIFIERS.get(mobEntity).getBossBar().addPlayer((ServerPlayerEntity)(Object)this);
+                EldritchMobsMod.ELDRITCH_MODIFIERS.get(mobEntity).getBossBar().addPlayer((ServerPlayerEntity) (Object) this);
             }
         }
     }
-
 }

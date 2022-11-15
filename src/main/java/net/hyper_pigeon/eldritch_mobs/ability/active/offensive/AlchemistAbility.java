@@ -1,9 +1,9 @@
 package net.hyper_pigeon.eldritch_mobs.ability.active.offensive;
 
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
+import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilitySubType;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityType;
-import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
@@ -44,30 +44,31 @@ public class AlchemistAbility implements Ability {
     }
 
     @Override
-    public boolean canUseAbilty(MobEntity mobEntity) {
-        if(mobEntity.world.getTime() > nextUseTime && mobEntity.getTarget() != null){
-            return true;
-        }
-        return false;
+    public boolean canUseAbility(MobEntity mobEntity) {
+        return mobEntity.world.getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
-        if(canUseAbilty(mobEntity)){
+        if (canUseAbility(mobEntity)) {
             LivingEntity target = mobEntity.getTarget();
-            Vec3d vec3d = target.getVelocity();
-            double d = target.getX() + vec3d.x - mobEntity.getX();
-            double e = target.getEyeY() - 1.100000023841858D - mobEntity.getY();
-            double f = target.getZ() + vec3d.z - mobEntity.getZ();
-            float g = MathHelper.sqrt((float) (d * d + f * f));
-            Potion potion = target.isUndead() ? (ALCHEMIST_CONFIG.useStrongHealing ? Potions.STRONG_HEALING : Potions.HEALING) :
-                    (ALCHEMIST_CONFIG.useStrongHarming ? Potions.STRONG_HARMING : Potions.HARMING);
-            PotionEntity potionEntity = new PotionEntity(mobEntity.world, mobEntity);
-            potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
-            potionEntity.setPitch(potionEntity.getPitch()-20);
-            potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.25F, 8.0F);
-            mobEntity.world.spawnEntity(potionEntity);
-            nextUseTime = getCooldown() + mobEntity.world.getTime();
+
+            if (target != null) {
+                Vec3d vec3d = target.getVelocity();
+                double d = target.getX() + vec3d.x - mobEntity.getX();
+                double e = target.getEyeY() - 1.100000023841858D - mobEntity.getY();
+                double f = target.getZ() + vec3d.z - mobEntity.getZ();
+                float g = MathHelper.sqrt((float) (d * d + f * f));
+                Potion potion = target.isUndead()
+                        ? (ALCHEMIST_CONFIG.useStrongHealing ? Potions.STRONG_HEALING : Potions.HEALING)
+                        : (ALCHEMIST_CONFIG.useStrongHarming ? Potions.STRONG_HARMING : Potions.HARMING);
+                PotionEntity potionEntity = new PotionEntity(mobEntity.world, mobEntity);
+                potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
+                potionEntity.setPitch(potionEntity.getPitch() - 20);
+                potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.25F, 8.0F);
+                mobEntity.world.spawnEntity(potionEntity);
+                nextUseTime = getCooldown() + mobEntity.world.getTime();
+            }
         }
     }
 }

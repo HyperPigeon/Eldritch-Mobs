@@ -9,10 +9,10 @@ import net.minecraft.util.ActionResult;
 public interface onDamagedCallback {
     Event<onDamagedCallback> ON_DAMAGED = EventFactory.createArrayBacked(onDamagedCallback.class,
             (listeners) -> (mobEntity, source, amount) -> {
-                for(onDamagedCallback listener : listeners ) {
+                for (onDamagedCallback listener : listeners) {
                     ActionResult result = listener.onDamaged(mobEntity, source, amount);
 
-                    if(result != ActionResult.PASS) {
+                    if (result != ActionResult.PASS) {
                         return result;
                     }
                 }
@@ -20,7 +20,6 @@ public interface onDamagedCallback {
                 return ActionResult.PASS;
             }
     );
-
 
 
     ActionResult onDamaged(LivingEntity entity, DamageSource source, float amount);

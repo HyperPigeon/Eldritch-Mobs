@@ -1,9 +1,9 @@
 package net.hyper_pigeon.eldritch_mobs.ability.passive.defensive;
 
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
+import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilitySubType;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityType;
-import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
@@ -31,7 +31,7 @@ public class WitheringAbility implements Ability {
 
     @Override
     public void onDamaged(LivingEntity entity, DamageSource source, float amount) {
-        if(source.getAttacker() != null && source.getAttacker().isAlive() && source.getAttacker() instanceof LivingEntity) {
+        if (source.getAttacker() != null && source.getAttacker().isAlive() && source.getAttacker() instanceof LivingEntity) {
             ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, witheringConfig.duration, witheringConfig.amplifier));
         }
     }

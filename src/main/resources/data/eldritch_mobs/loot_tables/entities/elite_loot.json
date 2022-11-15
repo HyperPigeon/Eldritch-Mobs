@@ -4,7 +4,7 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "item",
+          "type": "minecraft:item",
           "name": "minecraft:diamond_sword",
           "weight": 1,
           "functions": [
@@ -22,7 +22,7 @@
           ]
         },
         {
-          "type": "item",
+          "type": "minecraft:item",
           "name": "minecraft:diamond_shovel",
           "weight": 1,
           "functions": [
@@ -37,7 +37,7 @@
           ]
         },
         {
-          "type": "item",
+          "type": "minecraft:item",
           "name": "minecraft:diamond_pickaxe",
           "weight": 1,
           "functions": [
@@ -53,7 +53,7 @@
           ]
         },
         {
-          "type": "item",
+          "type": "minecraft:item",
           "name": "minecraft:diamond_axe",
           "weight": 1,
           "functions": [

@@ -9,10 +9,10 @@ public interface onAbilityUseCallback {
 
     Event<onAbilityUseCallback> ON_ABILITY_USE = EventFactory.createArrayBacked(onAbilityUseCallback.class,
             (listeners) -> (mobEntity) -> {
-                for(onAbilityUseCallback listener : listeners ) {
+                for (onAbilityUseCallback listener : listeners) {
                     ActionResult result = listener.onAbilityUse(mobEntity);
 
-                    if(result != ActionResult.PASS) {
+                    if (result != ActionResult.PASS) {
                         return result;
                     }
                 }
@@ -20,7 +20,6 @@ public interface onAbilityUseCallback {
                 return ActionResult.PASS;
             }
     );
-
 
 
     ActionResult onAbilityUse(LivingEntity livingEntity);

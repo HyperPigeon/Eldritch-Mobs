@@ -5,9 +5,10 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 
-@Config(name="eldritch_mobs")
-public class EldritchMobsConfig implements ConfigData {
+import static net.hyper_pigeon.eldritch_mobs.EldritchMobsMod.MOD_ID;
 
+@Config(name = MOD_ID)
+public class EldritchMobsConfig implements ConfigData {
 
     public double EliteSpawnRates = 0.01;
 
@@ -57,9 +58,6 @@ public class EldritchMobsConfig implements ConfigData {
 
     @Comment("Buffed mobs have generic titles w/o abilities")
     public boolean genericTitles = false;
-
-
-
 
     @ConfigEntry.Gui.CollapsibleObject
     public AlchemistConfig alchemistConfig = new AlchemistConfig();
@@ -196,7 +194,7 @@ public class EldritchMobsConfig implements ConfigData {
         public String name = "Drowning";
         public boolean disabled = false;
         public float drowningDamage = 0.010f;
-        public int waterBreatingDuration = 100;
+        public int waterBreathingDuration = 100;
     }
 
     public static class DuplicatorConfig {
@@ -330,8 +328,6 @@ public class EldritchMobsConfig implements ConfigData {
     public static class YeeterConfig {
         public String name = "Yeeter";
         public boolean disabled = false;
-        public double yeetAmount = 5;
+        public double yeetAmount = 1.5;
     }
-
-
 }
