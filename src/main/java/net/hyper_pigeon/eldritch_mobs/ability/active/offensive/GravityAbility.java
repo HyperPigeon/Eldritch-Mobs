@@ -48,40 +48,24 @@ public class GravityAbility implements Ability {
         if (mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
             long time = mobEntity.getEntityWorld().getTime();
             if (time > nextUseTime) {
+
                 nextUseTime = time + cooldown;
+
                 LivingEntity target = mobEntity.getTarget();
-                if (target instanceof PlayerEntity) {
-                    double targetX = target.getX();
-                    double targetY = target.getY();
-                    double targetZ = target.getZ();
-
-                    double entityX = mobEntity.getX();
-                    double entityY = mobEntity.getY();
-                    double entityZ = mobEntity.getZ();
-
-                    double diffX = entityX - targetX;
-                    double diffY = entityY - targetY;
-                    double diffZ = entityZ - targetZ;
-
-                    ((ServerPlayerEntity) target).networkHandler.sendPacket(new EntityVelocityUpdateS2CPacket(target.getId(),
-                            new Vec3d(diffX, diffY, diffZ)));
-                } else {
-
-                    double targetX = target.getX();
-                    double targetY = target.getY();
-                    double targetZ = target.getZ();
-
-                    double entityX = mobEntity.getX();
-                    double entityY = mobEntity.getY();
-                    double entityZ = mobEntity.getZ();
-
-                    double diffX = entityX - targetX;
-                    double diffY = entityY - targetY;
-                    double diffZ = entityZ - targetZ;
-
-                    target.addVelocity(diffX, diffY, diffZ);
-                }
-
+                double targetX = target.getX();
+                double targetY = target.getY();
+                double targetZ = target.getZ();
+                double entityX = mobEntity.getX();
+                double entityY = mobEntity.getY();
+                double entityZ = mobEntity.getZ();
+                double diffX = entityX - targetX;
+                double diffY = entityY - targetY;
+                double diffZ = entityZ - targetZ;
+                
+                if (target instanceof PlayerEntity) ((ServerPlayerEntity) target).networkHandler.sendPacket(
+                        new EntityVelocityUpdateS2CPacket(target.getId(), new Vec3d(diffX, diffY, diffZ))
+                );
+                else target.addVelocity(diffX, diffY, diffZ);
             }
         }
     }
