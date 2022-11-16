@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.persistent_state;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -7,11 +8,10 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.PersistentState;
 
 import java.util.HashMap;
-import java.util.Iterator;
 
 public class SoothingLanternPersistentState extends PersistentState {
 
-    private HashMap<String, ChunkPos> soothingLanternChunks = new HashMap<>();
+    private final HashMap<String, ChunkPos> soothingLanternChunks = new HashMap<>();
     public final String key;
 
     public SoothingLanternPersistentState(String key) {
@@ -19,7 +19,7 @@ public class SoothingLanternPersistentState extends PersistentState {
         this.key = key;
     }
 
-    public SoothingLanternPersistentState(){
+    public SoothingLanternPersistentState() {
         this("SoothingLanternChunks");
     }
 
@@ -27,13 +27,8 @@ public class SoothingLanternPersistentState extends PersistentState {
 
         SoothingLanternPersistentState soothingLanternPersistentState = new SoothingLanternPersistentState();
         NbtCompound compoundTag = tag.getCompound("contents");
-        Iterator var3 = compoundTag.getKeys().iterator();
 
-
-        while(var3.hasNext()) {
-            String string = (String)var3.next();
-            soothingLanternPersistentState.soothingLanternChunks.put(string, new ChunkPos(compoundTag.getLong(string)));
-        }
+        for (String key : compoundTag.getKeys()) soothingLanternPersistentState.soothingLanternChunks.put(key, new ChunkPos(compoundTag.getLong(key)));
         soothingLanternPersistentState.markDirty();
 
         return soothingLanternPersistentState;
@@ -43,52 +38,36 @@ public class SoothingLanternPersistentState extends PersistentState {
     public NbtCompound writeNbt(NbtCompound tag) {
         NbtCompound compoundTag = new NbtCompound();
 
-        this.soothingLanternChunks.forEach((string, chunkPos) -> {
-            compoundTag.putLong(string,chunkPos.toLong());
-        });
+        this.soothingLanternChunks.forEach((key, chunkPos) -> compoundTag.putLong(key, chunkPos.toLong()));
         tag.put("contents", compoundTag);
         return tag;
     }
 
-    public void addChunkPos(ChunkPos chunkPos, BlockPos blockPos){
-        soothingLanternChunks.put(blockPos.toString(),chunkPos);
+    public void addChunkPos(ServerWorld world, BlockPos pos) {
+        soothingLanternChunks.put(pos.toString(), world.getChunk(pos).getPos());
         this.markDirty();
     }
 
-    public void removeChunkPos(BlockPos pos){
-        if(soothingLanternChunks.containsKey(pos.toString())) {
+    public void removeChunkPos(BlockPos pos) {
+        if (soothingLanternChunks.containsKey(pos.toString())) {
             soothingLanternChunks.remove(pos.toString());
             this.markDirty();
         }
-
     }
 
-    public boolean containsChunk(ChunkPos chunkPos){
+    public boolean containsChunk(ChunkPos chunkPos) {
         return soothingLanternChunks.containsValue(chunkPos);
     }
 
-    public int getSize(){
+    public int getSize() {
         return soothingLanternChunks.size();
     }
 
     public static SoothingLanternPersistentState get(ServerWorld world) {
-        return (SoothingLanternPersistentState) world.getPersistentStateManager().getOrCreate((nbtCompound) -> {
-            return readNbt(nbtCompound);
-        },SoothingLanternPersistentState::new, "SoothingLanternChunks");
+        return world.getPersistentStateManager().getOrCreate(SoothingLanternPersistentState::readNbt, SoothingLanternPersistentState::new, "SoothingLanternChunks");
     }
 
-    public void printSoothingLanternChunks(){
-        for (String blockPosString : soothingLanternChunks.keySet()){
-            System.out.println(soothingLanternChunks.get(blockPosString));
-        }
-    }
-
-    public ChunkPos getChunkPos(ChunkPos chunkPos){
-        for (String blockPosString : soothingLanternChunks.keySet()){
-            if(chunkPos.equals(soothingLanternChunks.get(blockPosString))){
-                return chunkPos;
-            }
-        }
-        return null;
+    public void printSoothingLanternChunks() {
+        for (String key : soothingLanternChunks.keySet()) EldritchMobsMod.LOGGER.info(soothingLanternChunks.get(key).toString());
     }
 }

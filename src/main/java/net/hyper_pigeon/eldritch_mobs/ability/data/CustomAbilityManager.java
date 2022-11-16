@@ -30,22 +30,22 @@ public class CustomAbilityManager extends JsonDataLoader implements Identifiable
     protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
         prepared.forEach((id, element) -> {
             JsonObject jsonObject = element.getAsJsonObject();
-            String name = jsonObject.get("name").getAsString();
-            AbilityType abilityType = AbilityType.valueOf(jsonObject.get("type").getAsString());
-            AbilitySubType subAbilityType = AbilitySubType.valueOf(jsonObject.get("subtype").getAsString());
             ActivationType activationType = ActivationType.valueOf(jsonObject.get("activationType").getAsString());
-            String commandString = jsonObject.get("command").getAsString();
 
-            CustomAbility customAbility = new CustomAbility(name, abilityType, subAbilityType, activationType, commandString);
+            CustomAbility customAbility = new CustomAbility(
+                jsonObject.get("name").getAsString(),
+                AbilityType.valueOf(jsonObject.get("type").getAsString()),
+                AbilitySubType.valueOf(jsonObject.get("subtype").getAsString()),
+                activationType,
+                jsonObject.get("command").getAsString()
+            );
 
-            if(activationType == ActivationType.hasTarget){
-               Long cooldown =  jsonObject.get("cooldown").getAsLong();
-               customAbility.setCooldown(cooldown);
+            if (activationType == ActivationType.hasTarget) {
+                long cooldown = jsonObject.get("cooldown").getAsLong();
+                customAbility.setCooldown(cooldown);
             }
 
-
             AbilityHelper.addAbility(customAbility);
-
         });
     }
 }

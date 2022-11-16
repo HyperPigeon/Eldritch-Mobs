@@ -16,17 +16,10 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
-	maven {
-		name = 'Ladysnake Mods'
-		url = 'https://ladysnake.jfrog.io/artifactory/mods'
-	}
-
+	maven { url "https://ladysnake.jfrog.io/artifactory/mods" }
 	maven { url "https://maven.shedaniel.me/" }
-
-	maven {
-		url "https://maven.terraformersmc.com/"
-	}
-
+	maven { url "https://maven.terraformersmc.com/" }
+	maven { url "https://maven.nucleoid.xyz" }
 }
 
 dependencies {
@@ -35,24 +28,25 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_version}"
-	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_version}"
-	include "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_version}"
-	include "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_version}"
+	// Cardinal Components
+	modImplementation include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_version}")
+	modImplementation include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_version}")
 
-	// Uncomment the following line to enable the deprecated Fabric API modules.
-	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
+	// Cloth Config
+	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.config_version}") { exclude(group: 'net.fabricmc.fabric-api') }
 
-	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
-	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.config_version}") {
-		exclude(group: 'net.fabricmc.fabric-api')
-	}
-
+	// Mod Menu
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+	// Polymer
+	modImplementation include("eu.pb4:polymer:${project.polymer_version}")
+	modImplementation include("eu.pb4:polymer-blocks:${project.polymer_blocks_version}")
+
+	// Server Translation API
+	modImplementation include("fr.catcore:server-translations-api:${project.server_translation_api_version}")
 }
 
 processResources {

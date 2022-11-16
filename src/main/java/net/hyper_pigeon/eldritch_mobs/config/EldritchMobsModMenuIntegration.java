@@ -10,5 +10,4 @@ public class EldritchMobsModMenuIntegration implements ModMenuApi {
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return screen -> AutoConfig.getConfigScreen(EldritchMobsConfig.class, screen).get();
     }
-
 }

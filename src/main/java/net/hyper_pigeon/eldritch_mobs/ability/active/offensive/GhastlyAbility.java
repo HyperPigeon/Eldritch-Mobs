@@ -1,13 +1,12 @@
 package net.hyper_pigeon.eldritch_mobs.ability.active.offensive;
 
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
+import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilitySubType;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityType;
-import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireballEntity;
 import net.minecraft.util.math.Vec3d;
 
@@ -39,16 +38,13 @@ public class GhastlyAbility implements Ability {
     }
 
     @Override
-    public boolean canUseAbilty(MobEntity mobEntity) {
-        if(mobEntity.world.getTime() > nextUseTime && mobEntity.getTarget() != null){
-            return true;
-        }
-        return false;
+    public boolean canUseAbility(MobEntity mobEntity) {
+        return mobEntity.world.getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
-        if(mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
+        if (mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
             long time = mobEntity.getEntityWorld().getTime();
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
@@ -59,7 +55,7 @@ public class GhastlyAbility implements Ability {
                 double g = target.getBodyY(0.5D) - (0.5D + mobEntity.getBodyY(0.5D));
                 double h = target.getZ() - (mobEntity.getZ() + vec3d.z * 4.0D);
                 if (!mobEntity.isSilent()) {
-                    mobEntity.getEntityWorld().syncWorldEvent((PlayerEntity)null, 1016, mobEntity.getBlockPos(), 0);
+                    mobEntity.getEntityWorld().syncWorldEvent(null, 1016, mobEntity.getBlockPos(), 0);
                 }
 
                 FireballEntity fireballEntity;

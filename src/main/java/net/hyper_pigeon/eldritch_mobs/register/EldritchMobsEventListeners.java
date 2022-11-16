@@ -10,23 +10,23 @@ import net.minecraft.util.ActionResult;
 import java.util.List;
 
 public class EldritchMobsEventListeners {
-    public static void init(){
+    public static void init() {
         onAttackCallback.ON_ATTACK.register((attacker, target) -> {
-            if(attacker instanceof MobEntity){
-               List<Ability> abilityList =  EldritchMobsMod.getModifiers((ComponentProvider) attacker);
+            if (attacker instanceof MobEntity) {
+                List<Ability> abilityList = EldritchMobsMod.getModifiers((ComponentProvider) attacker);
 
-               for(Ability ability : abilityList){
-                   ability.onAttack(attacker, target);
-               }
+                for (Ability ability : abilityList) {
+                    ability.onAttack(attacker, target);
+                }
 
             }
             return ActionResult.PASS;
         });
 
         onDamagedCallback.ON_DAMAGED.register((livingEntity, source, amount) -> {
-            if(livingEntity instanceof MobEntity){
-                List<Ability> abilityList =  EldritchMobsMod.getModifiers((ComponentProvider) livingEntity);
-                for(Ability ability : abilityList){
+            if (livingEntity instanceof MobEntity) {
+                List<Ability> abilityList = EldritchMobsMod.getModifiers((ComponentProvider) livingEntity);
+                for (Ability ability : abilityList) {
                     ability.onDamaged(livingEntity, source, amount);
                 }
             }
@@ -34,11 +34,11 @@ public class EldritchMobsEventListeners {
         });
 
         onDamageToTargetCallback.ON_DAMAGE_TO_TARGET.register((attacker, target, source, amount) -> {
-            if(attacker instanceof MobEntity){
-                List<Ability> abilityList =  EldritchMobsMod.getModifiers((ComponentProvider) attacker);
+            if (attacker instanceof MobEntity) {
+                List<Ability> abilityList = EldritchMobsMod.getModifiers((ComponentProvider) attacker);
 
-                for(Ability ability : abilityList){
-                    ability.onDamageToTarget(attacker, target,source, amount);
+                for (Ability ability : abilityList) {
+                    ability.onDamageToTarget(attacker, target, source, amount);
                 }
 
             }
@@ -47,9 +47,9 @@ public class EldritchMobsEventListeners {
 
         passiveApplyCallback.PASSIVE_APPLY.register((livingEntity) ->
         {
-            if(livingEntity instanceof MobEntity){
-                List<Ability> abilityList =  EldritchMobsMod.getModifiers((ComponentProvider) livingEntity);
-                for(Ability ability : abilityList){
+            if (livingEntity instanceof MobEntity) {
+                List<Ability> abilityList = EldritchMobsMod.getModifiers((ComponentProvider) livingEntity);
+                for (Ability ability : abilityList) {
                     ability.passiveApply((MobEntity) livingEntity);
                 }
             }
@@ -57,10 +57,10 @@ public class EldritchMobsEventListeners {
         });
 
         onAbilityUseCallback.ON_ABILITY_USE.register(livingEntity -> {
-            if(livingEntity instanceof MobEntity){
-                List<Ability> abilityList =  EldritchMobsMod.getModifiers((ComponentProvider) livingEntity);
+            if (livingEntity instanceof MobEntity) {
+                List<Ability> abilityList = EldritchMobsMod.getModifiers((ComponentProvider) livingEntity);
 
-                for(Ability ability : abilityList){
+                for (Ability ability : abilityList) {
                     ability.onAbilityUse((MobEntity) livingEntity);
                 }
             }
@@ -68,10 +68,10 @@ public class EldritchMobsEventListeners {
         });
 
         onDeathCallback.ON_DEATH.register((livingEntity, damageSource) -> {
-            if(livingEntity instanceof MobEntity){
-                List<Ability> abilityList =  EldritchMobsMod.getModifiers((ComponentProvider) livingEntity);
+            if (livingEntity instanceof MobEntity) {
+                List<Ability> abilityList = EldritchMobsMod.getModifiers((ComponentProvider) livingEntity);
 
-                for(Ability ability : abilityList){
+                for (Ability ability : abilityList) {
                     ability.onDeath(livingEntity, damageSource);
                 }
             }

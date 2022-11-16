@@ -7,11 +7,9 @@ import net.hyper_pigeon.eldritch_mobs.command.SummonUltraCommand;
 
 public class EldritchMobsCommands {
 
-    public static void init(){
+    public static void init() {
         CommandRegistrationCallback.EVENT.register(SummonEliteCommand::register);
         CommandRegistrationCallback.EVENT.register(SummonUltraCommand::register);
         CommandRegistrationCallback.EVENT.register(SummonEldritchCommand::register);
     }
-
-
 }

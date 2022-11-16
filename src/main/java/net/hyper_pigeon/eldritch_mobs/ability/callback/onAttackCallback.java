@@ -8,10 +8,10 @@ import net.minecraft.util.ActionResult;
 public interface onAttackCallback {
     Event<onAttackCallback> ON_ATTACK = EventFactory.createArrayBacked(onAttackCallback.class,
             (listeners) -> (attacker, target) -> {
-                for(onAttackCallback listener : listeners ) {
+                for (onAttackCallback listener : listeners) {
                     ActionResult result = listener.onAttack(attacker, target);
 
-                    if(result != ActionResult.PASS) {
+                    if (result != ActionResult.PASS) {
                         return result;
                     }
                 }
@@ -21,6 +21,5 @@ public interface onAttackCallback {
     );
 
 
-
-    ActionResult onAttack(LivingEntity attacker,LivingEntity target);
+    ActionResult onAttack(LivingEntity attacker, LivingEntity target);
 }

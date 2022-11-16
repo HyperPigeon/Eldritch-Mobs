@@ -1,9 +1,9 @@
 package net.hyper_pigeon.eldritch_mobs.ability.active.offensive;
 
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
+import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilitySubType;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityType;
-import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
@@ -37,29 +37,26 @@ public class WebslingingAbility implements Ability {
     }
 
     @Override
-    public boolean canUseAbilty(MobEntity mobEntity) {
-        if(mobEntity.world.getTime() > nextUseTime && mobEntity.getTarget() != null){
-            return true;
-        }
-        return false;
+    public boolean canUseAbility(MobEntity mobEntity) {
+        return mobEntity.world.getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
-        if(mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
+        if (mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
             long time = mobEntity.getEntityWorld().getTime();
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
                 LivingEntity target = mobEntity.getTarget();
 
                 double x = target.getX();
-                double y = target.getY()+1;
+                double y = target.getY() + 1;
                 double z = target.getZ();
 
-                if(target.getEntityWorld().getBlockState(new BlockPos(x,y,z)).getBlock().equals(Blocks.AIR) ||
-                        target.getEntityWorld().getBlockState(new BlockPos(x,y,z)).getBlock().equals(Blocks.CAVE_AIR)
-                        || target.getEntityWorld().getBlockState(new BlockPos(x,y,z)).getBlock().equals(Blocks.VOID_AIR)) {
-                    target.getEntityWorld().setBlockState(new BlockPos(x,y,z), Blocks.COBWEB.getDefaultState());
+                if (target.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock().equals(Blocks.AIR) ||
+                        target.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock().equals(Blocks.CAVE_AIR)
+                        || target.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock().equals(Blocks.VOID_AIR)) {
+                    target.getEntityWorld().setBlockState(new BlockPos(x, y, z), Blocks.COBWEB.getDefaultState());
                 }
 
             }
