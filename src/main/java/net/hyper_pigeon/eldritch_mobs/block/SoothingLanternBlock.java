@@ -67,7 +67,7 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
 
     @SuppressWarnings("deprecation")
     @Override public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
-        world.spawnParticles(
+        if (state.get(LIT)) world.spawnParticles(
                 PARTICLE_TYPES[random.nextInt(PARTICLE_TYPES.length)],
                 pos.getX() + 0.5,
                 pos.getY() + 0.5,
