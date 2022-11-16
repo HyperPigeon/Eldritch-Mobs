@@ -110,9 +110,14 @@ public class AbilityHelper {
     }
 
     public static void removeDisabledAbilities() {
+        ArrayList<String> abilitiesToRemove = new ArrayList<>();
         for (AbilityRecord<?> record : ALL_ABILITIES) {
-            try { if (record.config != null && record.config.getClass().getField("disabled").getBoolean(record.config)) removeAbilityByName(record.name); }
+            try { if (record.config != null && record.config.getClass().getField("disabled").getBoolean(record.config)) abilitiesToRemove.add(record.name);}
             catch (IllegalAccessException | NoSuchFieldException e) { throw new RuntimeException(e); }
+        }
+
+        for(String name : abilitiesToRemove){
+            removeAbilityByName(name);
         }
     }
 }
