@@ -61,8 +61,8 @@ public class GravityAbility implements Ability {
                 double diffX = entityX - targetX;
                 double diffY = entityY - targetY;
                 double diffZ = entityZ - targetZ;
-                
-                if (target instanceof PlayerEntity) ((ServerPlayerEntity) target).networkHandler.sendPacket(
+
+                if (target instanceof ServerPlayerEntity serverTarget) serverTarget.networkHandler.sendPacket(
                         new EntityVelocityUpdateS2CPacket(target.getId(), new Vec3d(diffX, diffY, diffZ))
                 );
                 else target.addVelocity(diffX, diffY, diffZ);
