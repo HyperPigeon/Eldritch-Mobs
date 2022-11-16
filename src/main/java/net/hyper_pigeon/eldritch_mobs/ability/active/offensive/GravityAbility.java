@@ -48,7 +48,6 @@ public class GravityAbility implements Ability {
         if (mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
             long time = mobEntity.getEntityWorld().getTime();
             if (time > nextUseTime) {
-
                 nextUseTime = time + cooldown;
 
                 LivingEntity target = mobEntity.getTarget();
