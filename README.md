@@ -7,12 +7,8 @@
 
 A port of Infernal Mobs that was originally developed for ModFest 1.16 2020.
 
-<a href="https://modrinth.com/mod/fabric-api">
-  <img src="https://i.imgur.com/Ol1Tcf8.png" width="200">
-  
-<a href="https://modrinth.com/mod/cloth-config">
-  <img src="https://raw.githubusercontent.com/Jab125/Jab125/main/imgs/requiredClothConfig.png" width="200">
-  
+<img src="https://i.imgur.com/Ol1Tcf8.png" width="200">  
+<img src="https://raw.githubusercontent.com/Jab125/Jab125/main/imgs/requiredClothConfig.png" width="200">
 <a href="https://modrinth.com/mod/polymer">
   <img src="https://i.imgur.com/ouIq7eA.png"  width="100" height = "100">
 
