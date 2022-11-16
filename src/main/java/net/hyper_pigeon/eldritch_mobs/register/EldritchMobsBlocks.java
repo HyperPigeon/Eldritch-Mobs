@@ -32,6 +32,7 @@ public class EldritchMobsBlocks {
                     .sounds(BlockSoundGroup.METAL)
                     .luminance(createLightLevelFromLitBlockState(10))
                     .allowsSpawning((state, world, pos, type) -> false)
+                    .ticksRandomly()
                     .nonOpaque()
     );
 

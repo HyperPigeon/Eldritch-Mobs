@@ -7,6 +7,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.particle.ParticleType;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -26,6 +29,8 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
             = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2UzNWNhODY0N2MxZjJiYmU0NGU0ZmM4NDYxZDU1YjlmMDJiMjFmN2Y5YWJlM2JjNmFkZDk4MjgwMjk5NmJmOSJ9fX0=";
     @SuppressWarnings("SpellCheckingInspection") public static final String ACTIVE_SKIN
             = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjI0MzcwNjA3NWE0ZjVmMjczMWE4YWQ1ZjYzNjA1OGIxZDViM2E0OWMxZjE0ZjViOWJhYmNmMjA0NGY1OTM1NSJ9fX0=";
+
+    public static final DefaultParticleType[] PARTICLE_TYPES = new DefaultParticleType[] { ParticleTypes.ENCHANT, ParticleTypes.PORTAL, ParticleTypes.EFFECT };
 
     public SoothingLanternBlock(final Settings settings) {
         this(settings, false);
@@ -47,7 +52,6 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
 
     // SERVERSIDE
 
-
     @Override public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
         if (!world.isClient) {
@@ -59,6 +63,21 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
     @Override public void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
         super.onBroken(world, pos, state);
         if (world instanceof ServerWorldAccess serverWorldAccess) SoothingLanternPersistentState.get(serverWorldAccess.toServerWorld()).removeChunkPos(pos);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override public void randomTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+        world.spawnParticles(
+                PARTICLE_TYPES[random.nextInt(PARTICLE_TYPES.length)],
+                pos.getX() + 0.5,
+                pos.getY() + 0.5,
+                pos.getZ() + 0.5,
+                1,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+        );
     }
 
     @Nullable @Override public BlockState getPlacementState(ItemPlacementContext ctx) {
