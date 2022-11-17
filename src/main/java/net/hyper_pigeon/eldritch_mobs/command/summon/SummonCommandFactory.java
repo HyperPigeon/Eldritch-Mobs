@@ -4,7 +4,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
-import net.hyper_pigeon.eldritch_mobs.rank.MobRank;
+import net.hyper_pigeon.eldritch_mobs.enums.MobRank;
 import net.minecraft.command.argument.EntitySummonArgumentType;
 import net.minecraft.command.argument.NbtCompoundArgumentType;
 import net.minecraft.command.argument.Vec3ArgumentType;
@@ -22,18 +22,17 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
-public class SummonCommandFactory {
+public abstract class SummonCommandFactory {
 
     protected static final SimpleCommandExceptionType FAILED_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("commands.summon.failed"));
     protected static final SimpleCommandExceptionType FAILED_UUID_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("commands.summon.failed.uuid"));
     protected static final SimpleCommandExceptionType INVALID_POSITION_EXCEPTION = new SimpleCommandExceptionType(Text.translatable("commands.summon.invalidPosition"));
 
-    private SummonCommandFactory() { throw new AssertionError("Class should not be instantiated!"); }
-
-    public static LiteralArgumentBuilder<ServerCommandSource> generate(MobRank rank) {
+    protected static LiteralArgumentBuilder<ServerCommandSource> generate(@NotNull MobRank rank) {
 
         // Check that the rank we are building the command for is valid.
         if (rank == MobRank.NONE || rank == MobRank.UNDECIDED) throw new IllegalArgumentException("Invalid rank: " + rank);

@@ -4,10 +4,11 @@ import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityHelper;
 import net.hyper_pigeon.eldritch_mobs.component.interfaces.ModifierComponent;
-import net.hyper_pigeon.eldritch_mobs.persistent_state.SoothingLanternPersistentState;
-import net.hyper_pigeon.eldritch_mobs.rank.MobRank;
+import net.hyper_pigeon.eldritch_mobs.persistent_state.EffectBlockPersistentState;
+import net.hyper_pigeon.eldritch_mobs.enums.MobRank;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobTagKeys;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsAttributeModifiers;
+import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsBlocks;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -246,7 +247,7 @@ public class MobModifierComponent implements ModifierComponent {
         if (!checkedIfSpawnedInSoothingLanternChunk) {
             if (this.rank != MobRank.NONE
                 && !provider.getEntityWorld().isClient
-                && SoothingLanternPersistentState.get((ServerWorld) provider.getEntityWorld()).containsChunk(provider.getChunkPos())
+                && EffectBlockPersistentState.get((ServerWorld) provider.getEntityWorld(), EldritchMobsBlocks.SOOTHING_LANTERN).containsChunkPos(provider.getChunkPos())
             ) makeMobNormal();
             checkedIfSpawnedInSoothingLanternChunk = true;
         }

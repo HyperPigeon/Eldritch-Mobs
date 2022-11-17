@@ -1,13 +1,11 @@
 package net.hyper_pigeon.eldritch_mobs.command.summon;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import net.hyper_pigeon.eldritch_mobs.rank.MobRank;
+import net.hyper_pigeon.eldritch_mobs.enums.MobRank;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
-public class SummonCommandRoot {
-
-    private SummonCommandRoot() { throw new AssertionError("Class should not be instantiated!"); }
+public abstract class SummonCommandRoot {
 
     public static final LiteralArgumentBuilder<ServerCommandSource> SUMMON_COMMAND_ROOT = CommandManager.literal("summon")
             .requires(source -> source.hasPermissionLevel(4))

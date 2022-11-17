@@ -1,14 +1,13 @@
 package net.hyper_pigeon.eldritch_mobs.block;
 
 import eu.pb4.polymer.api.block.PolymerHeadBlock;
-import net.hyper_pigeon.eldritch_mobs.persistent_state.SoothingLanternPersistentState;
+import net.hyper_pigeon.eldritch_mobs.persistent_state.EffectBlockPersistentState;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
@@ -55,14 +54,15 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
     @Override public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
         if (!world.isClient) {
-            if (state.get(LIT)) SoothingLanternPersistentState.get((ServerWorld) world).addChunkPos((ServerWorld) world, pos);
-            else SoothingLanternPersistentState.get((ServerWorld) world).removeChunkPos(pos);
+            EffectBlockPersistentState soothingLanternPersistentState = EffectBlockPersistentState.get((ServerWorld) world, this);
+            if (state.get(LIT)) soothingLanternPersistentState.addChunkPos((ServerWorld) world, pos);
+            else soothingLanternPersistentState.removeChunkPos(pos);
         }
     }
 
     @Override public void onBroken(WorldAccess world, BlockPos pos, BlockState state) {
         super.onBroken(world, pos, state);
-        if (world instanceof ServerWorldAccess serverWorldAccess) SoothingLanternPersistentState.get(serverWorldAccess.toServerWorld()).removeChunkPos(pos);
+        if (world instanceof ServerWorldAccess serverWorldAccess) EffectBlockPersistentState.get(serverWorldAccess.toServerWorld(), this).removeChunkPos(pos);
     }
 
     @SuppressWarnings("deprecation")
@@ -87,8 +87,6 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
     @SuppressWarnings("deprecation")
     public void neighborUpdate(BlockState state, World world, BlockPos pos, Block sourceBlock, BlockPos sourcePos, boolean notify) {
 
-        SoothingLanternPersistentState.get((ServerWorld) world).printSoothingLanternChunks();
-
         if (!world.isClient) {
             boolean isLit = state.get(LIT);
             if (isLit != world.isReceivingRedstonePower(pos)) {
@@ -98,7 +96,7 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
                 // Also add the chunk to the persistent state.
                 else {
                     world.setBlockState(pos, state.cycle(LIT), 2);
-                    SoothingLanternPersistentState.get((ServerWorld) world).addChunkPos((ServerWorld) world, pos);
+                    EffectBlockPersistentState.get((ServerWorld) world, this).addChunkPos((ServerWorld) world, pos);
                 }
             }
         }
@@ -111,7 +109,7 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
         // Also remove the chunk from the persistent state.
         if (state.get(LIT) && !world.isReceivingRedstonePower(pos)) {
             world.setBlockState(pos, state.cycle(LIT), 2);
-            SoothingLanternPersistentState.get(world).removeChunkPos(pos);
+            EffectBlockPersistentState.get(world, this).removeChunkPos(pos);
         }
     }
 
