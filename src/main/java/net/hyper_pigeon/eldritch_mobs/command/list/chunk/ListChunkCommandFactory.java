@@ -18,10 +18,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public abstract class ListChunkCommandFactory {
 
     protected static LiteralArgumentBuilder<ServerCommandSource> generate(@NotNull LanternType lanternType) {
-        return CommandManager.literal(switch (lanternType) {
-            case SOOTHING -> "soothing";
-            case CURSING_ELITE, CURSING_ULTRA, CURSING_ELDRITCH -> "cursing";
-        }).executes(context -> execute(context.getSource(), lanternType));
+        return CommandManager.literal(lanternType.getDisplayName()).executes(context -> execute(context.getSource(), lanternType));
     }
 
     private static int execute(ServerCommandSource source, LanternType lanternType) {
