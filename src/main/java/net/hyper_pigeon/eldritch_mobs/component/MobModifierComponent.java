@@ -24,10 +24,10 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MobModifierComponent implements ModifierComponent {
 
@@ -61,18 +61,21 @@ public class MobModifierComponent implements ModifierComponent {
     public void randomlySetRank() {
 
         if (rank == MobRank.UNDECIDED) {
-            Random random = new Random();
-            double value = random.nextDouble();
+            double value = provider.getEntityWorld().getRandom().nextDouble();
 
-            rank = MobRank.NONE;
+            setRank(MobRank.NONE);
 
-            if (provider.getType().isIn(EldritchMobTagKeys.ALWAYS_ELITE) || (value <= EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteSpawnRates && value > EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraSpawnRates)) {
-                setRank(MobRank.ELITE);
-            } else if (provider.getType().isIn(EldritchMobTagKeys.ALWAYS_ULTRA) || (value <= EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraSpawnRates && value > EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchSpawnRates)) {
-                setRank(MobRank.ULTRA);
-            } else if (provider.getType().isIn(EldritchMobTagKeys.ALWAYS_ELDRITCH) || value <= EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchSpawnRates) {
-                setRank(MobRank.ELDRITCH);
-            }
+            if (provider.getType().isIn(EldritchMobTagKeys.ALWAYS_ELITE) || (
+                    value <= EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteSpawnRates
+                            && value > EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraSpawnRates
+            )) setRank(MobRank.ELITE);
+            else if (provider.getType().isIn(EldritchMobTagKeys.ALWAYS_ULTRA) || (
+                    value <= EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraSpawnRates
+                            && value > EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchSpawnRates)
+            ) setRank(MobRank.ULTRA);
+            else if (provider.getType().isIn(EldritchMobTagKeys.ALWAYS_ELDRITCH) || (
+                    value <= EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchSpawnRates
+            )) setRank(MobRank.ELDRITCH);
         }
     }
 
@@ -129,17 +132,19 @@ public class MobModifierComponent implements ModifierComponent {
     public void setRank(MobRank mobRank) {
         this.rank = mobRank;
 
+        Random random = provider.getEntityWorld().getRandom();
+
         switch (mobRank) {
             case ELITE -> {
-                numMaxAbilities = AbilityHelper.RANDOM.nextInt(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteMinModifiers, EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteMaxModifiers + 1);
+                numMaxAbilities = random.nextBetween(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteMinModifiers, EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EliteMaxModifiers + 1);
                 this.bossBar.setColor(BossBar.Color.YELLOW);
             }
             case ULTRA -> {
-                numMaxAbilities = AbilityHelper.RANDOM.nextInt(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraMinModifiers, EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraMaxModifiers + 1);
+                numMaxAbilities = random.nextBetween(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraMinModifiers, EldritchMobsMod.ELDRITCH_MOBS_CONFIG.UltraMaxModifiers + 1);
                 this.bossBar.setColor(BossBar.Color.RED);
             }
             case ELDRITCH -> {
-                numMaxAbilities = AbilityHelper.RANDOM.nextInt(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchMinModifiers, EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchMaxModifiers + 1);
+                numMaxAbilities = random.nextBetween(EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchMinModifiers, EldritchMobsMod.ELDRITCH_MOBS_CONFIG.EldritchMaxModifiers + 1);
                 this.bossBar.setColor(BossBar.Color.PURPLE);
             }
             default -> {}
@@ -247,7 +252,7 @@ public class MobModifierComponent implements ModifierComponent {
         if (!checkedIfSpawnedInSoothingLanternChunk) {
             if (this.rank != MobRank.NONE
                 && !provider.getEntityWorld().isClient
-                && EffectBlockPersistentState.get((ServerWorld) provider.getEntityWorld(), EldritchMobsBlocks.SOOTHING_LANTERN).containsChunkPos(provider.getChunkPos())
+                && EffectBlockPersistentState.get((ServerWorld) provider.getEntityWorld()).containsChunkPos(EldritchMobsBlocks.SOOTHING_LANTERN, provider.getChunkPos())
             ) makeMobNormal();
             checkedIfSpawnedInSoothingLanternChunk = true;
         }

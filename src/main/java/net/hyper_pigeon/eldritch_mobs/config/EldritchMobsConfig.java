@@ -264,6 +264,8 @@ public class EldritchMobsConfig implements ConfigData {
     public static class StormyConfig {
         public String name = "Stormy";
         public boolean disabled = false;
+        @ConfigEntry.BoundedDiscrete(min = -1, max = 128)
+        public int lightningRodRadius = 16;
         public long cooldown = 1000;
     }
 
