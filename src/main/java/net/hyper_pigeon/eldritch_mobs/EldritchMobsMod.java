@@ -10,7 +10,7 @@ import net.hyper_pigeon.eldritch_mobs.ability.Ability;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityHelper;
 import net.hyper_pigeon.eldritch_mobs.component.interfaces.ModifierComponent;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
-import net.hyper_pigeon.eldritch_mobs.rank.MobRank;
+import net.hyper_pigeon.eldritch_mobs.enums.MobRank;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsBlocks;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsCommands;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsDataRegistry;
