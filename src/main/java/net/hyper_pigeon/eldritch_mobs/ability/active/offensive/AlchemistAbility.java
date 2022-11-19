@@ -50,7 +50,7 @@ public class AlchemistAbility implements Ability {
 
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
-        if (canUseAbility(mobEntity)) {
+        if (!mobEntity.getEntityWorld().isClient() && canUseAbility(mobEntity)) {
             LivingEntity target = mobEntity.getTarget();
 
             if (target != null) {

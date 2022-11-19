@@ -43,7 +43,7 @@ public class LethargicAbility implements Ability {
 
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
-        if (mobEntity.getTarget() != null && mobEntity.getTarget().isAlive() && mobEntity.canSee(mobEntity.getTarget())) {
+        if (!mobEntity.getEntityWorld().isClient() && mobEntity.getTarget() != null && mobEntity.getTarget().isAlive() && mobEntity.canSee(mobEntity.getTarget())) {
             long time = mobEntity.getEntityWorld().getTime();
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;

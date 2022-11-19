@@ -45,7 +45,7 @@ public class GravityAbility implements Ability {
 
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
-        if (mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
+        if (!mobEntity.getEntityWorld().isClient() && mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
             long time = mobEntity.getEntityWorld().getTime();
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;

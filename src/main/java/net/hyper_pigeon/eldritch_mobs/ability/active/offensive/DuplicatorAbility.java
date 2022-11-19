@@ -36,7 +36,7 @@ public class DuplicatorAbility implements Ability {
     }
 
     public void onAbilityUse(MobEntity entity) {
-        if (entity.getTarget() != null && entity.canSee(entity.getTarget()) && entity.getTarget().isAlive()) {
+        if (!entity.getEntityWorld().isClient() && entity.getTarget() != null && entity.canSee(entity.getTarget()) && entity.getTarget().isAlive()) {
             long time = entity.getEntityWorld().getTime();
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
