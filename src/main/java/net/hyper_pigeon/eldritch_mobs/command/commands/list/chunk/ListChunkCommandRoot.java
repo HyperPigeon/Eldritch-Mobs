@@ -1,7 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.command.commands.list.chunk;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import net.hyper_pigeon.eldritch_mobs.command.argument_type.LanternArgumentType;
 import net.hyper_pigeon.eldritch_mobs.enums.LanternType;
@@ -22,13 +21,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class ListChunkCommandRoot {
 
-    private static final RequiredArgumentBuilder<ServerCommandSource, LanternType> LANTERN_ARGUMENT_BUILDER = RequiredArgumentBuilder.argument(
-            "lantern_type",
-            LanternArgumentType.lantern()
+    public static final LiteralArgumentBuilder<ServerCommandSource> LIST_CHUNK_COMMAND_ROOT = CommandManager.literal("chunk").then(
+            CommandManager.argument("lantern_type", LanternArgumentType.lanternType())
+                    .executes(ListChunkCommandRoot::execute)
     );
-
-    public static final LiteralArgumentBuilder<ServerCommandSource> LIST_CHUNK_COMMAND_ROOT = CommandManager.literal("chunk")
-            .then(LANTERN_ARGUMENT_BUILDER.executes(ListChunkCommandRoot::execute));
 
     private static int execute(CommandContext<ServerCommandSource> context) {
 
