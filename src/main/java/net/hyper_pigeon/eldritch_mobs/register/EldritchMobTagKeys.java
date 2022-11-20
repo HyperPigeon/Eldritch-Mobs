@@ -5,7 +5,7 @@ import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-public class EldritchMobTagKeys {
+public abstract class EldritchMobTagKeys {
     private static final Identifier BLACKLIST_ID = new Identifier("eldritch_mobs:blacklist");
     public static final TagKey<EntityType<?>> BLACKLIST = TagKey.of(Registry.ENTITY_TYPE_KEY, BLACKLIST_ID);
 

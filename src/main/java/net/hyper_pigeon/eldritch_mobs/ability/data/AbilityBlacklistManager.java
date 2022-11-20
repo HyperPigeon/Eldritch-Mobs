@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityHelper;
+import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsAbilities;
 import net.minecraft.entity.EntityType;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
@@ -43,8 +44,9 @@ public class AbilityBlacklistManager extends JsonDataLoader implements Identifia
                 }
             }
 
-            AbilityHelper.blacklistEntityType(name, entityTypeList);
-
+            EldritchMobsAbilities
+                    .getAbilityByName(name)
+                    .ifPresent(a -> EldritchMobsAbilities.blacklistEntityType(a, entityTypeList.toArray(EntityType[]::new)));
         });
     }
 }

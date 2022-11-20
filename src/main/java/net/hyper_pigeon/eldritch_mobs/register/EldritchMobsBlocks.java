@@ -2,6 +2,7 @@ package net.hyper_pigeon.eldritch_mobs.register;
 
 import eu.pb4.polymer.api.block.PolymerHeadBlock;
 import eu.pb4.polymer.api.item.PolymerHeadBlockItem;
+import net.hyper_pigeon.eldritch_mobs.block.NamedBlock;
 import net.hyper_pigeon.eldritch_mobs.block.SoothingLanternBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -18,7 +19,7 @@ import java.util.function.ToIntFunction;
 
 import static net.hyper_pigeon.eldritch_mobs.EldritchMobsMod.id;
 
-public class EldritchMobsBlocks {
+public abstract class EldritchMobsBlocks {
 
     private static ToIntFunction<BlockState> createLightLevelFromLitBlockState(final int litLevel) {
         return state -> state.get(Properties.LIT) ? litLevel : 0;
@@ -33,15 +34,16 @@ public class EldritchMobsBlocks {
                     .luminance(createLightLevelFromLitBlockState(10))
                     .allowsSpawning((state, world, pos, type) -> false)
                     .ticksRandomly()
-                    .nonOpaque()
+                    .nonOpaque(),
+            "soothing_lantern"
     );
 
     public static void init() {
-        registerHeadBlock("soothing_lantern", SOOTHING_LANTERN, new Item.Settings().group(ItemGroup.REDSTONE));
+        registerHeadBlock(SOOTHING_LANTERN, new Item.Settings().group(ItemGroup.REDSTONE));
     }
 
-    private static <T extends Block & PolymerHeadBlock> void registerHeadBlock(final String name, final T block, final Item.Settings settings) {
-        Identifier id = id(name);
+    private static <T extends Block & PolymerHeadBlock & NamedBlock> void registerHeadBlock(final T block, final Item.Settings settings) {
+        Identifier id = id(block.getBlockName());
         Registry.register(Registry.BLOCK, id, block);
         Registry.register(Registry.ITEM, id, new PolymerHeadBlockItem(block, settings));
     }

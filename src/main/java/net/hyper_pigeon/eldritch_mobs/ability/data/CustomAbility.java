@@ -17,6 +17,7 @@ import java.util.Objects;
 public class CustomAbility implements Ability {
 
     String name;
+    boolean disabled;
     AbilityType abilityType;
     AbilitySubType abilitySubType;
     ActivationType activationType;
@@ -25,8 +26,9 @@ public class CustomAbility implements Ability {
     private long cooldown;
     private long nextUseTime = 0;
 
-    public CustomAbility(String name, AbilityType abilityType, AbilitySubType abilitySubType, ActivationType activationType, String command) {
+    public CustomAbility(String name, boolean disabled, AbilityType abilityType, AbilitySubType abilitySubType, ActivationType activationType, String command) {
         this.name = name;
+        this.disabled = disabled;
         this.abilityType = abilityType;
         this.abilitySubType = abilitySubType;
         this.activationType = activationType;
@@ -38,6 +40,9 @@ public class CustomAbility implements Ability {
     public String getName() {
         return name;
     }
+
+    @Override
+    public boolean getDisabled() { return disabled; }
 
     @Override
     public AbilityType getAbilityType() {

@@ -4,16 +4,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
-import net.hyper_pigeon.eldritch_mobs.ability.AbilityHelper;
-import net.hyper_pigeon.eldritch_mobs.ability.AbilitySubType;
-import net.hyper_pigeon.eldritch_mobs.ability.AbilityType;
-import net.hyper_pigeon.eldritch_mobs.ability.ActivationType;
+import net.hyper_pigeon.eldritch_mobs.ability.*;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
+import net.minecraft.util.registry.Registry;
 
 import java.util.Map;
+
+import static net.hyper_pigeon.eldritch_mobs.register.EldritchMobsRegistries.ABILITY_REGISTRY;
 
 public class CustomAbilityManager extends JsonDataLoader implements IdentifiableResourceReloadListener {
 
@@ -34,6 +34,7 @@ public class CustomAbilityManager extends JsonDataLoader implements Identifiable
 
             CustomAbility customAbility = new CustomAbility(
                 jsonObject.get("name").getAsString(),
+                jsonObject.get("disabled").getAsBoolean(),
                 AbilityType.valueOf(jsonObject.get("type").getAsString()),
                 AbilitySubType.valueOf(jsonObject.get("subtype").getAsString()),
                 activationType,
@@ -45,7 +46,7 @@ public class CustomAbilityManager extends JsonDataLoader implements Identifiable
                 customAbility.setCooldown(cooldown);
             }
 
-            AbilityHelper.ALL_ABILITIES.add(customAbility);
+            Registry.register(ABILITY_REGISTRY, Ability.getIdentifier(customAbility.getName()), customAbility);
         });
     }
 }

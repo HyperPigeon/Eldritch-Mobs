@@ -1,4 +1,4 @@
-package net.hyper_pigeon.eldritch_mobs.command.mark.global;
+package net.hyper_pigeon.eldritch_mobs.command.commands.mark.global;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.command.CommandManager;

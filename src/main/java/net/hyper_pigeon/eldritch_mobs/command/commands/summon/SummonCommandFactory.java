@@ -1,4 +1,4 @@
-package net.hyper_pigeon.eldritch_mobs.command.summon;
+package net.hyper_pigeon.eldritch_mobs.command.commands.summon;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;

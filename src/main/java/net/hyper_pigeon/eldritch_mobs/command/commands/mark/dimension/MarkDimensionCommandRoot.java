@@ -1,4 +1,4 @@
-package net.hyper_pigeon.eldritch_mobs.command.mark.dimension;
+package net.hyper_pigeon.eldritch_mobs.command.commands.mark.dimension;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.command.CommandManager;

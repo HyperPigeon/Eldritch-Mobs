@@ -1,10 +1,10 @@
-package net.hyper_pigeon.eldritch_mobs.command.list;
+package net.hyper_pigeon.eldritch_mobs.command.commands.list;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
-import static net.hyper_pigeon.eldritch_mobs.command.list.chunk.ListChunkCommandRoot.LIST_CHUNK_COMMAND_ROOT;
+import static net.hyper_pigeon.eldritch_mobs.command.commands.list.chunk.ListChunkCommandRoot.LIST_CHUNK_COMMAND_ROOT;
 
 public abstract class ListCommandRoot {
 

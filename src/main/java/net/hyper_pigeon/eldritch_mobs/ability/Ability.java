@@ -1,14 +1,19 @@
 package net.hyper_pigeon.eldritch_mobs.ability;
 
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.config.AbilitySpecificConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.util.Identifier;
 
 public interface Ability {
 
     String getName();
+
+    default Identifier getIdentifier() { return getIdentifier(getName()); }
+    static Identifier getIdentifier(String name) { return EldritchMobsMod.id(name.toLowerCase().replace(' ', '_')); }
 
     boolean getDisabled();
 

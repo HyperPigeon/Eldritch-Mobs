@@ -1,12 +1,12 @@
-package net.hyper_pigeon.eldritch_mobs.command.mark;
+package net.hyper_pigeon.eldritch_mobs.command.commands.mark;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
-import static net.hyper_pigeon.eldritch_mobs.command.mark.chunk.MarkChunkCommandRoot.MARK_CHUNK_COMMAND_ROOT;
-import static net.hyper_pigeon.eldritch_mobs.command.mark.dimension.MarkDimensionCommandRoot.MARK_DIMENSION_COMMAND_ROOT;
-import static net.hyper_pigeon.eldritch_mobs.command.mark.global.MarkGlobalCommandRoot.MARK_GLOBAL_COMMAND_ROOT;
+import static net.hyper_pigeon.eldritch_mobs.command.commands.mark.chunk.MarkChunkCommandRoot.MARK_CHUNK_COMMAND_ROOT;
+import static net.hyper_pigeon.eldritch_mobs.command.commands.mark.dimension.MarkDimensionCommandRoot.MARK_DIMENSION_COMMAND_ROOT;
+import static net.hyper_pigeon.eldritch_mobs.command.commands.mark.global.MarkGlobalCommandRoot.MARK_GLOBAL_COMMAND_ROOT;
 
 public abstract class MarkCommandRoot {
 

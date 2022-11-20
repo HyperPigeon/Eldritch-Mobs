@@ -2,11 +2,11 @@ package net.hyper_pigeon.eldritch_mobs.component;
 
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.ability.Ability;
-import net.hyper_pigeon.eldritch_mobs.ability.AbilityHelper;
 import net.hyper_pigeon.eldritch_mobs.component.interfaces.ModifierComponent;
-import net.hyper_pigeon.eldritch_mobs.persistent_state.EffectBlockPersistentState;
 import net.hyper_pigeon.eldritch_mobs.enums.MobRank;
+import net.hyper_pigeon.eldritch_mobs.persistent_state.EffectBlockPersistentState;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobTagKeys;
+import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsAbilities;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsAttributeModifiers;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsBlocks;
 import net.minecraft.entity.attribute.EntityAttributeInstance;
@@ -25,9 +25,12 @@ import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.hyper_pigeon.eldritch_mobs.register.EldritchMobsRegistries.ABILITY_REGISTRY;
 
 public class MobModifierComponent implements ModifierComponent {
 
@@ -81,7 +84,7 @@ public class MobModifierComponent implements ModifierComponent {
 
     @Override
     public void randomlySetModifiers() {
-        if (rank != MobRank.NONE && rank != MobRank.UNDECIDED) modifiers = AbilityHelper.pickNRandomForEntity(AbilityHelper.ALL_ABILITIES, numMaxAbilities, provider.getType());
+        if (rank != MobRank.NONE && rank != MobRank.UNDECIDED) modifiers = EldritchMobsAbilities.pickNRandomForEntity(numMaxAbilities, provider.getType());
     }
 
     public void setTitle() {
@@ -200,7 +203,7 @@ public class MobModifierComponent implements ModifierComponent {
         if (modifiers != null) modifiers.clear();
 
         for (String name : tag.getCompound("abilities").getKeys())
-            AbilityHelper.ALL_ABILITIES.stream().filter(a -> a.getName().equals(name)).findFirst().ifPresent(modifiers::add);
+            ABILITY_REGISTRY.stream().filter(a -> a.getName().equals(name)).findFirst().ifPresent(modifiers::add);
     }
 
     @Override
@@ -246,14 +249,15 @@ public class MobModifierComponent implements ModifierComponent {
         return false;
     }
 
-
     @Override
     public void serverTick() {
 
         if (!checkedIfSpawnedInSoothingLanternChunk) {
             if (this.rank != MobRank.NONE
                 && !provider.getEntityWorld().isClient
-                && EffectBlockPersistentState.get((ServerWorld) provider.getEntityWorld()).containsChunkPos(EldritchMobsBlocks.SOOTHING_LANTERN, provider.getChunkPos())
+                && EffectBlockPersistentState
+                    .get((ServerWorld) provider.getEntityWorld())
+                    .containsChunkPos(Registry.BLOCK.getId(EldritchMobsBlocks.SOOTHING_LANTERN), provider.getChunkPos())
             ) makeMobNormal();
             checkedIfSpawnedInSoothingLanternChunk = true;
         }

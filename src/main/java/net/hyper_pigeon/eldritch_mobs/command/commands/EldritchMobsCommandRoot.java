@@ -1,16 +1,15 @@
-package net.hyper_pigeon.eldritch_mobs.command;
+package net.hyper_pigeon.eldritch_mobs.command.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.tree.CommandNode;
-import net.hyper_pigeon.eldritch_mobs.command.summon.SummonCommandRoot;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
 import java.util.ArrayList;
 
-import static net.hyper_pigeon.eldritch_mobs.command.list.ListCommandRoot.LIST_COMMAND_ROOT;
-import static net.hyper_pigeon.eldritch_mobs.command.summon.SummonCommandRoot.SUMMON_COMMAND_ROOT;
+import static net.hyper_pigeon.eldritch_mobs.command.commands.list.ListCommandRoot.LIST_COMMAND_ROOT;
+import static net.hyper_pigeon.eldritch_mobs.command.commands.summon.SummonCommandRoot.SUMMON_COMMAND_ROOT;
 
 public abstract class EldritchMobsCommandRoot {
 

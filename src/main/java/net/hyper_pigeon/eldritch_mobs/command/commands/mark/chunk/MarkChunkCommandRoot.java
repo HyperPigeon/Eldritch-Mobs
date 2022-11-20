@@ -1,4 +1,4 @@
-package net.hyper_pigeon.eldritch_mobs.command.mark.chunk;
+package net.hyper_pigeon.eldritch_mobs.command.commands.mark.chunk;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.minecraft.server.command.CommandManager;
