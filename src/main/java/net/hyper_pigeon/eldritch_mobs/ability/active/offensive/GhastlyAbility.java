@@ -12,14 +12,17 @@ import net.minecraft.util.math.Vec3d;
 
 public class GhastlyAbility implements Ability {
 
-    private final EldritchMobsConfig.GhastlyConfig ghastlyConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.ghastlyConfig;
-    private final long cooldown = ghastlyConfig.cooldown;
+    private static final EldritchMobsConfig.GhastlyConfig GHASTLY_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.ghastlyConfig;
+    private final long cooldown = GHASTLY_CONFIG.cooldown;
     private long nextUseTime = 0L;
 
     @Override
     public String getName() {
-        return ghastlyConfig.name;
+        return GHASTLY_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return GHASTLY_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -59,7 +62,7 @@ public class GhastlyAbility implements Ability {
                 }
 
                 FireballEntity fireballEntity;
-                fireballEntity = new FireballEntity(mobEntity.getEntityWorld(), mobEntity, f, g, h, ghastlyConfig.fireballPower);
+                fireballEntity = new FireballEntity(mobEntity.getEntityWorld(), mobEntity, f, g, h, GHASTLY_CONFIG.fireballPower);
 
                 fireballEntity.updatePosition(mobEntity.getX() + vec3d.x * 4.0D, mobEntity.getBodyY(0.5D) + 0.5D, fireballEntity.getZ() + vec3d.z * 4.0D);
                 mobEntity.getEntityWorld().spawnEntity(fireballEntity);

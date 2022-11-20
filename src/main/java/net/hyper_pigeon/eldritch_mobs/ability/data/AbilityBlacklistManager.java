@@ -43,7 +43,7 @@ public class AbilityBlacklistManager extends JsonDataLoader implements Identifia
                 }
             }
 
-            AbilityHelper.addBlacklist(name, entityTypeList);
+            AbilityHelper.blacklistEntityType(name, entityTypeList);
 
         });
     }

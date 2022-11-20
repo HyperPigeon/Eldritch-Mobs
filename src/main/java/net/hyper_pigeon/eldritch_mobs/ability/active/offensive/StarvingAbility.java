@@ -12,14 +12,17 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class StarvingAbility implements Ability {
 
-    private final EldritchMobsConfig.StarvingConfig starvingConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.starvingConfig;
-    private final long cooldown = starvingConfig.cooldown;
+    private static final EldritchMobsConfig.StarvingConfig STARVING_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.starvingConfig;
+    private final long cooldown = STARVING_CONFIG.cooldown;
     private long nextUseTime = 0L;
 
     @Override
     public String getName() {
-        return starvingConfig.name;
+        return STARVING_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return STARVING_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -48,7 +51,7 @@ public class StarvingAbility implements Ability {
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
                 LivingEntity target = mobEntity.getTarget();
-                target.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, starvingConfig.duration, starvingConfig.amplifier));
+                target.addStatusEffect(new StatusEffectInstance(StatusEffects.HUNGER, STARVING_CONFIG.duration, STARVING_CONFIG.amplifier));
             }
         }
     }

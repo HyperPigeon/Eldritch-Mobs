@@ -11,8 +11,8 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class SprinterAbility implements Ability {
 
-    private final EldritchMobsConfig.SprinterConfig sprinterConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.sprinterConfig;
-    private final long cooldown = sprinterConfig.cooldown;
+    private static final EldritchMobsConfig.SprinterConfig SPRINTER_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.sprinterConfig;
+    private final long cooldown = SPRINTER_CONFIG.cooldown;
     private long nextUseTime = 0L;
 
     @Override
@@ -22,8 +22,11 @@ public class SprinterAbility implements Ability {
 
     @Override
     public String getName() {
-        return sprinterConfig.name;
+        return SPRINTER_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return SPRINTER_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -43,7 +46,7 @@ public class SprinterAbility implements Ability {
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
         if (canUseAbility(mobEntity)) {
-            mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, sprinterConfig.duration, sprinterConfig.amplifier));
+            mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, SPRINTER_CONFIG.duration, SPRINTER_CONFIG.amplifier));
             nextUseTime = mobEntity.world.getTime() + getCooldown();
         }
     }

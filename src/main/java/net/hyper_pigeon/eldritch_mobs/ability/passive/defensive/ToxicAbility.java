@@ -12,12 +12,15 @@ import net.minecraft.entity.effect.StatusEffects;
 
 public class ToxicAbility implements Ability {
 
-    private final EldritchMobsConfig.ToxicConfig toxicConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.toxicConfig;
+    private static final EldritchMobsConfig.ToxicConfig TOXIC_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.toxicConfig;
 
     @Override
     public String getName() {
-        return toxicConfig.name;
+        return TOXIC_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return TOXIC_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -32,7 +35,7 @@ public class ToxicAbility implements Ability {
     @Override
     public void onDamaged(LivingEntity entity, DamageSource source, float amount) {
         if (source.getAttacker() != null && source.getAttacker().isAlive() && source.getAttacker() instanceof LivingEntity) {
-            ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, toxicConfig.duration, toxicConfig.amplifier));
+            ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, TOXIC_CONFIG.duration, TOXIC_CONFIG.amplifier));
         }
     }
 }

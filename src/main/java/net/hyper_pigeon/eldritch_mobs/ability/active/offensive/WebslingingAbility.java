@@ -12,14 +12,17 @@ import net.minecraft.util.math.BlockPos;
 
 public class WebslingingAbility implements Ability {
 
-    private final EldritchMobsConfig.WebslingingConfig webslingingConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.webslingingConfig;
-    private final long cooldown = webslingingConfig.cooldown;
+    private static final EldritchMobsConfig.WebslingingConfig WEBSLINGING_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.webslingingConfig;
+    private final long cooldown = WEBSLINGING_CONFIG.cooldown;
     private long nextUseTime = 0L;
 
     @Override
     public String getName() {
-        return webslingingConfig.name;
+        return WEBSLINGING_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return WEBSLINGING_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {

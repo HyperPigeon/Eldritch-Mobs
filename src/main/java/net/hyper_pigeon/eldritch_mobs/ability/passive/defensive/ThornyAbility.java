@@ -10,12 +10,15 @@ import net.minecraft.entity.damage.DamageSource;
 
 public class ThornyAbility implements Ability {
 
-    private final EldritchMobsConfig.ThornyConfig thornyConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.thornyConfig;
+    private static final EldritchMobsConfig.ThornyConfig THORNY_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.thornyConfig;
 
     @Override
     public String getName() {
-        return thornyConfig.name;
+        return THORNY_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return THORNY_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -30,7 +33,7 @@ public class ThornyAbility implements Ability {
     @Override
     public void onDamaged(LivingEntity entity, DamageSource source, float amount) {
         if (source.getAttacker() != null && source.getAttacker().isAlive()) {
-            source.getAttacker().damage(DamageSource.MAGIC, (float) (amount * thornyConfig.thornyReturnDamage));
+            source.getAttacker().damage(DamageSource.MAGIC, (float) (amount * THORNY_CONFIG.thornyReturnDamage));
         }
     }
 }

@@ -12,14 +12,17 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class WeaknessAbility implements Ability {
 
-    private final EldritchMobsConfig.WeaknessConfig weaknessConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.weaknessConfig;
-    private final long cooldown = weaknessConfig.cooldown;
+    private static final EldritchMobsConfig.WeaknessConfig WEAKNESS_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.weaknessConfig;
+    private final long cooldown = WEAKNESS_CONFIG.cooldown;
     private long nextUseTime = 0L;
 
     @Override
     public String getName() {
-        return weaknessConfig.name;
+        return WEAKNESS_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return WEAKNESS_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -48,7 +51,7 @@ public class WeaknessAbility implements Ability {
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
                 LivingEntity target = mobEntity.getTarget();
-                target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, weaknessConfig.duration, weaknessConfig.amplifier));
+                target.addStatusEffect(new StatusEffectInstance(StatusEffects.WEAKNESS, WEAKNESS_CONFIG.duration, WEAKNESS_CONFIG.amplifier));
             }
         }
     }

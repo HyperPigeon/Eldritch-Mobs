@@ -10,12 +10,15 @@ import net.minecraft.entity.LivingEntity;
 
 public class RustAbility implements Ability {
 
-    private final EldritchMobsConfig.RustConfig rustConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.rustConfig;
+    private static final EldritchMobsConfig.RustConfig RUST_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.rustConfig;
 
     @Override
     public String getName() {
-        return rustConfig.name;
+        return RUST_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return RUST_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -31,16 +34,16 @@ public class RustAbility implements Ability {
     public void onAttack(LivingEntity attacker, LivingEntity entity) {
         if (entity.isAlive()) {
             if (entity.hasStackEquipped(EquipmentSlot.HEAD)) {
-                entity.getEquippedStack(EquipmentSlot.HEAD).damage(rustConfig.equipmentDamage, entity, p -> p.sendEquipmentBreakStatus(EquipmentSlot.HEAD));
+                entity.getEquippedStack(EquipmentSlot.HEAD).damage(RUST_CONFIG.equipmentDamage, entity, p -> p.sendEquipmentBreakStatus(EquipmentSlot.HEAD));
             }
             if (entity.hasStackEquipped(EquipmentSlot.CHEST)) {
-                entity.getEquippedStack(EquipmentSlot.CHEST).damage(rustConfig.equipmentDamage, entity, p -> p.sendEquipmentBreakStatus(EquipmentSlot.CHEST));
+                entity.getEquippedStack(EquipmentSlot.CHEST).damage(RUST_CONFIG.equipmentDamage, entity, p -> p.sendEquipmentBreakStatus(EquipmentSlot.CHEST));
             }
             if (entity.hasStackEquipped(EquipmentSlot.LEGS)) {
-                entity.getEquippedStack(EquipmentSlot.LEGS).damage(rustConfig.equipmentDamage, entity, p -> p.sendEquipmentBreakStatus(EquipmentSlot.LEGS));
+                entity.getEquippedStack(EquipmentSlot.LEGS).damage(RUST_CONFIG.equipmentDamage, entity, p -> p.sendEquipmentBreakStatus(EquipmentSlot.LEGS));
             }
             if (entity.hasStackEquipped(EquipmentSlot.FEET)) {
-                entity.getEquippedStack(EquipmentSlot.FEET).damage(rustConfig.equipmentDamage, entity, p -> p.sendEquipmentBreakStatus(EquipmentSlot.FEET));
+                entity.getEquippedStack(EquipmentSlot.FEET).damage(RUST_CONFIG.equipmentDamage, entity, p -> p.sendEquipmentBreakStatus(EquipmentSlot.FEET));
             }
         }
     }

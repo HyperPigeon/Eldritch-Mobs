@@ -7,21 +7,23 @@ import net.hyper_pigeon.eldritch_mobs.ability.AbilityType;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.EntityVelocityUpdateS2CPacket;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Vec3d;
 
 public class GravityAbility implements Ability {
 
-    private final EldritchMobsConfig.GravityConfig gravityConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.gravityConfig;
-    private final long cooldown = gravityConfig.cooldown;
+    private static final EldritchMobsConfig.GravityConfig GRAVITY_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.gravityConfig;
+    private final long cooldown = GRAVITY_CONFIG.cooldown;
     private long nextUseTime = 0;
 
     @Override
     public String getName() {
-        return gravityConfig.name;
+        return GRAVITY_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return GRAVITY_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {

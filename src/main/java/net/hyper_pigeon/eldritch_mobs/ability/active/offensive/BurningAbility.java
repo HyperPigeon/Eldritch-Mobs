@@ -10,14 +10,17 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class BurningAbility implements Ability {
 
-    private final EldritchMobsConfig.BurningConfig burningConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.burningConfig;
-    private final long cooldown = burningConfig.cooldown;
+    private static final EldritchMobsConfig.BurningConfig BURNING_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.burningConfig;
+    private final long cooldown = BURNING_CONFIG.cooldown;
     private long nextUseTime = 0L;
 
     @Override
     public String getName() {
-        return burningConfig.name;
+        return BURNING_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return BURNING_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -46,7 +49,7 @@ public class BurningAbility implements Ability {
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
                 LivingEntity target = mobEntity.getTarget();
-                target.setOnFireFor(burningConfig.fireDuration);
+                target.setOnFireFor(BURNING_CONFIG.fireDuration);
             }
         }
     }

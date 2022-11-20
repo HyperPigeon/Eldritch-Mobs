@@ -1,5 +1,6 @@
 package net.hyper_pigeon.eldritch_mobs.ability;
 
+import net.hyper_pigeon.eldritch_mobs.config.AbilitySpecificConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
@@ -9,7 +10,7 @@ public interface Ability {
 
     String getName();
 
-    static String getConfig() { return null; }
+    boolean getDisabled();
 
     AbilityType getAbilityType();
 

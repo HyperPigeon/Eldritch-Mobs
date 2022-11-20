@@ -45,7 +45,7 @@ public class CustomAbilityManager extends JsonDataLoader implements Identifiable
                 customAbility.setCooldown(cooldown);
             }
 
-            AbilityHelper.addAbility(customAbility);
+            AbilityHelper.ALL_ABILITIES.add(customAbility);
         });
     }
 }

@@ -13,12 +13,15 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 
 public class DeflectorAbility implements Ability {
 
-    private final EldritchMobsConfig.DeflectorConfig deflectorConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.deflectorConfig;
+    private static final EldritchMobsConfig.DeflectorConfig DEFLECTOR_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.deflectorConfig;
 
     @Override
     public String getName() {
-        return deflectorConfig.name;
+        return DEFLECTOR_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return DEFLECTOR_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {

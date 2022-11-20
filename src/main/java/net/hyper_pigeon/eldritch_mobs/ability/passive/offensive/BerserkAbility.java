@@ -13,12 +13,15 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class BerserkAbility implements Ability {
 
-    private final EldritchMobsConfig.BerserkConfig berserkConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.berserkConfig;
+    private static final EldritchMobsConfig.BerserkConfig BERSERK_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.berserkConfig;
 
     @Override
     public String getName() {
-        return berserkConfig.name;
+        return BERSERK_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return BERSERK_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -37,7 +40,7 @@ public class BerserkAbility implements Ability {
 
     @Override
     public void passiveApply(MobEntity mobEntity) {
-        mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 100, berserkConfig.amplifier));
+        mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 100, BERSERK_CONFIG.amplifier));
     }
 
     @Override

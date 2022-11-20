@@ -12,14 +12,17 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class LethargicAbility implements Ability {
 
-    private final EldritchMobsConfig.LethargicConfig lethargicConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.lethargicConfig;
-    private final long cooldown = lethargicConfig.cooldown;
+    private static final EldritchMobsConfig.LethargicConfig LETHARGIC_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.lethargicConfig;
+    private final long cooldown = LETHARGIC_CONFIG.cooldown;
     private long nextUseTime = 0L;
 
     @Override
     public String getName() {
-        return lethargicConfig.name;
+        return LETHARGIC_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return LETHARGIC_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -48,7 +51,7 @@ public class LethargicAbility implements Ability {
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
                 LivingEntity target = mobEntity.getTarget();
-                target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, lethargicConfig.duration, lethargicConfig.amplifier));
+                target.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, LETHARGIC_CONFIG.duration, LETHARGIC_CONFIG.amplifier));
             }
         }
     }

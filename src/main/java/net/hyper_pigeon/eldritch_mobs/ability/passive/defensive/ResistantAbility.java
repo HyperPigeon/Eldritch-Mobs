@@ -11,12 +11,15 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class ResistantAbility implements Ability {
 
-    private final EldritchMobsConfig.ResistantConfig resistantConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.resistantConfig;
+    private static final EldritchMobsConfig.ResistantConfig RESISTANT_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.resistantConfig;
 
     @Override
     public String getName() {
-        return resistantConfig.name;
+        return RESISTANT_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return RESISTANT_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -30,6 +33,6 @@ public class ResistantAbility implements Ability {
 
     @Override
     public void passiveApply(MobEntity mobEntity) {
-        mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 100, resistantConfig.amplifier));
+        mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 100, RESISTANT_CONFIG.amplifier));
     }
 }

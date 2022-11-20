@@ -12,12 +12,15 @@ import net.minecraft.entity.effect.StatusEffects;
 
 public class WitheringAbility implements Ability {
 
-    private final EldritchMobsConfig.WitheringConfig witheringConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.witheringConfig;
+    private static final EldritchMobsConfig.WitheringConfig WITHERING_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.witheringConfig;
 
     @Override
     public String getName() {
-        return witheringConfig.name;
+        return WITHERING_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return WITHERING_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -32,7 +35,7 @@ public class WitheringAbility implements Ability {
     @Override
     public void onDamaged(LivingEntity entity, DamageSource source, float amount) {
         if (source.getAttacker() != null && source.getAttacker().isAlive() && source.getAttacker() instanceof LivingEntity) {
-            ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, witheringConfig.duration, witheringConfig.amplifier));
+            ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.WITHER, WITHERING_CONFIG.duration, WITHERING_CONFIG.amplifier));
         }
     }
 }

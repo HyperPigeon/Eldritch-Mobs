@@ -18,7 +18,7 @@ import net.minecraft.util.math.Vec3d;
 
 public class AlchemistAbility implements Ability {
 
-    private final EldritchMobsConfig.AlchemistConfig ALCHEMIST_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.alchemistConfig;
+    private static final EldritchMobsConfig.AlchemistConfig ALCHEMIST_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.alchemistConfig;
     private final long cooldown = ALCHEMIST_CONFIG.cooldown;
     private long nextUseTime = 0;
 
@@ -32,6 +32,9 @@ public class AlchemistAbility implements Ability {
     public String getName() {
         return ALCHEMIST_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return ALCHEMIST_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {

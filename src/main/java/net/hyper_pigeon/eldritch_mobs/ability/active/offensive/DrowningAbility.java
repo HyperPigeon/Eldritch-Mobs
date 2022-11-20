@@ -13,12 +13,15 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class DrowningAbility implements Ability {
 
-    private final EldritchMobsConfig.DrowningConfig drowningConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.drowningConfig;
+    private static final EldritchMobsConfig.DrowningConfig DROWNING_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.drowningConfig;
 
     @Override
     public String getName() {
-        return drowningConfig.name;
+        return DROWNING_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return DROWNING_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -35,7 +38,7 @@ public class DrowningAbility implements Ability {
         if (mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
             LivingEntity target = mobEntity.getTarget();
             if (!(target.hasStatusEffect(StatusEffects.WATER_BREATHING))) {
-                target.damage(DamageSource.DROWN, drowningConfig.drowningDamage);
+                target.damage(DamageSource.DROWN, DROWNING_CONFIG.drowningDamage);
             }
         }
     }
@@ -43,7 +46,7 @@ public class DrowningAbility implements Ability {
     @Override
     public void onDamaged(LivingEntity entity, DamageSource source, float amount) {
         if (source.getAttacker() != null && source.getAttacker() instanceof LivingEntity) {
-            ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, drowningConfig.waterBreathingDuration));
+            ((LivingEntity) source.getAttacker()).addStatusEffect(new StatusEffectInstance(StatusEffects.WATER_BREATHING, DROWNING_CONFIG.waterBreathingDuration));
         }
     }
 }

@@ -11,12 +11,15 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class CloakedAbility implements Ability {
 
-    private final EldritchMobsConfig.CloakedConfig cloakedConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.cloakedConfig;
+    private static final EldritchMobsConfig.CloakedConfig CLOAKED_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.cloakedConfig;
 
     @Override
     public String getName() {
-        return cloakedConfig.name;
+        return CLOAKED_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return CLOAKED_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {

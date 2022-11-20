@@ -9,10 +9,13 @@ import net.minecraft.entity.LivingEntity;
 
 public class YeeterAbility implements Ability {
 
-    private final EldritchMobsConfig.YeeterConfig yeeterConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.yeeterConfig;
+    private static final EldritchMobsConfig.YeeterConfig YEETER_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.yeeterConfig;
 
     @Override
-    public String getName() { return yeeterConfig.name; }
+    public String getName() { return YEETER_CONFIG.name; }
+
+    @Override
+    public boolean getDisabled() { return YEETER_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -26,6 +29,6 @@ public class YeeterAbility implements Ability {
 
     @Override
     public void onAttack(LivingEntity attacker, LivingEntity target) {
-        target.addVelocity(0, yeeterConfig.yeetAmount, 0);
+        target.addVelocity(0, YEETER_CONFIG.yeetAmount, 0);
     }
 }

@@ -81,7 +81,7 @@ public class MobModifierComponent implements ModifierComponent {
 
     @Override
     public void randomlySetModifiers() {
-        if (rank != MobRank.NONE && rank != MobRank.UNDECIDED) modifiers = AbilityHelper.pickNRandomForEntity(AbilityHelper.getAbilities(), numMaxAbilities, provider.getType());
+        if (rank != MobRank.NONE && rank != MobRank.UNDECIDED) modifiers = AbilityHelper.pickNRandomForEntity(AbilityHelper.ALL_ABILITIES, numMaxAbilities, provider.getType());
     }
 
     public void setTitle() {
@@ -199,7 +199,8 @@ public class MobModifierComponent implements ModifierComponent {
 
         if (modifiers != null) modifiers.clear();
 
-        for (String name : tag.getCompound("abilities").getKeys()) AbilityHelper.getAbilityRecordByName(name).ifPresent(record -> modifiers.add(record.ability));
+        for (String name : tag.getCompound("abilities").getKeys())
+            AbilityHelper.ALL_ABILITIES.stream().filter(a -> a.getName().equals(name)).findFirst().ifPresent(modifiers::add);
     }
 
     @Override

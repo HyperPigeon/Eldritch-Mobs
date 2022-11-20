@@ -11,7 +11,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.World;
@@ -22,14 +21,17 @@ import java.util.Optional;
 
 public class StormyAbility implements Ability {
 
-    private final EldritchMobsConfig.StormyConfig stormyConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.stormyConfig;
-    private final long cooldown = stormyConfig.cooldown;
+    private static final EldritchMobsConfig.StormyConfig STORMY_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.stormyConfig;
+    private final long cooldown = STORMY_CONFIG.cooldown;
     private long nextUseTime = 0;
 
     @Override
     public String getName() {
-        return stormyConfig.name;
+        return STORMY_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return STORMY_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -71,8 +73,8 @@ public class StormyAbility implements Ability {
 
                 // TODO: Test!
                 // If there is a lightning rod nearby and the configs allow redirection, spawn lightning there instead.
-                if (stormyConfig.lightningRodRadius >= 0 && !world.isClient) {
-                    Optional<BlockPos> lightningRodPos = getLightningRodPos((ServerWorld) world, target.getBlockPos(), stormyConfig.lightningRodRadius);
+                if (STORMY_CONFIG.lightningRodRadius >= 0 && !world.isClient) {
+                    Optional<BlockPos> lightningRodPos = getLightningRodPos((ServerWorld) world, target.getBlockPos(), STORMY_CONFIG.lightningRodRadius);
                     if (lightningRodPos.isPresent()) lightningEntityPos = lightningRodPos.get();
                 }
 

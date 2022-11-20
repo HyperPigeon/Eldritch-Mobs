@@ -10,12 +10,15 @@ import net.minecraft.entity.damage.DamageSource;
 
 public class LifestealAbility implements Ability {
 
-    private final EldritchMobsConfig.LifestealConfig lifestealConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.lifestealConfig;
+    private static final EldritchMobsConfig.LifestealConfig LIFESTEAL_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.lifestealConfig;
 
     @Override
     public String getName() {
-        return lifestealConfig.name;
+        return LIFESTEAL_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return LIFESTEAL_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -29,6 +32,6 @@ public class LifestealAbility implements Ability {
 
     @Override
     public void onDamageToTarget(LivingEntity attacker, LivingEntity target, DamageSource source, float amount) {
-        attacker.heal((float) (amount * lifestealConfig.lifestealHealProportion));
+        attacker.heal((float) (amount * LIFESTEAL_CONFIG.lifestealHealProportion));
     }
 }

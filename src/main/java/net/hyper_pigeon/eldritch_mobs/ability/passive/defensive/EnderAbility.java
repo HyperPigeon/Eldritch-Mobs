@@ -17,12 +17,15 @@ import net.minecraft.util.math.Direction;
 
 public class EnderAbility implements Ability {
 
-    private final EldritchMobsConfig.EnderConfig enderConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.enderConfig;
+    private static final EldritchMobsConfig.EnderConfig ENDER_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.enderConfig;
 
     @Override
     public String getName() {
-        return enderConfig.name;
+        return ENDER_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return ENDER_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {

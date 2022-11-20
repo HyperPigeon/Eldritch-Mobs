@@ -12,14 +12,17 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class BlindingAbility implements Ability {
 
-    private final EldritchMobsConfig.BlindingConfig BLINDING_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.blindingConfig;
+    private static final EldritchMobsConfig.BlindingConfig BLINDING_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.blindingConfig;
     private final long cooldown = BLINDING_CONFIG.cooldown;
     private long nextUseTime = 0L;
 
     @Override
     public String getName() {
-        return "Blinding";
+        return BLINDING_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return BLINDING_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {

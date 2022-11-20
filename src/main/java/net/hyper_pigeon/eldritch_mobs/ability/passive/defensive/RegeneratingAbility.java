@@ -9,12 +9,15 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class RegeneratingAbility implements Ability {
 
-    private final EldritchMobsConfig.RegeneratingConfig regeneratingConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.regeneratingConfig;
+    private static final EldritchMobsConfig.RegeneratingConfig REGENERATING_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.regeneratingConfig;
 
     @Override
     public String getName() {
-        return regeneratingConfig.name;
+        return REGENERATING_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return REGENERATING_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -28,6 +31,6 @@ public class RegeneratingAbility implements Ability {
 
     @Override
     public void passiveApply(MobEntity mobEntity) {
-        mobEntity.heal(regeneratingConfig.healAmount);
+        mobEntity.heal(REGENERATING_CONFIG.healAmount);
     }
 }

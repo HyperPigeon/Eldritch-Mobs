@@ -11,14 +11,17 @@ import net.minecraft.server.world.ServerWorld;
 
 public class DuplicatorAbility implements Ability {
 
-    private final EldritchMobsConfig.DuplicatorConfig duplicatorConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.duplicatorConfig;
-    private final long cooldown = duplicatorConfig.cooldown;
+    private static final EldritchMobsConfig.DuplicatorConfig DUPLICATOR_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.duplicatorConfig;
+    private final long cooldown = DUPLICATOR_CONFIG.cooldown;
     private long nextUseTime = 0;
 
     @Override
     public String getName() {
-        return duplicatorConfig.name;
+        return DUPLICATOR_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return DUPLICATOR_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {

@@ -12,14 +12,17 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class DrainingAbility implements Ability {
 
-    private final EldritchMobsConfig.DrainingConfig drainingConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.drainingConfig;
-    private final long cooldown = drainingConfig.cooldown;
+    private static final EldritchMobsConfig.DrainingConfig DRAINING_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.drainingConfig;
+    private final long cooldown = DRAINING_CONFIG.cooldown;
     private long nextUseTime = 0L;
 
     @Override
     public String getName() {
-        return drainingConfig.name;
+        return DRAINING_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return DRAINING_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -47,7 +50,7 @@ public class DrainingAbility implements Ability {
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
                 LivingEntity target = mobEntity.getTarget();
-                target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, drainingConfig.duration, drainingConfig.amplifier));
+                target.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, DRAINING_CONFIG.duration, DRAINING_CONFIG.amplifier));
             }
         }
     }

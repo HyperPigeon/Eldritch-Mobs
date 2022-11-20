@@ -11,12 +11,15 @@ import net.minecraft.entity.mob.MobEntity;
 
 public class SpeedsterAbility implements Ability {
 
-    private final EldritchMobsConfig.SpeedsterConfig speedsterConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.speedsterConfig;
+    private static final EldritchMobsConfig.SpeedsterConfig SPEEDSTER_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.speedsterConfig;
 
     @Override
     public String getName() {
-        return speedsterConfig.name;
+        return SPEEDSTER_CONFIG.name;
     }
+
+    @Override
+    public boolean getDisabled() { return SPEEDSTER_CONFIG.disabled; }
 
     @Override
     public AbilityType getAbilityType() {
@@ -30,6 +33,6 @@ public class SpeedsterAbility implements Ability {
 
     @Override
     public void passiveApply(MobEntity mobEntity) {
-        mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 100, speedsterConfig.amplifier));
+        mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 100, SPEEDSTER_CONFIG.amplifier));
     }
 }
