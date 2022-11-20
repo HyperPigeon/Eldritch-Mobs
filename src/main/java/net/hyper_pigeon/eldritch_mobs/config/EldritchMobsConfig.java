@@ -143,193 +143,218 @@ public class EldritchMobsConfig implements ConfigData {
     @ConfigEntry.Gui.CollapsibleObject
     public YeeterConfig yeeterConfig = new YeeterConfig();
 
-    public static class AlchemistConfig {
-        public String name = "Alchemist";
-        public boolean disabled = false;
+    public static class AlchemistConfig extends AbilitySpecificConfig {
+
         public long cooldown = 200;
         public boolean useStrongHealing = false;
         public boolean useStrongHarming = false;
+
+        public AlchemistConfig() { super("Alchemist", false); }
     }
 
-    public static class BerserkConfig {
-        public String name = "Berserk";
-        public boolean disabled = false;
+    public static class BerserkConfig extends AbilitySpecificConfig {
+
         public int amplifier = 1;
+
+        public BerserkConfig() { super("Berserk", false); }
     }
 
-    public static class BlindingConfig {
-        public String name = "Blinding";
-        public boolean disabled = false;
+    public static class BlindingConfig extends AbilitySpecificConfig {
+
         public long cooldown = 300;
         public int duration = 80;
         public int amplifier = 0;
+
+        public BlindingConfig() { super("Blinding", false); }
     }
 
-    public static class BurningConfig {
-        public String name = "Burning";
-        public boolean disabled = false;
+    public static class BurningConfig extends AbilitySpecificConfig {
+
         public long cooldown = 500;
         public int fireDuration = 6;
+
+        public BurningConfig() { super("Burning", false); }
     }
 
-    public static class CloakedConfig {
-        public String name = "Cloaked";
-        public boolean disabled = false;
+    public static class CloakedConfig extends AbilitySpecificConfig {
+
+        public CloakedConfig() { super("Cloaked", false); }
     }
 
-    public static class DeflectorConfig {
-        public String name = "Deflector";
-        public boolean disabled = false;
+    public static class DeflectorConfig extends AbilitySpecificConfig {
+
+        public DeflectorConfig() { super("Deflector", false); }
     }
 
-    public static class DrainingConfig {
-        public String name = "Draining";
-        public boolean disabled = false;
+    public static class DrainingConfig extends AbilitySpecificConfig {
+
         public long cooldown = 300;
         public int duration = 125;
         public int amplifier = 0;
+
+        public DrainingConfig() { super("Draining", false); }
     }
 
-    public static class DrowningConfig {
-        public String name = "Drowning";
-        public boolean disabled = false;
+    public static class DrowningConfig extends AbilitySpecificConfig {
+
         public float drowningDamage = 0.010f;
         public int waterBreathingDuration = 100;
+
+        public DrowningConfig() { super("Drowning", false); }
     }
 
-    public static class DuplicatorConfig {
-        public String name = "Duplicator";
-        public boolean disabled = false;
+    public static class DuplicatorConfig extends AbilitySpecificConfig {
+
         public long cooldown = 3000;
+
+        public DuplicatorConfig() { super("Duplicator", false); }
     }
 
-    public static class EnderConfig {
-        public String name = "Ender";
-        public boolean disabled = false;
+    public static class EnderConfig extends AbilitySpecificConfig {
+
+        public EnderConfig() { super("Ender", false); }
     }
 
-    public static class GhastlyConfig {
-        public String name = "Ghastly";
-        public boolean disabled = false;
+    public static class GhastlyConfig extends AbilitySpecificConfig {
+
         public long cooldown = 700;
         public int fireballPower = 1;
+
+        public GhastlyConfig() { super("Ghastly", false); }
     }
 
-    public static class GravityConfig {
-        public String name = "Gravity";
-        public boolean disabled = false;
+    public static class GravityConfig extends AbilitySpecificConfig {
+
         public long cooldown = 700;
+
+        public GravityConfig() { super("Gravity", false); }
     }
 
-    public static class LethargicConfig {
-        public String name = "Lethargic";
-        public boolean disabled = false;
+    public static class LethargicConfig extends AbilitySpecificConfig {
+
         public long cooldown = 250;
         public int duration = 100;
         public int amplifier = 0;
+
+        public LethargicConfig() { super("Lethargic", false); }
     }
 
-    public static class LifestealConfig {
-        public String name = "Lifesteal";
-        public boolean disabled = false;
+    public static class LifestealConfig extends AbilitySpecificConfig {
+
         public double lifestealHealProportion = 1;
+
+        public LifestealConfig() { super("Lifesteal", false); }
     }
 
-    public static class RegeneratingConfig {
-        public String name = "Regenerating";
-        public boolean disabled = false;
+    public static class RegeneratingConfig extends AbilitySpecificConfig {
+
         public float healAmount = 0.025f;
+
+        public RegeneratingConfig() { super("Regenerating", false); }
     }
 
-    public static class RustConfig {
-        public String name = "Rust";
-        public boolean disabled = false;
+    public static class RustConfig extends AbilitySpecificConfig {
+
         public int equipmentDamage = 30;
+
+        public RustConfig() { super("Rust", false); }
     }
 
-    public static class ResistantConfig {
-        public String name = "Resistant";
-        public boolean disabled = false;
+    public static class ResistantConfig extends AbilitySpecificConfig {
+
         public int amplifier = 0;
+
+        public ResistantConfig() { super("Resistant", false); }
     }
 
-    public static class StarvingConfig {
-        public String name = "Starving";
-        public boolean disabled = false;
+    public static class StarvingConfig extends AbilitySpecificConfig {
+
         public long cooldown = 250;
         public int duration = 200;
         public int amplifier = 0;
+
+        public StarvingConfig() { super("Starving", false); }
     }
 
-    public static class StormyConfig {
-        public String name = "Stormy";
-        public boolean disabled = false;
+    public static class StormyConfig extends AbilitySpecificConfig {
+
         @ConfigEntry.BoundedDiscrete(min = -1, max = 128)
         public int lightningRodRadius = 16;
         public long cooldown = 1000;
+
+        public StormyConfig() { super("Stormy", false); }
     }
 
-    public static class SpeedsterConfig {
-        public String name = "Speedster";
-        public boolean disabled = false;
+    public static class SpeedsterConfig extends AbilitySpecificConfig {
+
         public int amplifier = 2;
+
+        public SpeedsterConfig() { super("Speedster", false); }
     }
 
-    public static class SprinterConfig {
-        public String name = "Sprinter";
-        public boolean disabled = false;
+    public static class SprinterConfig extends AbilitySpecificConfig {
+
         public long cooldown = 600;
         public int duration = 100;
         public int amplifier = 4;
+
+        public SprinterConfig() { super("Sprinter", false); }
     }
 
-    public static class ThornyConfig {
-        public String name = "Thorny";
-        public boolean disabled = false;
+    public static class ThornyConfig extends AbilitySpecificConfig {
+
         public double thornyReturnDamage = 0.25;
+
+        public ThornyConfig() { super("Thorny", false); }
     }
 
-    public static class ToxicConfig {
-        public String name = "Toxic";
-        public boolean disabled = false;
+    public static class ToxicConfig extends AbilitySpecificConfig {
+
         public int duration = 100;
         public int amplifier = 0;
+
+        public ToxicConfig() { super("Toxic", false); }
     }
 
-    public static class UndyingConfig {
-        public String name = "Undying";
-        public boolean disabled = false;
+    public static class UndyingConfig extends AbilitySpecificConfig {
+
         public int regenerationDuration = 900;
         public int regenerationAmplifier = 1;
         public int absorptionDuration = 1200;
         public int absorptionAmplifier = 5;
         public int fireResistanceDuration = 800;
+
+        public UndyingConfig() { super("Undying", false); }
     }
 
-    public static class WeaknessConfig {
-        public String name = "Weakness";
-        public boolean disabled = false;
+    public static class WeaknessConfig extends AbilitySpecificConfig {
+
         public long cooldown = 250;
         public int duration = 100;
         public int amplifier = 0;
+
+        public WeaknessConfig() { super("Weakness", false); }
     }
 
-    public static class WebslingingConfig {
-        public String name = "Webslinging";
-        public boolean disabled = false;
+    public static class WebslingingConfig extends AbilitySpecificConfig {
+
         public long cooldown = 700;
+
+        public WebslingingConfig() { super("Webslinging", false); }
     }
 
-    public static class WitheringConfig {
-        public String name = "Withering";
-        public boolean disabled = false;
+    public static class WitheringConfig extends AbilitySpecificConfig {
+
         public int duration = 100;
         public int amplifier = 0;
+
+        public WitheringConfig() { super("Withering", false); }
     }
 
-    public static class YeeterConfig {
-        public String name = "Yeeter";
-        public boolean disabled = false;
+    public static class YeeterConfig extends AbilitySpecificConfig {
+
         public double yeetAmount = 1.5;
+
+        public YeeterConfig() { super("Yeeter", false); }
     }
 }

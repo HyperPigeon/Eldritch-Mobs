@@ -1,15 +1,17 @@
 package net.hyper_pigeon.eldritch_mobs.ability;
 
-import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.ability.active.defensive.SprinterAbility;
 import net.hyper_pigeon.eldritch_mobs.ability.active.offensive.*;
 import net.hyper_pigeon.eldritch_mobs.ability.passive.defensive.*;
 import net.hyper_pigeon.eldritch_mobs.ability.passive.offensive.*;
+import net.hyper_pigeon.eldritch_mobs.config.AbilitySpecificConfig;
 import net.minecraft.entity.EntityType;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static net.hyper_pigeon.eldritch_mobs.EldritchMobsMod.ELDRITCH_MOBS_CONFIG;
 
 public class AbilityHelper {
 
@@ -18,11 +20,6 @@ public class AbilityHelper {
         public final @Nullable C config;
         public final String name;
 
-        public Class<C> getConfigType() {
-            //noinspection unchecked
-            return config == null ? null : (Class<C>) config.getClass();
-        }
-
         public AbilityRecord(Ability ability, @Nullable C config) {
             this.ability = ability;
             this.config = config;
@@ -30,36 +27,36 @@ public class AbilityHelper {
         }
     }
 
-    public static final ArrayList<AbilityRecord<?>> ALL_ABILITIES = new ArrayList<>() {{
-        add(new AbilityRecord<>(new AlchemistAbility()   , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.alchemistConfig   ));
-        add(new AbilityRecord<>(new BlindingAbility()    , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.blindingConfig    ));
-        add(new AbilityRecord<>(new BurningAbility()     , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.burningConfig     ));
-        add(new AbilityRecord<>(new DrainingAbility()    , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.drainingConfig    ));
-        add(new AbilityRecord<>(new DrowningAbility()    , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.drowningConfig    ));
-        add(new AbilityRecord<>(new DuplicatorAbility()  , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.duplicatorConfig  ));
-        add(new AbilityRecord<>(new GhastlyAbility()     , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.ghastlyConfig     ));
-        add(new AbilityRecord<>(new GravityAbility()     , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.gravityConfig     ));
-        add(new AbilityRecord<>(new LethargicAbility()   , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.lethargicConfig   ));
-        add(new AbilityRecord<>(new RustAbility()        , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.rustConfig        ));
-        add(new AbilityRecord<>(new StarvingAbility()    , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.speedsterConfig   ));
-        add(new AbilityRecord<>(new StormyAbility()      , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.stormyConfig      ));
-        add(new AbilityRecord<>(new WeaknessAbility()    , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.weaknessConfig    ));
-        add(new AbilityRecord<>(new WebslingingAbility() , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.webslingingConfig ));
-        add(new AbilityRecord<>(new CloakedAbility()     , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.cloakedConfig     ));
-        add(new AbilityRecord<>(new DeflectorAbility()   , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.deflectorConfig   ));
-        add(new AbilityRecord<>(new EnderAbility()       , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.enderConfig       ));
-        add(new AbilityRecord<>(new UndyingAbility()     , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.undyingConfig     ));
-        add(new AbilityRecord<>(new RegeneratingAbility(), EldritchMobsMod.ELDRITCH_MOBS_CONFIG.regeneratingConfig));
-        add(new AbilityRecord<>(new ResistantAbility()   , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.resistantConfig   ));
-        add(new AbilityRecord<>(new SprinterAbility()    , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.sprinterConfig    ));
-        add(new AbilityRecord<>(new StarvingAbility()    , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.starvingConfig    ));
-        add(new AbilityRecord<>(new ThornyAbility()      , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.thornyConfig      ));
-        add(new AbilityRecord<>(new ToxicAbility()       , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.toxicConfig       ));
-        add(new AbilityRecord<>(new WitheringAbility()   , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.witheringConfig   ));
-        add(new AbilityRecord<>(new BerserkAbility()     , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.berserkConfig     ));
-        add(new AbilityRecord<>(new LifestealAbility()   , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.lifestealConfig   ));
-        add(new AbilityRecord<>(new SpeedsterAbility()   , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.speedsterConfig   ));
-        add(new AbilityRecord<>(new YeeterAbility()      , EldritchMobsMod.ELDRITCH_MOBS_CONFIG.yeeterConfig      ));
+    public static final HashMap<Ability, @Nullable AbilitySpecificConfig> ALL_ABILITIES = new HashMap<>() {{
+        put(new AlchemistAbility()   , ELDRITCH_MOBS_CONFIG.alchemistConfig   );
+        put(new BlindingAbility()    , ELDRITCH_MOBS_CONFIG.blindingConfig    );
+        put(new BurningAbility()     , ELDRITCH_MOBS_CONFIG.burningConfig     );
+        put(new DrainingAbility()    , ELDRITCH_MOBS_CONFIG.drainingConfig    );
+        put(new DrowningAbility()    , ELDRITCH_MOBS_CONFIG.drowningConfig    );
+        put(new DuplicatorAbility()  , ELDRITCH_MOBS_CONFIG.duplicatorConfig  );
+        put(new GhastlyAbility()     , ELDRITCH_MOBS_CONFIG.ghastlyConfig     );
+        put(new GravityAbility()     , ELDRITCH_MOBS_CONFIG.gravityConfig     );
+        put(new LethargicAbility()   , ELDRITCH_MOBS_CONFIG.lethargicConfig   );
+        put(new RustAbility()        , ELDRITCH_MOBS_CONFIG.rustConfig        );
+        put(new StarvingAbility()    , ELDRITCH_MOBS_CONFIG.speedsterConfig   );
+        put(new StormyAbility()      , ELDRITCH_MOBS_CONFIG.stormyConfig      );
+        put(new WeaknessAbility()    , ELDRITCH_MOBS_CONFIG.weaknessConfig    );
+        put(new WebslingingAbility() , ELDRITCH_MOBS_CONFIG.webslingingConfig );
+        put(new CloakedAbility()     , ELDRITCH_MOBS_CONFIG.cloakedConfig     );
+        put(new DeflectorAbility()   , ELDRITCH_MOBS_CONFIG.deflectorConfig   );
+        put(new EnderAbility()       , ELDRITCH_MOBS_CONFIG.enderConfig       );
+        put(new UndyingAbility()     , ELDRITCH_MOBS_CONFIG.undyingConfig     );
+        put(new RegeneratingAbility(), ELDRITCH_MOBS_CONFIG.regeneratingConfig);
+        put(new ResistantAbility()   , ELDRITCH_MOBS_CONFIG.resistantConfig   );
+        put(new SprinterAbility()    , ELDRITCH_MOBS_CONFIG.sprinterConfig    );
+        put(new StarvingAbility()    , ELDRITCH_MOBS_CONFIG.starvingConfig    );
+        put(new ThornyAbility()      , ELDRITCH_MOBS_CONFIG.thornyConfig      );
+        put(new ToxicAbility()       , ELDRITCH_MOBS_CONFIG.toxicConfig       );
+        put(new WitheringAbility()   , ELDRITCH_MOBS_CONFIG.witheringConfig   );
+        put(new BerserkAbility()     , ELDRITCH_MOBS_CONFIG.berserkConfig     );
+        put(new LifestealAbility()   , ELDRITCH_MOBS_CONFIG.lifestealConfig   );
+        put(new SpeedsterAbility()   , ELDRITCH_MOBS_CONFIG.speedsterConfig   );
+        put(new YeeterAbility()      , ELDRITCH_MOBS_CONFIG.yeeterConfig      );
     }};
 
     public static final HashMap<String, List<EntityType<?>>> ABILITY_BLACKLIST = new HashMap<>();
@@ -80,7 +77,7 @@ public class AbilityHelper {
     }
 
     public static void addAbility(Ability ability) {
-        ALL_ABILITIES.add(new AbilityRecord<>(ability, null));
+        ALL_ABILITIES.put(ability, null);
     }
 
     public static void addBlacklist(String name, List<EntityType<?>> entityTypeList) {
@@ -88,31 +85,24 @@ public class AbilityHelper {
     }
 
     public static void removeAbility(Ability ability) {
-        ALL_ABILITIES.removeIf(abilityRecord -> abilityRecord.name.equals(ability.getName()));
+        ALL_ABILITIES.remove(ability);
     }
 
     public static void removeAbilityByName(String name) {
-        ALL_ABILITIES.removeIf(abilityRecord -> abilityRecord.name.equals(name));
-    }
-
-    public static Optional<AbilityRecord<?>> getAbilityRecordByName(String name) {
-        return AbilityHelper.ALL_ABILITIES.stream()
-                .filter(record -> record.name.equals(name))
-                .findFirst();
+        ALL_ABILITIES.keySet().removeIf(k -> k.getName().equals(name));
     }
 
     public static List<String> getAbilityNames() {
-        return ALL_ABILITIES.stream().map(record -> record.name).collect(Collectors.toList());
+        return ALL_ABILITIES.keySet().stream().map(Ability::getName).collect(Collectors.toList());
     }
 
-    public static List<Ability> getAbilities() {
-        return ALL_ABILITIES.stream().map(record -> record.ability).collect(Collectors.toList());
-    }
+    public static List<Ability> getAbilities() { return ALL_ABILITIES.keySet().stream().toList(); }
 
     public static void removeDisabledAbilities() {
-        for (AbilityRecord<?> record : ALL_ABILITIES) {
-            try { if (record.config != null && record.config.getClass().getField("disabled").getBoolean(record.config)) removeAbilityByName(record.name); }
-            catch (IllegalAccessException | NoSuchFieldException e) { throw new RuntimeException(e); }
-        }
+        ALL_ABILITIES.values().stream()
+                .filter(Objects::nonNull)
+                .filter(c -> c.disabled)
+                .map(c -> c.name)
+                .forEach(AbilityHelper::removeAbilityByName);
     }
 }
