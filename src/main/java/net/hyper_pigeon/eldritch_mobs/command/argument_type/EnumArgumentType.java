@@ -25,14 +25,24 @@ public class EnumArgumentType <E extends Enum<E> & NamedEnum> implements Argumen
         this.blacklisted = blacklisted;
     }
 
+    private String wrapWithQuotesIfNecessary(String input) {
+        if (input.contains(" ")) return "\"" + input + "\"";
+        return input;
+    }
+
     protected HashSet<String> getSuggestions() {
         List<E> enumConstants = List.of(enumClass.getEnumConstants());
         return new HashSet<>() {{
             enumConstants.stream()
                     .filter(Predicate.not(blacklisted::contains))
                     .forEach(e -> {
-                        add(e.name());
-                        add(e.getDisplayName());
+                        String enumName = e.name();
+                        add(enumName);                                      // Enum name (unquoted).
+                        add("\"" + enumName + "\"");                        // Enum name (quoted).
+
+                        String displayName = e.getDisplayName();
+                        if (!displayName.contains(" ")) add(displayName);   // Display name (unquoted).
+                        add("\"" + displayName + "\"");                     // Display name (quoted).
                     }
             );
         }};
@@ -43,31 +53,39 @@ public class EnumArgumentType <E extends Enum<E> & NamedEnum> implements Argumen
 
     @Override public E parse(StringReader reader) throws CommandSyntaxException {
 
-        E enumConstant = null;
+        E enumConstant;
         String readString;
         int start = reader.getCursor();
 
-        // Prioritise reading a quoted string if there is a quote.
-        // Quoted strings could only possibly be display names.
+        // Prioritise reading a quoted string if possible.
         if (reader.canRead() && StringReader.isQuotedStringStart(reader.peek())) {
             readString = reader.readQuotedString();
+
+            // Attempt to read the quoted string as a display name.
             enumConstant = NamedEnum.fromDisplayName(enumClass, readString);
+            if (enumConstant != null) return enumConstant;
+
+            // If still not found, attempt to read the quoted string as an enum name.
+            try { enumConstant = Enum.valueOf(enumClass, readString); }
+            catch (IllegalArgumentException ignored) {}
+            if (enumConstant != null) return enumConstant;
         }
 
         // If we haven't yet found an enum constant, try reading an unquoted string.
         reader.setCursor(start);
-        if (enumConstant == null) {
-            readString = reader.readUnquotedString();
-            try { enumConstant = Enum.valueOf(enumClass, readString); }
-            catch (IllegalArgumentException ignored) {}
-        }
+        readString = reader.readUnquotedString();
+
+        // Retry reading unquoted argument as display name.
+        enumConstant = NamedEnum.fromDisplayName(enumClass, readString);
+        if (enumConstant != null) return enumConstant;
+
+        // If we still haven't found an enum constant, try reading an unquoted string as an enum name.
+        try { enumConstant = Enum.valueOf(enumClass, readString); }
+        catch (IllegalArgumentException ignored) {}
+        if (enumConstant != null) return enumConstant;
 
         // If we still haven't found an enum constant, throw an exception.
-        if (enumConstant == null)
-            throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.literalIncorrect().createWithContext(reader, enumClass.getSimpleName());
-
-        // If we have found an enum constant, return it.
-        return enumConstant;
+        throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.literalIncorrect().createWithContext(reader, enumClass.getSimpleName());
     }
 
     @Override public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
