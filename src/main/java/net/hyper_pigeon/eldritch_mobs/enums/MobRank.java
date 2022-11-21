@@ -14,11 +14,6 @@ public enum MobRank implements NamedEnum {
     ULTRA    ("Ultra"    , LanternType.CURSING_ULTRA),
     ELDRITCH ("Eldritch" , LanternType.CURSING_ELDRITCH);
 
-    public static final ImmutableSet<MobRank> MOB_RANKS = ImmutableSet.copyOf(Arrays.stream(MobRank.values())
-            .filter(Predicate.not(((Predicate<MobRank>) NONE::equals).or(UNDECIDED::equals)))
-            .toList()
-    );
-
     private final String displayName;
     private final LanternType associatedLanternType;
 

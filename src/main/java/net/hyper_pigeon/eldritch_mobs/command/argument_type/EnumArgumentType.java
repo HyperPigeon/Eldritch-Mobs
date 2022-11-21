@@ -13,22 +13,28 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Predicate;
 
 public class EnumArgumentType <E extends Enum<E> & NamedEnum> implements ArgumentType<E> {
 
     public final Class<E> enumClass;
+    private final List<E> blacklisted;
 
-    public EnumArgumentType(Class<E> enumClass) {
+    public EnumArgumentType(Class<E> enumClass, List<E> blacklisted) {
         this.enumClass = enumClass;
+        this.blacklisted = blacklisted;
     }
 
     protected HashSet<String> getSuggestions() {
         List<E> enumConstants = List.of(enumClass.getEnumConstants());
         return new HashSet<>() {{
-            enumConstants.forEach(e -> {
-                add(e.name());
-                add(e.getDisplayName());
-            });
+            enumConstants.stream()
+                    .filter(Predicate.not(blacklisted::contains))
+                    .forEach(e -> {
+                        add(e.name());
+                        add(e.getDisplayName());
+                    }
+            );
         }};
     }
 
@@ -36,17 +42,31 @@ public class EnumArgumentType <E extends Enum<E> & NamedEnum> implements Argumen
     public static <S, E extends Enum<E> & NamedEnum> E get(CommandContext<S> context, String name, Class<E> enumClass) { return context.getArgument(name, enumClass); }
 
     @Override public E parse(StringReader reader) throws CommandSyntaxException {
-        String string = reader.getRemaining();
-        reader.setCursor(reader.getTotalLength());
 
-        E enumConstant;
-        try {
-            enumConstant = NamedEnum.fromDisplayName(enumClass, string);
-            if (enumConstant == null) enumConstant = Enum.valueOf(enumClass, string);
-        } catch (IllegalArgumentException | NullPointerException ignored) {
-            throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.literalIncorrect().createWithContext(reader, string);
+        E enumConstant = null;
+        String readString;
+        int start = reader.getCursor();
+
+        // Prioritise reading a quoted string if there is a quote.
+        // Quoted strings could only possibly be display names.
+        if (reader.canRead() && StringReader.isQuotedStringStart(reader.peek())) {
+            readString = reader.readQuotedString();
+            enumConstant = NamedEnum.fromDisplayName(enumClass, readString);
         }
 
+        // If we haven't yet found an enum constant, try reading an unquoted string.
+        reader.setCursor(start);
+        if (enumConstant == null) {
+            readString = reader.readUnquotedString();
+            try { enumConstant = Enum.valueOf(enumClass, readString); }
+            catch (IllegalArgumentException ignored) {}
+        }
+
+        // If we still haven't found an enum constant, throw an exception.
+        if (enumConstant == null)
+            throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.literalIncorrect().createWithContext(reader, enumClass.getSimpleName());
+
+        // If we have found an enum constant, return it.
         return enumConstant;
     }
 
