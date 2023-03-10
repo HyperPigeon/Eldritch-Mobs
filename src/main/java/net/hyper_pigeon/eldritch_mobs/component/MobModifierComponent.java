@@ -38,10 +38,11 @@ public class MobModifierComponent implements ModifierComponent {
     private boolean healthIncreased = false;
     private boolean checkedIfSpawnedInSoothingLanternChunk = false;
     private boolean titleSet = false;
+    private boolean setName = false;
 
     public MobModifierComponent(MobEntity provider) {
         this.provider = provider;
-        this.bossBar = new ServerBossBar(provider.getDisplayName(), BossBar.Color.GREEN, BossBar.Style.PROGRESS);
+        this.bossBar = new ServerBossBar(Text.of(""), BossBar.Color.GREEN, BossBar.Style.PROGRESS);
 
         if (canBeBuffed(provider)) {
             randomlySetRank();
@@ -249,6 +250,11 @@ public class MobModifierComponent implements ModifierComponent {
                 && SoothingLanternPersistentState.get((ServerWorld) provider.getEntityWorld()).containsChunk(provider.getChunkPos())
             ) makeMobNormal();
             checkedIfSpawnedInSoothingLanternChunk = true;
+        }
+
+        if(!setName){
+            bossBar.setName(provider.getDisplayName());
+            setName = true;
         }
 
         if (getRank() != MobRank.NONE) {
