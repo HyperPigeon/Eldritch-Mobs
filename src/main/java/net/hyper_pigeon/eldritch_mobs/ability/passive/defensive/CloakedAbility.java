@@ -30,7 +30,7 @@ public class CloakedAbility implements Ability {
 
     @Override
     public void passiveApply(MobEntity mobEntity) {
-        if(mobEntity.hasStatusEffect(StatusEffects.INVISIBILITY)) {
+        if(!mobEntity.hasStatusEffect(StatusEffects.INVISIBILITY)) {
             mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.INVISIBILITY, 10000));
         }
     }

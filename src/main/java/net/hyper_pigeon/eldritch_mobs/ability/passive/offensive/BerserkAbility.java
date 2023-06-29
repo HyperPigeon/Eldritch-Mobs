@@ -40,7 +40,7 @@ public class BerserkAbility implements Ability {
 
     @Override
     public void passiveApply(MobEntity mobEntity) {
-        if(mobEntity.hasStatusEffect(StatusEffects.STRENGTH)) {
+        if(!mobEntity.hasStatusEffect(StatusEffects.STRENGTH)) {
             mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 10000, berserkConfig.amplifier));
         }
     }
