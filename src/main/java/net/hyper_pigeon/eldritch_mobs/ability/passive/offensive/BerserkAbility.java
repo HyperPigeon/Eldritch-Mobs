@@ -11,9 +11,12 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 
+
+
 public class BerserkAbility implements Ability {
 
     private final EldritchMobsConfig.BerserkConfig berserkConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.berserkConfig;
+
 
     @Override
     public String getName() {
@@ -37,7 +40,9 @@ public class BerserkAbility implements Ability {
 
     @Override
     public void passiveApply(MobEntity mobEntity) {
-        mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 100, berserkConfig.amplifier));
+        if(mobEntity.hasStatusEffect(StatusEffects.STRENGTH)) {
+            mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 10000, berserkConfig.amplifier));
+        }
     }
 
     @Override

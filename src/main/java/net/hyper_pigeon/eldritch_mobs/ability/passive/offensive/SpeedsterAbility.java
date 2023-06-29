@@ -30,6 +30,8 @@ public class SpeedsterAbility implements Ability {
 
     @Override
     public void passiveApply(MobEntity mobEntity) {
-        mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 100, speedsterConfig.amplifier));
+        if(mobEntity.hasStatusEffect(StatusEffects.SPEED)) {
+            mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 10000, speedsterConfig.amplifier));
+        }
     }
 }
