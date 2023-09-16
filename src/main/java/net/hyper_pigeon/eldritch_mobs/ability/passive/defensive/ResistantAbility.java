@@ -30,6 +30,8 @@ public class ResistantAbility implements Ability {
 
     @Override
     public void passiveApply(MobEntity mobEntity) {
-        mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 100, resistantConfig.amplifier));
+        if(!mobEntity.hasStatusEffect(StatusEffects.RESISTANCE)) {
+            mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 10000, resistantConfig.amplifier));
+        }
     }
 }
