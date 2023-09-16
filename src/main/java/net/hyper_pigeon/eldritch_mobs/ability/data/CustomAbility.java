@@ -82,7 +82,7 @@ public class CustomAbility implements Ability {
             ServerCommandSource commandSource = minecraftServer.getCommandSource();
             CommandManager commandManager = minecraftServer.getCommandManager();
             if (source.getAttacker() != null && source.getAttacker() instanceof LivingEntity)
-                parsedCommand = this.command.replaceAll("\\{attacker\\}", source.getAttacker().getUuidAsString());
+                parsedCommand = parsedCommand.replaceAll("\\{attacker\\}", source.getAttacker().getUuidAsString());
             ParseResults<ServerCommandSource> parseResults = commandManager.getDispatcher().parse(parsedCommand, commandSource);
             Objects.requireNonNull(entity.getServer()).getCommandManager().execute(parseResults, parsedCommand);
         }
