@@ -83,6 +83,10 @@ public class AbilityHelper {
         ALL_ABILITIES.add(new AbilityRecord<>(ability, null));
     }
 
+    public static boolean includesAbility(String abilityName) {
+        return ALL_ABILITIES.stream().anyMatch(abilityRecord -> abilityRecord.name.equals(abilityName));
+    }
+
     public static void addBlacklist(String name, List<EntityType<?>> entityTypeList) {
         ABILITY_BLACKLIST.put(name, entityTypeList);
     }
