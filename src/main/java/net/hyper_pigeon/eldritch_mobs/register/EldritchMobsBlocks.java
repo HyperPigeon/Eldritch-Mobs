@@ -8,7 +8,6 @@ import net.hyper_pigeon.eldritch_mobs.block.SoothingLanternBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
@@ -28,8 +27,7 @@ public class EldritchMobsBlocks {
     }
 
     public static final SoothingLanternBlock SOOTHING_LANTERN = new SoothingLanternBlock(
-            AbstractBlock.Settings
-                    .of(Material.METAL)
+            AbstractBlock.Settings.create()
                     .requiresTool()
                     .strength(1.5F)
                     .sounds(BlockSoundGroup.METAL)

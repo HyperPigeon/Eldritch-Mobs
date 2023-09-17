@@ -121,7 +121,7 @@ public class SummonEliteCommand {
 
     private static int execute(ServerCommandSource source, RegistryEntry.Reference<EntityType<?>> entityType, Vec3d pos, NbtCompound nbt, boolean initialize) throws CommandSyntaxException {
         Entity entity = summon(source, entityType, pos, nbt, initialize);
-        source.sendFeedback(Text.translatable("commands.summon_elite.success", new Object[]{entity.getDisplayName()}), true);
+        source.sendFeedback(() -> Text.translatable("commands.summon_elite.success", new Object[]{entity.getDisplayName()}), true);
         return 1;
     }
 

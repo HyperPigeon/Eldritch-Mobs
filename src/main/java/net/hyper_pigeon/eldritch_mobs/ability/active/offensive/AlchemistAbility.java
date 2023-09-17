@@ -45,7 +45,7 @@ public class AlchemistAbility implements Ability {
 
     @Override
     public boolean canUseAbility(MobEntity mobEntity) {
-        return mobEntity.world.getTime() > nextUseTime && mobEntity.getTarget() != null;
+        return mobEntity.getEntityWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     @Override
@@ -62,12 +62,12 @@ public class AlchemistAbility implements Ability {
                 Potion potion = target.isUndead()
                         ? (ALCHEMIST_CONFIG.useStrongHealing ? Potions.STRONG_HEALING : Potions.HEALING)
                         : (ALCHEMIST_CONFIG.useStrongHarming ? Potions.STRONG_HARMING : Potions.HARMING);
-                PotionEntity potionEntity = new PotionEntity(mobEntity.world, mobEntity);
+                PotionEntity potionEntity = new PotionEntity(mobEntity.getEntityWorld(), mobEntity);
                 potionEntity.setItem(PotionUtil.setPotion(new ItemStack(Items.SPLASH_POTION), potion));
                 potionEntity.setPitch(potionEntity.getPitch() - 20);
                 potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.25F, 8.0F);
-                mobEntity.world.spawnEntity(potionEntity);
-                nextUseTime = getCooldown() + mobEntity.world.getTime();
+                mobEntity.getEntityWorld().spawnEntity(potionEntity);
+                nextUseTime = getCooldown() + mobEntity.getEntityWorld().getTime();
             }
         }
     }

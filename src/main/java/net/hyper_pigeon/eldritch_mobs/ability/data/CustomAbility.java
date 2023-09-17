@@ -51,7 +51,7 @@ public class CustomAbility implements Ability {
 
     @Override
     public boolean canUseAbility(MobEntity mobEntity) {
-        return mobEntity.world.getTime() > nextUseTime && mobEntity.getTarget() != null;
+        return mobEntity.getEntityWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     public long getCooldown() {

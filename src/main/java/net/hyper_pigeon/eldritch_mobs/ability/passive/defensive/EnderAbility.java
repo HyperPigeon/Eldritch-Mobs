@@ -49,7 +49,7 @@ public class EnderAbility implements Ability {
     }
 
     private void teleportRandomly(LivingEntity livingEntity) {
-        if (!livingEntity.world.isClient() && livingEntity.isAlive()) {
+        if (!livingEntity.getEntityWorld().isClient() && livingEntity.isAlive()) {
             double d = livingEntity.getX() + (livingEntity.getRandom().nextDouble() - 0.5D) * 25.0D;
             double e = livingEntity.getY() + (double) (livingEntity.getRandom().nextInt(64) - 32);
             double f = livingEntity.getZ() + (livingEntity.getRandom().nextDouble() - 0.5D) * 25.0D;
@@ -60,17 +60,17 @@ public class EnderAbility implements Ability {
     private void teleportTo(double x, double y, double z, LivingEntity livingEntity) {
         BlockPos.Mutable mutable = new BlockPos.Mutable(x, y, z);
 
-        while (mutable.getY() > 0 && !livingEntity.world.getBlockState(mutable).getMaterial().blocksMovement()) {
+        while (mutable.getY() > 0 && !livingEntity.getEntityWorld().getBlockState(mutable).blocksMovement()) {
             mutable.move(Direction.DOWN);
         }
 
-        BlockState blockState = livingEntity.world.getBlockState(mutable);
-        boolean bl = blockState.getMaterial().blocksMovement();
+        BlockState blockState = livingEntity.getEntityWorld().getBlockState(mutable);
+        boolean bl = blockState.blocksMovement();
         boolean bl2 = blockState.getFluidState().isIn(FluidTags.WATER);
         if (bl && !bl2) {
             boolean bl3 = livingEntity.teleport(x, y, z, false);
             if (bl3 && !livingEntity.isSilent()) {
-                livingEntity.world.playSound(null, livingEntity.prevX, livingEntity.prevY, livingEntity.prevZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, livingEntity.getSoundCategory(), 1.0F, 1.0F);
+                livingEntity.getEntityWorld().playSound(null, livingEntity.prevX, livingEntity.prevY, livingEntity.prevZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, livingEntity.getSoundCategory(), 1.0F, 1.0F);
                 livingEntity.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
             }
         }

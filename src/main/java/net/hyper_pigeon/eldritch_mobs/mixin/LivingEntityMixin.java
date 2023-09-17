@@ -7,18 +7,22 @@ import net.hyper_pigeon.eldritch_mobs.rank.MobRank;
 import net.hyper_pigeon.eldritch_mobs.register.EldritchMobsLootTables;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.loot.LootManager;
 import net.minecraft.loot.LootTable;
+import net.minecraft.loot.context.LootContextParameterSet;
+import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.world.World;
 import org.objectweb.asm.Opcodes;
@@ -38,8 +42,6 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     @Shadow public abstract boolean addStatusEffect(StatusEffectInstance effect);
 
     @Shadow public abstract boolean hasStatusEffect(StatusEffect effect);
-
-    @Shadow protected abstract net.minecraft.loot.context.LootContext.Builder getLootContextBuilder(boolean causedByPlayer, DamageSource source);
 
     @Shadow public abstract float getHealth();
 
@@ -133,36 +135,44 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                 && (causedByPlayer || !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.onlyDropLootIfKilledByPlayers)
                 && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.disableLootDrops) {
 
-            MinecraftServer server = this.world.getServer();
+            MinecraftServer server = this.getEntityWorld().getServer();
 
             if (server != null) {
                 LootManager lootManager = server.getLootManager();
 
+                net.minecraft.loot.context.LootContextParameterSet.Builder builder = new net.minecraft.loot.context.LootContextParameterSet.Builder(
+                        (ServerWorld)this.getWorld()
+                )
+                        .add(LootContextParameters.THIS_ENTITY, this)
+                        .add(LootContextParameters.ORIGIN, this.getPos())
+                        .add(LootContextParameters.DAMAGE_SOURCE, source)
+                        .addOptional(LootContextParameters.KILLER_ENTITY, source.getAttacker())
+                        .addOptional(LootContextParameters.DIRECT_KILLER_ENTITY, source.getSource());
+
+                LootContextParameterSet lootContextParameterSet = builder.build(LootContextTypes.ENTITY);
+
                 switch (EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank()) {
                     case ELITE -> {
-                        LootTable lootTable = lootManager.getTable(EldritchMobsLootTables.ELITE_LOOT_ID);
-                        net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
-                        lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+                        LootTable lootTable = lootManager.getLootTable(EldritchMobsLootTables.ELITE_LOOT_ID);
+                        lootTable.generateLoot(lootContextParameterSet,this::dropStack);
                     }
                     case ULTRA -> {
-                        LootTable lootTable = lootManager.getTable(EldritchMobsLootTables.ULTRA_LOOT_ID);
-                        net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
-                        lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+                        LootTable lootTable = lootManager.getLootTable(EldritchMobsLootTables.ULTRA_LOOT_ID);
+                        lootTable.generateLoot(lootContextParameterSet,this::dropStack);
                         if (EldritchMobsMod.ELDRITCH_MOBS_CONFIG.combinedLootDrop) {
-                            LootTable eliteLootTable = lootManager.getTable(EldritchMobsLootTables.ELITE_LOOT_ID);
-                            eliteLootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+                            LootTable eliteLootTable = lootManager.getLootTable(EldritchMobsLootTables.ELITE_LOOT_ID);
+                            eliteLootTable.generateLoot(lootContextParameterSet,this::dropStack);
                         }
                     }
                     case ELDRITCH -> {
-                        LootTable lootTable = lootManager.getTable(EldritchMobsLootTables.ELDRITCH_LOOT_ID);
-                        net.minecraft.loot.context.LootContext.Builder builder = this.getLootContextBuilder(causedByPlayer, source);
-                        lootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+                        LootTable lootTable = lootManager.getLootTable(EldritchMobsLootTables.ELDRITCH_LOOT_ID);
+                        lootTable.generateLoot(lootContextParameterSet,this::dropStack);
                         if (EldritchMobsMod.ELDRITCH_MOBS_CONFIG.combinedLootDrop) {
-                            LootTable eliteLootTable = lootManager.getTable(EldritchMobsLootTables.ELITE_LOOT_ID);
-                            eliteLootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+                            LootTable eliteLootTable = lootManager.getLootTable(EldritchMobsLootTables.ELITE_LOOT_ID);
+                            eliteLootTable.generateLoot(lootContextParameterSet,this::dropStack);
 
-                            LootTable ultraLootTable = lootManager.getTable(EldritchMobsLootTables.ULTRA_LOOT_ID);
-                            ultraLootTable.generateLoot(builder.build(LootContextTypes.ENTITY), this::dropStack);
+                            LootTable ultraLootTable = lootManager.getLootTable(EldritchMobsLootTables.ULTRA_LOOT_ID);
+                            ultraLootTable.generateLoot(lootContextParameterSet,this::dropStack);
                         }
                     }
                     default -> {}

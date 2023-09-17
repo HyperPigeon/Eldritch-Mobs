@@ -38,7 +38,7 @@ public class StarvingAbility implements Ability {
 
     @Override
     public boolean canUseAbility(MobEntity mobEntity) {
-        return mobEntity.world.getTime() > nextUseTime && mobEntity.getTarget() != null;
+        return mobEntity.getEntityWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     @Override

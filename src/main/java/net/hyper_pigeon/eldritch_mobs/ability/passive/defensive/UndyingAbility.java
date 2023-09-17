@@ -42,7 +42,7 @@ public class UndyingAbility implements Ability {
             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.REGENERATION, undyingConfig.regenerationDuration, undyingConfig.regenerationAmplifier));
             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.ABSORPTION, undyingConfig.absorptionDuration, undyingConfig.absorptionAmplifier));
             entity.addStatusEffect(new StatusEffectInstance(StatusEffects.FIRE_RESISTANCE, undyingConfig.fireResistanceDuration, 0));
-            entity.world.sendEntityStatus(entity, (byte) 35);
+            entity.getEntityWorld().sendEntityStatus(entity, (byte) 35);
 
             abilityUsed = true;
         }
