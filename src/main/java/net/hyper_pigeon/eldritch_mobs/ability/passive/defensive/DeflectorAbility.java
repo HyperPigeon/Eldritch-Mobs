@@ -8,8 +8,8 @@ import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.registry.tag.DamageTypeTags;
 
 public class DeflectorAbility implements Ability {
 
@@ -37,7 +37,7 @@ public class DeflectorAbility implements Ability {
 
     @Override
     public void onDamaged(LivingEntity entity, DamageSource source, float amount) {
-        if (source instanceof ProjectileDamageSource && (source.getSource() instanceof PersistentProjectileEntity projectileEntity)) {
+        if (source.isIn(DamageTypeTags.IS_PROJECTILE) && (source.getSource() instanceof PersistentProjectileEntity projectileEntity)) {
 
             if (projectileEntity.getOwner() != null) {
                 Entity owner = projectileEntity.getOwner();

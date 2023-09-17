@@ -6,11 +6,11 @@ import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityHelper;
 import net.minecraft.entity.EntityType;
+import net.minecraft.registry.Registries;
 import net.minecraft.resource.JsonDataLoader;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
-import net.minecraft.util.registry.Registry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +37,9 @@ public class AbilityBlacklistManager extends JsonDataLoader implements Identifia
                 String namespace = entry.getAsString();
                 if (namespace.contains("minecraft:")) {
                     String[] split_namespace = namespace.split(":");
-                    entityTypeList.add(Registry.ENTITY_TYPE.get(Identifier.tryParse(split_namespace[1])));
+                    entityTypeList.add(Registries.ENTITY_TYPE.get(Identifier.tryParse(split_namespace[1])));
                 } else {
-                    entityTypeList.add(Registry.ENTITY_TYPE.get(Identifier.tryParse(namespace)));
+                    entityTypeList.add(Registries.ENTITY_TYPE.get(Identifier.tryParse(namespace)));
                 }
             }
 

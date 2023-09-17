@@ -40,7 +40,7 @@ public class DuplicatorAbility implements Ability {
             long time = entity.getEntityWorld().getTime();
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
-                entity.getType().spawn((ServerWorld) entity.getEntityWorld(), null, null, null, entity.getBlockPos(), SpawnReason.REINFORCEMENT, true, true);
+                entity.getType().spawn((ServerWorld) entity.getEntityWorld(), entity.getBlockPos(), SpawnReason.REINFORCEMENT);
             }
         }
     }

@@ -8,10 +8,10 @@ import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
+import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
@@ -41,7 +41,7 @@ public class EnderAbility implements Ability {
 
     @Override
     public void onDamaged(LivingEntity entity, DamageSource source, float amount) {
-        if ((source instanceof ProjectileDamageSource) && (source.getSource() instanceof PersistentProjectileEntity)) {
+        if (source.isIn(DamageTypeTags.IS_PROJECTILE) && (source.getSource() instanceof PersistentProjectileEntity)) {
             for (int i = 0; i < 32; ++i) {
                 teleportRandomly(entity);
             }

@@ -30,7 +30,7 @@ public class ThornyAbility implements Ability {
     @Override
     public void onDamaged(LivingEntity entity, DamageSource source, float amount) {
         if (source.getAttacker() != null && source.getAttacker().isAlive()) {
-            source.getAttacker().damage(DamageSource.MAGIC, (float) (amount * thornyConfig.thornyReturnDamage));
+            source.getAttacker().damage(entity.getDamageSources().magic(), (float) (amount * thornyConfig.thornyReturnDamage));
         }
     }
 }

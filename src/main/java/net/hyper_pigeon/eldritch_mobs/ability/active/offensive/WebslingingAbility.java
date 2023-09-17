@@ -49,14 +49,16 @@ public class WebslingingAbility implements Ability {
                 nextUseTime = time + cooldown;
                 LivingEntity target = mobEntity.getTarget();
 
-                double x = target.getX();
-                double y = target.getY() + 1;
-                double z = target.getZ();
+                int x = (int) target.getX();
+                int y = (int) (target.getY() + 1);
+                int z = (int) target.getZ();
 
-                if (target.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock().equals(Blocks.AIR) ||
-                        target.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock().equals(Blocks.CAVE_AIR)
-                        || target.getEntityWorld().getBlockState(new BlockPos(x, y, z)).getBlock().equals(Blocks.VOID_AIR)) {
-                    target.getEntityWorld().setBlockState(new BlockPos(x, y, z), Blocks.COBWEB.getDefaultState());
+                BlockPos blockPos = new BlockPos(x,y,z);
+
+                if (target.getEntityWorld().getBlockState(blockPos).getBlock().equals(Blocks.AIR) ||
+                        target.getEntityWorld().getBlockState(blockPos).getBlock().equals(Blocks.CAVE_AIR)
+                        || target.getEntityWorld().getBlockState(blockPos).getBlock().equals(Blocks.VOID_AIR)) {
+                    target.getEntityWorld().setBlockState(blockPos, Blocks.COBWEB.getDefaultState());
                 }
 
             }

@@ -1,6 +1,7 @@
 package net.hyper_pigeon.eldritch_mobs.block;
 
-import eu.pb4.polymer.api.block.PolymerHeadBlock;
+
+import eu.pb4.polymer.core.api.block.PolymerHeadBlock;
 import net.hyper_pigeon.eldritch_mobs.persistent_state.SoothingLanternPersistentState;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -8,8 +9,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.particle.ParticleType;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -46,7 +47,9 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
     @Override public Block getPolymerBlock(final BlockState state) {
         return getPolymerBlock();
     }
-    @Override public String getPolymerSkinValue(final BlockState state) {
+
+    @Override
+    public String getPolymerSkinValue(BlockState state, BlockPos pos, ServerPlayerEntity player) {
         return state.get(LIT) ? ACTIVE_SKIN : INACTIVE_SKIN;
     }
 
@@ -93,7 +96,7 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
             boolean isLit = state.get(LIT);
             if (isLit != world.isReceivingRedstonePower(pos)) {
                 // If the block is lit and is not receiving redstone power, turn it off.
-                if (isLit) world.createAndScheduleBlockTick(pos, this, 4);
+                if (isLit) world.scheduleBlockTick(pos, this, 4);
                 // If the block is not lit and is receiving redstone power, turn it on.
                 // Also add the chunk to the persistent state.
                 else {
@@ -118,4 +121,6 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
     protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(LIT);
     }
+
+
 }

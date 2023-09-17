@@ -8,8 +8,15 @@ import net.hyper_pigeon.eldritch_mobs.command.SummonUltraCommand;
 public class EldritchMobsCommands {
 
     public static void init() {
-        CommandRegistrationCallback.EVENT.register(SummonEliteCommand::register);
-        CommandRegistrationCallback.EVENT.register(SummonUltraCommand::register);
-        CommandRegistrationCallback.EVENT.register(SummonEldritchCommand::register);
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+            SummonEliteCommand.register(dispatcher,registryAccess);
+        }
+        );
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+            SummonUltraCommand.register(dispatcher,registryAccess);
+        });
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+            SummonEldritchCommand.register(dispatcher,registryAccess);
+        });
     }
 }
