@@ -51,9 +51,10 @@ public class MobModifierComponent implements ModifierComponent {
     }
 
     public boolean canBeBuffed(MobEntity mobEntity) {
-        return this.rank == MobRank.UNDECIDED && !(mobEntity.hasCustomName() && EldritchMobsMod.ELDRITCH_MOBS_CONFIG.ignoreNamedMobs)
-                && (mobEntity.getType().isIn(EldritchMobTagKeys.ALLOWED)
-                && !mobEntity.getType().isIn(EldritchMobTagKeys.BLACKLIST)
+        return this.rank == MobRank.UNDECIDED &&
+                (mobEntity.getType().isIn(EldritchMobTagKeys.ALLOWED)
+                && !mobEntity.getType().isIn(EldritchMobTagKeys.BLACKLIST) &&
+                !(mobEntity.hasCustomName() && EldritchMobsMod.ELDRITCH_MOBS_CONFIG.ignoreNamedMobs)
         );
     }
 
