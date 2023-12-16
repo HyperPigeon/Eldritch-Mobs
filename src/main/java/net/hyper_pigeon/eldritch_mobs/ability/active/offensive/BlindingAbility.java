@@ -18,7 +18,7 @@ public class BlindingAbility implements Ability {
 
     @Override
     public String getName() {
-        return "Blinding";
+        return BLINDING_CONFIG.name;
     }
 
     @Override
