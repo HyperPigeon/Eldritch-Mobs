@@ -16,7 +16,7 @@ public class StormyAbility implements Ability {
 
     private final EldritchMobsConfig.StormyConfig stormyConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.stormyConfig;
     private final long cooldown = stormyConfig.cooldown;
-    private long nextUseTime = 0;
+    private long nextUseTime = 100;
 
     @Override
     public String getName() {

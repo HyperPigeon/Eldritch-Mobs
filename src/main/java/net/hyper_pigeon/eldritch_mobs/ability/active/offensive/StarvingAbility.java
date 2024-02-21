@@ -14,7 +14,7 @@ public class StarvingAbility implements Ability {
 
     private final EldritchMobsConfig.StarvingConfig starvingConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.starvingConfig;
     private final long cooldown = starvingConfig.cooldown;
-    private long nextUseTime = 0L;
+    private long nextUseTime = 100L;
 
     @Override
     public String getName() {

@@ -14,7 +14,7 @@ public class BlindingAbility implements Ability {
 
     private final EldritchMobsConfig.BlindingConfig BLINDING_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.blindingConfig;
     private final long cooldown = BLINDING_CONFIG.cooldown;
-    private long nextUseTime = 0L;
+    private long nextUseTime = 100L;
 
     @Override
     public String getName() {

@@ -14,7 +14,7 @@ public class DrainingAbility implements Ability {
 
     private final EldritchMobsConfig.DrainingConfig drainingConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.drainingConfig;
     private final long cooldown = drainingConfig.cooldown;
-    private long nextUseTime = 0L;
+    private long nextUseTime = 100L;
 
     @Override
     public String getName() {

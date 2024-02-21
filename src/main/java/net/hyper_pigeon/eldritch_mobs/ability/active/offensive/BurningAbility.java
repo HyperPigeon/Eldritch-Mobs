@@ -12,7 +12,7 @@ public class BurningAbility implements Ability {
 
     private final EldritchMobsConfig.BurningConfig burningConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.burningConfig;
     private final long cooldown = burningConfig.cooldown;
-    private long nextUseTime = 0L;
+    private long nextUseTime = 100L;
 
     @Override
     public String getName() {

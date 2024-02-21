@@ -14,7 +14,7 @@ public class GhastlyAbility implements Ability {
 
     private final EldritchMobsConfig.GhastlyConfig ghastlyConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.ghastlyConfig;
     private final long cooldown = ghastlyConfig.cooldown;
-    private long nextUseTime = 0L;
+    private long nextUseTime = 100L;
 
     @Override
     public String getName() {

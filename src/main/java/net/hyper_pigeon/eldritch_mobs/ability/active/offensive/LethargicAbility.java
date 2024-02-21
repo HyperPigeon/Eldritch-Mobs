@@ -14,7 +14,7 @@ public class LethargicAbility implements Ability {
 
     private final EldritchMobsConfig.LethargicConfig lethargicConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.lethargicConfig;
     private final long cooldown = lethargicConfig.cooldown;
-    private long nextUseTime = 0L;
+    private long nextUseTime = 100L;
 
     @Override
     public String getName() {

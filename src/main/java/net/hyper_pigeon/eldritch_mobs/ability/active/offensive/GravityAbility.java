@@ -16,7 +16,7 @@ public class GravityAbility implements Ability {
 
     private final EldritchMobsConfig.GravityConfig gravityConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.gravityConfig;
     private final long cooldown = gravityConfig.cooldown;
-    private long nextUseTime = 0;
+    private long nextUseTime = 100;
 
     @Override
     public String getName() {

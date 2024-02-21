@@ -14,7 +14,7 @@ public class WeaknessAbility implements Ability {
 
     private final EldritchMobsConfig.WeaknessConfig weaknessConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.weaknessConfig;
     private final long cooldown = weaknessConfig.cooldown;
-    private long nextUseTime = 0L;
+    private long nextUseTime = 100L;
 
     @Override
     public String getName() {

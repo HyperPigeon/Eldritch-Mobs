@@ -14,7 +14,7 @@ public class WebslingingAbility implements Ability {
 
     private final EldritchMobsConfig.WebslingingConfig webslingingConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.webslingingConfig;
     private final long cooldown = webslingingConfig.cooldown;
-    private long nextUseTime = 0L;
+    private long nextUseTime = 100L;
 
     @Override
     public String getName() {

@@ -13,7 +13,7 @@ public class DuplicatorAbility implements Ability {
 
     private final EldritchMobsConfig.DuplicatorConfig duplicatorConfig = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.duplicatorConfig;
     private final long cooldown = duplicatorConfig.cooldown;
-    private long nextUseTime = 0;
+    private long nextUseTime = 100;
 
     @Override
     public String getName() {

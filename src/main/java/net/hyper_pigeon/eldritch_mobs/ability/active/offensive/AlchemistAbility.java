@@ -20,7 +20,7 @@ public class AlchemistAbility implements Ability {
 
     private final EldritchMobsConfig.AlchemistConfig ALCHEMIST_CONFIG = EldritchMobsMod.ELDRITCH_MOBS_CONFIG.alchemistConfig;
     private final long cooldown = ALCHEMIST_CONFIG.cooldown;
-    private long nextUseTime = 0;
+    private long nextUseTime = 100;
 
 
     @Override
