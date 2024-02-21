@@ -25,8 +25,8 @@ public class GameRendererMixin implements GameRendererExtensions {
 	@Unique
 	Entity targetedEldritch;
 
-	@Final
 	@Shadow
+	@Final
 	MinecraftClient client;
 
 	@Inject(
