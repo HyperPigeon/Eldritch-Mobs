@@ -29,10 +29,11 @@
     "eldritch_mobs.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.14.6",
+    "fabricloader": ">=0.15.0",
     "fabric": "*",
     "minecraft": "~1.20",
-    "java": ">=17"
+    "java": ">=17",
+    "cloth-config": ">=11.0.0"
   },
   "custom": {
     "cardinal-components": [

@@ -3,6 +3,13 @@
   "minVersion": "0.8",
   "package": "net.hyper_pigeon.eldritch_mobs.mixin",
   "compatibilityLevel": "JAVA_17",
+  "client": [
+    "client.EntityRenderDispatcherMixin",
+    "client.GameRendererMixin",
+    "client.MinecraftClientMixin",
+    "client.MobEntityRendererMixin",
+    "client.WorldRendererMixin"
+  ],
   "mixins": [
     "LivingEntityMixin",
     "MobEntityMixin",
