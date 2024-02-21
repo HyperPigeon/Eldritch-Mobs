@@ -35,15 +35,15 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
     @Inject(method = "tick", at = @At("TAIL"))
     public void isLookingAtBuffedEntity(CallbackInfo ci) {
         if (EldritchMobsMod.ELDRITCH_MOBS_CONFIG.crosshairBossBars && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.turnOffBossBars) {
-            Vec3d vec3d = getEyePos();
-            Vec3d vec3d2 = getRotationVec(1.0F);
-            Vec3d vec3d3 = vec3d.add(vec3d2.x * 100.0D, vec3d2.y * 100.0D, vec3d2.z * 100.0D);
+            Vec3d cameraVec = getCameraPosVec(1.0F);
+            Vec3d rotationVec = getRotationVec(1.0F);
+            Vec3d reachVec = cameraVec.add(rotationVec.multiply(64.0D));
             EntityHitResult entityHitResult = ProjectileUtil.getEntityCollision(
                     getServerWorld(),
                     (ServerPlayerEntity) (Object) this,
-                    vec3d,
-                    vec3d3,
-                    new Box(vec3d, vec3d3).expand(1.0D),
+                    cameraVec,
+                    reachVec,
+                    new Box(cameraVec, reachVec).expand(1.0D),
                     (entityX) -> !entityX.isSpectator()
                             && entityX instanceof MobEntity
                             && EldritchMobsMod.getRank((ComponentProvider) entityX) != MobRank.NONE

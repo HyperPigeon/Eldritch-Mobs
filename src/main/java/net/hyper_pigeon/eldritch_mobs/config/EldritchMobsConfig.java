@@ -59,6 +59,9 @@ public class EldritchMobsConfig implements ConfigData {
     @Comment("Buffed mobs have generic titles w/o abilities")
     public boolean genericTitles = false;
 
+    @Comment("Allows to see eldritch mobs' name tags from any distance")
+    public boolean distantVisibleNameTags = false;
+
     @ConfigEntry.Gui.CollapsibleObject
     public AlchemistConfig alchemistConfig = new AlchemistConfig();
 

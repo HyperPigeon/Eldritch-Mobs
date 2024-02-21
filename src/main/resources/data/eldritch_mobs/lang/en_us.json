@@ -24,6 +24,7 @@
   "text.autoconfig.eldritch_mobs.option.turnOnGlowingMobs": "Buffed mobs glow after being damaged",
   "text.autoconfig.eldritch_mobs.option.onlyDropLootIfKilledByPlayers": "Buffed mobs only drop loot when killed by a player",
   "text.autoconfig.eldritch_mobs.option.combinedLootDrop": "Buffed mobs drop loot of tier below them",
+  "text.autoconfig.eldritch_mobs.option.distantVisibleNameTags": "Show elditch mobs' name tags from anywhere",
   "text.autoconfig.eldritch_mobs.option.alchemistConfig": "Alchemist",
   "text.autoconfig.eldritch_mobs.option.berserkConfig": "Berserk",
   "text.autoconfig.eldritch_mobs.option.blindingConfig": "Blinding",
