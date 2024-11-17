@@ -43,8 +43,8 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	// Cardinal Components
-	modImplementation include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_version}")
-	modImplementation include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_version}")
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_version}"
+	modImplementation "dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_version}"
 
 	// Cloth Config
 	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.config_version}") { exclude(group: 'net.fabricmc.fabric-api') }
