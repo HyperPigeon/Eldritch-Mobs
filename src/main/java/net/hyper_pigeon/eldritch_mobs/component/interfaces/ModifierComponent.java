@@ -28,4 +28,9 @@ public interface ModifierComponent extends Component, ServerTickingComponent, Au
     void increaseHealth();
 
     ServerBossBar getBossBar();
+
+    @Override
+    default boolean isRequiredOnClient() {
+        return false;
+    }
 }
