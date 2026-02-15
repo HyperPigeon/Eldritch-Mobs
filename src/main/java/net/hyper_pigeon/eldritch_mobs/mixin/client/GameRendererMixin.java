@@ -22,20 +22,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin implements GameRendererExtensions {
-	@Unique
-	Entity targetedEldritch;
 
-	@Shadow
-	@Final
-	MinecraftClient client;
+	@Unique
+	private Entity targetedEldritch;
+
+	@Shadow @Final
+	private MinecraftClient client;
 
 	@Inject(
 			method = "renderWorld",
-			at = @At(
-					value = "INVOKE",
-					target = "Lnet/minecraft/client/MinecraftClient;getProfiler()Lnet/minecraft/util/profiler/Profiler;",
-					ordinal = 0
-			)
+			at = @At("HEAD")
 	)
 	private void injectUpdateOnGameRenderer(RenderTickCounter tickCounter, CallbackInfo ci) {
 		this.eldritch_mobs$updateTargetedEldritch(tickCounter.getTickDelta(true));
@@ -44,19 +40,30 @@ public class GameRendererMixin implements GameRendererExtensions {
 	@Override
 	public void eldritch_mobs$updateTargetedEldritch(float tickDelta) {
 		if (this.client.targetedEntity == null) {
-			var camera = this.client.getCameraEntity();
+			Entity camera = this.client.getCameraEntity();
 			this.targetedEldritch = null;
+
 			if (camera != null && this.client.world != null) {
 				var cameraVec = camera.getCameraPosVec(tickDelta);
 				var rotationVec = camera.getRotationVec(1.0F);
 				var reachVec = cameraVec.add(rotationVec.multiply(64.0));
-				var box = camera.getBoundingBox().stretch(rotationVec.multiply(64.0)).expand(1.0);
+				var box = camera.getBoundingBox()
+						.stretch(rotationVec.multiply(64.0))
+						.expand(1.0);
 
-				var hitResult = ProjectileUtil.raycast(camera, cameraVec, reachVec, box, entity -> !entity.isSpectator()
-                        && entity.canHit()
-						&& entity instanceof MobEntity
-                        && EldritchMobsMod.getRank((ComponentProvider) entity) != MobRank.NONE
-                        && EldritchMobsMod.getRank((ComponentProvider) entity) != MobRank.UNDECIDED, 4096.0);
+				var hitResult = ProjectileUtil.raycast(
+						camera,
+						cameraVec,
+						reachVec,
+						box,
+						entity -> !entity.isSpectator()
+								&& entity.canHit()
+								&& entity instanceof MobEntity
+								&& EldritchMobsMod.getRank((ComponentProvider) entity) != MobRank.NONE
+								&& EldritchMobsMod.getRank((ComponentProvider) entity) != MobRank.UNDECIDED,
+						4096.0
+				);
+
 				if (hitResult != null) {
 					this.targetedEldritch = hitResult.getEntity();
 				}
@@ -69,3 +76,4 @@ public class GameRendererMixin implements GameRendererExtensions {
 		return this.targetedEldritch;
 	}
 }
+

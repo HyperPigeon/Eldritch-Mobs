@@ -4,6 +4,7 @@ package net.hyper_pigeon.eldritch_mobs.register;
 import eu.pb4.polymer.core.api.block.PolymerHeadBlock;
 import eu.pb4.polymer.core.api.item.PolymerHeadBlockItem;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
+import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
 import net.hyper_pigeon.eldritch_mobs.block.SoothingLanternBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -12,6 +13,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroups;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Identifier;
@@ -27,7 +30,7 @@ public class EldritchMobsBlocks {
     }
 
     public static final SoothingLanternBlock SOOTHING_LANTERN = new SoothingLanternBlock(
-            AbstractBlock.Settings.create()
+            AbstractBlock.Settings.create().registryKey(RegistryKey.of(RegistryKeys.BLOCK, Identifier.of(EldritchMobsMod.MOD_ID, "soothing_lantern")))
                     .requiresTool()
                     .strength(1.5F)
                     .sounds(BlockSoundGroup.METAL)
@@ -40,7 +43,9 @@ public class EldritchMobsBlocks {
 
 
     public static void init() {
-        registerHeadBlock("soothing_lantern", SOOTHING_LANTERN, new Item.Settings().maxCount(1));
+        registerHeadBlock("soothing_lantern", SOOTHING_LANTERN, new Item.Settings()
+                .registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(EldritchMobsMod.MOD_ID, "soothing_lantern")))
+                .maxCount(1));
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.REDSTONE).register((itemGroup) -> itemGroup.add(SOOTHING_LANTERN));
     }
 

@@ -1,10 +1,8 @@
 package net.hyper_pigeon.eldritch_mobs.ability.data;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.hyper_pigeon.eldritch_mobs.ability.AbilityHelper;
+import net.hyper_pigeon.eldritch_mobs.ability.data.records.AbilityBlacklistData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.JsonDataLoader;
@@ -16,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AbilityBlacklistManager extends JsonDataLoader implements IdentifiableResourceReloadListener {
+public class AbilityBlacklistManager extends JsonDataLoader<AbilityBlacklistData> implements IdentifiableResourceReloadListener {
     public AbilityBlacklistManager() {
-        super(new Gson(), "ability_blacklist");
+        super(AbilityBlacklistData.CODEC, "ability_blacklist");
     }
 
     @Override
@@ -27,24 +25,16 @@ public class AbilityBlacklistManager extends JsonDataLoader implements Identifia
     }
 
     @Override
-    protected void apply(Map<Identifier, JsonElement> prepared, ResourceManager manager, Profiler profiler) {
-        prepared.forEach((id, element) -> {
-            JsonObject jsonObject = element.getAsJsonObject();
-            String name = jsonObject.get("name").getAsString();
+    protected void apply(Map<Identifier, AbilityBlacklistData> prepared , ResourceManager manager, Profiler profiler) {
+        prepared.forEach((id, data) -> {
 
             List<EntityType<?>> entityTypeList = new ArrayList<>();
-            for (var entry : element.getAsJsonObject().get("entities").getAsJsonArray()) {
-                String namespace = entry.getAsString();
-                if (namespace.contains("minecraft:")) {
-                    String[] split_namespace = namespace.split(":");
-                    entityTypeList.add(Registries.ENTITY_TYPE.get(Identifier.tryParse(split_namespace[1])));
-                } else {
-                    entityTypeList.add(Registries.ENTITY_TYPE.get(Identifier.tryParse(namespace)));
-                }
+
+            for (Identifier identifier : data.entities()) {
+                entityTypeList.add(Registries.ENTITY_TYPE.get(identifier));
             }
 
-            AbilityHelper.addBlacklist(name, entityTypeList);
-
+            AbilityHelper.addBlacklist(data.name(), entityTypeList);
         });
     }
 }

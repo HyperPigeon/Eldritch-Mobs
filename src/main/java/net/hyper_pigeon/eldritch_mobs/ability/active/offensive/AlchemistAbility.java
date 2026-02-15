@@ -64,7 +64,7 @@ public class AlchemistAbility implements Ability {
                 RegistryEntry<Potion> potion = target.hasInvertedHealingAndHarm()
                         ? (ALCHEMIST_CONFIG.useStrongHealing ? Potions.STRONG_HEALING : Potions.HEALING)
                         : (ALCHEMIST_CONFIG.useStrongHarming ? Potions.STRONG_HARMING : Potions.HARMING);
-                PotionEntity potionEntity = new PotionEntity(mobEntity.getEntityWorld(), mobEntity);
+                PotionEntity potionEntity = new PotionEntity(mobEntity.getEntityWorld(), mobEntity, PotionContentsComponent.createStack(Items.SPLASH_POTION, potion));
                 potionEntity.setItem(PotionContentsComponent.createStack(Items.SPLASH_POTION, potion));
                 potionEntity.setPitch(potionEntity.getPitch() - 20);
                 potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.25F, 8.0F);
