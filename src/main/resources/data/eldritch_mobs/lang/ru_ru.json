@@ -1,5 +1,6 @@
 {
   "block.eldritch_mobs.soothing_lantern": "Успокаивающий фонарь",
+  "item.eldritch_mobs.soothing_lantern": "Успокаивающий фонарь",
   "text.autoconfig.eldritch_mobs.title": "Настройки сверхъестественных мобов",
   "text.autoconfig.eldritch_mobs.option.EliteSpawnRates": "Частота появления элит",
   "text.autoconfig.eldritch_mobs.option.UltraSpawnRates": "Частота появления ультр",
