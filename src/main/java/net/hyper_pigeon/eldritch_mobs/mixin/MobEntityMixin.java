@@ -44,7 +44,7 @@ public abstract class MobEntityMixin extends LivingEntity implements ComponentPr
         }
     }
 
-    @Inject(at = @At("HEAD"), method = "getXpToDrop")
+    @Inject(at = @At("HEAD"), method = "getExperienceToDrop")
     protected void multiplyXpDrop(CallbackInfoReturnable<Integer> cir) {
         if (EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank() != MobRank.NONE && EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank() != MobRank.UNDECIDED) {
             switch (EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank()) {

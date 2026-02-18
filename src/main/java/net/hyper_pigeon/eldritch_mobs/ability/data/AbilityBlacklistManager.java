@@ -6,6 +6,7 @@ import net.hyper_pigeon.eldritch_mobs.ability.data.records.AbilityBlacklistData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.JsonDataLoader;
+import net.minecraft.resource.ResourceFinder;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 public class AbilityBlacklistManager extends JsonDataLoader<AbilityBlacklistData> implements IdentifiableResourceReloadListener {
     public AbilityBlacklistManager() {
-        super(AbilityBlacklistData.CODEC, "ability_blacklist");
+        super(AbilityBlacklistData.CODEC, ResourceFinder.json("ability_blacklist"));
     }
 
     @Override
