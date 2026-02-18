@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(MobEntityRenderer.class)
 public class MobEntityRendererMixin {
     @WrapOperation(
-            method = "hasLabel(Lnet/minecraft/entity/mob/MobEntity;)Z",
+            method = "hasLabel(Lnet/minecraft/entity/mob/MobEntity;D)Z",
             at = @At(
                     value = "FIELD",
                     target = "Lnet/minecraft/client/render/entity/EntityRenderDispatcher;targetedEntity:Lnet/minecraft/entity/Entity;"

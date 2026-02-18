@@ -13,9 +13,9 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.loot.LootTable;
-import net.minecraft.loot.context.LootContextParameterSet;
 import net.minecraft.loot.context.LootContextParameters;
 import net.minecraft.loot.context.LootContextTypes;
+import net.minecraft.loot.context.LootWorldContext;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -28,6 +28,7 @@ import org.ladysnake.cca.api.v3.component.ComponentProvider;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -37,15 +38,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class LivingEntityMixin extends Entity implements ComponentProvider {
 
 
-    @Shadow public abstract boolean damage(DamageSource source, float amount);
+    @Unique
+    public abstract boolean damage(DamageSource source, float amount);
 
     @Shadow public abstract boolean addStatusEffect(StatusEffectInstance effect);
 
     @Shadow public abstract boolean hasStatusEffect(RegistryEntry<StatusEffect> effect);
-
-    @Shadow public abstract float getHealth();
-
-    @Shadow public abstract RegistryKey<LootTable> getLootTable();
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
@@ -70,8 +68,8 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
         }
     }
 
-    @Inject(method = "damage", at = @At("TAIL"))
-    private void applyOnDamageAbilities(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "damage", at = @At("TAIL"), cancellable = true)
+    private void applyOnDamageAbilities(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         if (this.getType() != EntityType.PLAYER && notNormal(this)) {
             ActionResult result = onDamagedCallback.ON_DAMAGED.invoker().onDamaged((LivingEntity) (Object) (this), source, amount);
 
@@ -86,8 +84,8 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
         }
     }
 
-    @Inject(method = "damage", at = @At("TAIL"))
-    private void applyOnDamageToTarget(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "damage", at = @At("TAIL"), cancellable = true)
+    private void applyOnDamageToTarget(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         Entity attacker = source.getAttacker();
         if (
                 attacker instanceof LivingEntity
@@ -132,7 +130,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
     }
 
     @Inject(at = @At("TAIL"), method = "dropLoot")
-    protected void dropBonusLoot(DamageSource source, boolean causedByPlayer, CallbackInfo info) {
+    protected void dropBonusLoot(ServerWorld world, DamageSource damageSource, boolean causedByPlayer, CallbackInfo ci) {
         if (this.getType() != EntityType.PLAYER && notNormal(this)
                 && (causedByPlayer || !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.onlyDropLootIfKilledByPlayers)
                 && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.disableLootDrops) {
@@ -140,16 +138,16 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
             MinecraftServer server = this.getEntityWorld().getServer();
 
             if (server != null) {
-                net.minecraft.loot.context.LootContextParameterSet.Builder builder = new net.minecraft.loot.context.LootContextParameterSet.Builder(
+                LootWorldContext.Builder builder = new LootWorldContext.Builder(
                         (ServerWorld)this.getWorld()
                 )
                         .add(LootContextParameters.THIS_ENTITY, this)
                         .add(LootContextParameters.ORIGIN, this.getPos())
-                        .add(LootContextParameters.DAMAGE_SOURCE, source)
-                        .addOptional(LootContextParameters.ATTACKING_ENTITY, source.getAttacker())
-                        .addOptional(LootContextParameters.DIRECT_ATTACKING_ENTITY, source.getSource());
+                        .add(LootContextParameters.DAMAGE_SOURCE, damageSource)
+                        .addOptional(LootContextParameters.ATTACKING_ENTITY, damageSource.getAttacker())
+                        .addOptional(LootContextParameters.DIRECT_ATTACKING_ENTITY, damageSource.getSource());
 
-                LootContextParameterSet lootContextParameterSet = builder.build(LootContextTypes.ENTITY);
+                LootWorldContext lootContextParameterSet = builder.build(LootContextTypes.ENTITY);
 
                 LootTable eliteLootTable = this.getWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ELITE_LOOT_ID));
                 LootTable ultraLootTable = this.getWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ULTRA_LOOT_ID));
@@ -158,20 +156,20 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                 switch (EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank()) {
                     case ELITE -> {
                         LootTable lootTable = this.getWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ELITE_LOOT_ID));
-                        lootTable.generateLoot(lootContextParameterSet,this::dropStack);
+                        lootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getWorld(), stack));
                     }
                     case ULTRA -> {
                         LootTable lootTable = this.getWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ULTRA_LOOT_ID));
-                        lootTable.generateLoot(lootContextParameterSet,this::dropStack);
+                        lootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getWorld(), stack));
                         if (EldritchMobsMod.ELDRITCH_MOBS_CONFIG.combinedLootDrop) {
-                            eliteLootTable.generateLoot(lootContextParameterSet,this::dropStack);
+                            eliteLootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getWorld(), stack));
                         }
                     }
                     case ELDRITCH -> {
-                        eldritchLootTable.generateLoot(lootContextParameterSet,this::dropStack);
+                        eldritchLootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getWorld(), stack));
                         if (EldritchMobsMod.ELDRITCH_MOBS_CONFIG.combinedLootDrop) {
-                            eliteLootTable.generateLoot(lootContextParameterSet,this::dropStack);
-                            ultraLootTable.generateLoot(lootContextParameterSet,this::dropStack);
+                            eliteLootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getWorld(), stack));
+                            ultraLootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getWorld(), stack));
                         }
                     }
                     default -> {}

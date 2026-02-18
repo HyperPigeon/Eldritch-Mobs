@@ -10,6 +10,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.MobEntity;
+import net.minecraft.server.world.ServerWorld;
 
 public class DrowningAbility implements Ability {
 
@@ -35,7 +36,8 @@ public class DrowningAbility implements Ability {
         if (!mobEntity.getEntityWorld().isClient() && mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
             LivingEntity target = mobEntity.getTarget();
             if (!(target.hasStatusEffect(StatusEffects.WATER_BREATHING))) {
-                target.damage(mobEntity.getDamageSources().drown(), drowningConfig.drowningDamage);
+                //world can be cast because we query if it is !client
+                target.damage((ServerWorld) mobEntity.getEntityWorld(), mobEntity.getDamageSources().drown(), drowningConfig.drowningDamage);
             }
         }
     }

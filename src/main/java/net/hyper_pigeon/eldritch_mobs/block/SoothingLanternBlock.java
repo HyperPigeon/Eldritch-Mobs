@@ -21,6 +21,7 @@ import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
+import xyz.nucleoid.packettweaker.PacketContext;
 
 public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
 
@@ -50,7 +51,7 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
 //    }
 
     @Override
-    public String getPolymerSkinValue(BlockState state, BlockPos pos, ServerPlayerEntity player) {
+    public String getPolymerSkinValue(BlockState state, BlockPos pos, PacketContext context) {
         return state.get(LIT) ? ACTIVE_SKIN : INACTIVE_SKIN;
     }
 

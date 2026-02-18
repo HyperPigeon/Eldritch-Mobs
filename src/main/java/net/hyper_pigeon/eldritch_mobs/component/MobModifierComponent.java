@@ -150,10 +150,10 @@ public class MobModifierComponent implements ModifierComponent {
     }
 
     private void increaseMaxHealthForModifier(EntityAttributeModifier modifier) {
-        EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.GENERIC_MAX_HEALTH);
+        EntityAttributeInstance entityAttributeInstance = provider.getAttributeInstance(EntityAttributes.MAX_HEALTH);
         assert entityAttributeInstance != null;
         if (!entityAttributeInstance.hasModifier(modifier.id())) entityAttributeInstance.addPersistentModifier(modifier);
-        provider.setHealth((float) provider.getAttributeValue(EntityAttributes.GENERIC_MAX_HEALTH));
+        provider.setHealth((float) provider.getAttributeValue(EntityAttributes.MAX_HEALTH));
     }
 
     public void increaseHealth() {

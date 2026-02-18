@@ -81,7 +81,8 @@ public class SummonUltraCommand {
             NbtCompound nbtCompound = nbt.copy();
             nbtCompound.putString("id", entityType.registryKey().getValue().toString());
             ServerWorld serverWorld = source.getWorld();
-            Entity entity = EntityType.loadEntityWithPassengers(nbtCompound, serverWorld, entityx -> {
+            SpawnReason spawnReason = SpawnReason.COMMAND;
+            Entity entity = EntityType.loadEntityWithPassengers(nbtCompound, serverWorld, spawnReason, entityx -> {
                 entityx.refreshPositionAndAngles(pos.x, pos.y, pos.z, entityx.getYaw(), entityx.getPitch());
                 return entityx;
             });

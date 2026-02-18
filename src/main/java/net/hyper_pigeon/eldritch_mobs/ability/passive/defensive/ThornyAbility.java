@@ -7,6 +7,7 @@ import net.hyper_pigeon.eldritch_mobs.ability.AbilityType;
 import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.server.world.ServerWorld;
 
 public class ThornyAbility implements Ability {
 
@@ -29,8 +30,8 @@ public class ThornyAbility implements Ability {
 
     @Override
     public void onDamaged(LivingEntity entity, DamageSource source, float amount) {
-        if (source.getAttacker() != null && source.getAttacker().isAlive()) {
-            source.getAttacker().damage(entity.getDamageSources().magic(), (float) (amount * thornyConfig.thornyReturnDamage));
+        if (source.getAttacker() != null && source.getAttacker().isAlive() && entity.getWorld() instanceof ServerWorld serverWorld) {
+            source.getAttacker().damage(serverWorld , entity.getDamageSources().magic(), (float) (amount * thornyConfig.thornyReturnDamage));
         }
     }
 }
