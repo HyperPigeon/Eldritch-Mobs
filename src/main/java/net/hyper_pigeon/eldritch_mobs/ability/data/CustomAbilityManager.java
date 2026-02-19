@@ -7,6 +7,7 @@ import net.hyper_pigeon.eldritch_mobs.ability.AbilityType;
 import net.hyper_pigeon.eldritch_mobs.ability.ActivationType;
 import net.hyper_pigeon.eldritch_mobs.ability.data.records.AbilityConfigurationData;
 import net.minecraft.resource.JsonDataLoader;
+import net.minecraft.resource.ResourceFinder;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
@@ -16,7 +17,7 @@ import java.util.Map;
 public class CustomAbilityManager extends JsonDataLoader<AbilityConfigurationData> implements IdentifiableResourceReloadListener {
 
     public CustomAbilityManager() {
-        super(AbilityConfigurationData.CODEC, "ability");
+        super(AbilityConfigurationData.CODEC, ResourceFinder.json("ability"));
     }
 
     @Override
