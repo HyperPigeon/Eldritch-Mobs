@@ -7,7 +7,6 @@ import net.hyper_pigeon.eldritch_mobs.rank.MobRank;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.projectile.ProjectileUtil;
@@ -34,7 +33,7 @@ public class GameRendererMixin implements GameRendererExtensions {
 			at = @At("HEAD")
 	)
 	private void injectUpdateOnGameRenderer(RenderTickCounter tickCounter, CallbackInfo ci) {
-		this.eldritch_mobs$updateTargetedEldritch(tickCounter.getTickDelta(true));
+		this.eldritch_mobs$updateTargetedEldritch(tickCounter.getTickProgress(true));
 	}
 
 	@Override

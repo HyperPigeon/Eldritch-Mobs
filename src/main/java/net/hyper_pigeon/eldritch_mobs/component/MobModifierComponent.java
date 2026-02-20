@@ -174,10 +174,10 @@ public class MobModifierComponent implements ModifierComponent {
     @Override
     public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 
-        healthIncreased = tag.getBoolean("healthIncreased");
-        numMaxAbilities = tag.getInt("numMaxAbilities");
-        checkedIfSpawnedInSoothingLanternChunk = tag.getBoolean("checkedIfSpawnedInSoothingLanternChunk");
-        titleSet = tag.getBoolean("titleSet");
+        healthIncreased = tag.getBoolean("healthIncreased", false);
+        numMaxAbilities = tag.getInt("numMaxAbilities", 0);
+        checkedIfSpawnedInSoothingLanternChunk = tag.getBoolean("checkedIfSpawnedInSoothingLanternChunk", false);
+        titleSet = tag.getBoolean("titleSet", false);
 
         switch (numMaxAbilities) {
             case 1, 2, 3, 4 -> {
@@ -197,7 +197,7 @@ public class MobModifierComponent implements ModifierComponent {
 
         if (modifiers != null) modifiers.clear();
 
-        for (String name : tag.getCompound("abilities").getKeys()) AbilityHelper.getAbilityRecordByName(name).ifPresent(record -> modifiers.add(record.ability));
+        for (String name : tag.getCompoundOrEmpty("abilities").getKeys()) AbilityHelper.getAbilityRecordByName(name).ifPresent(record -> modifiers.add(record.ability));
     }
 
     @Override

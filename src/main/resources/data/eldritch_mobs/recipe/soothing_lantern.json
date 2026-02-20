@@ -1,24 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "EGE",
-    "GSG",
-    "EGE"
+    "#g#",
+    "gSg",
+    "#g#"
   ],
   "key": {
-    "E": {
-      "item": "minecraft:emerald"
-    },
-    "G": {
-      "item": "minecraft:gold_ingot"
-    },
-    "S": {
-      "item": "minecraft:sea_lantern"
-    }
+    "#": "minecraft:emerald",
+    "g": "minecraft:gold_ingot",
+    "S": "minecraft:sea_lantern"
   },
   "result": {
     "id": "eldritch_mobs:soothing_lantern",
     "count": 1
   }
 }
-

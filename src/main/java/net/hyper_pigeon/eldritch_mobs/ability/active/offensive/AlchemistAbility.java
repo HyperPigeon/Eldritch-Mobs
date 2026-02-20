@@ -8,7 +8,7 @@ import net.hyper_pigeon.eldritch_mobs.config.EldritchMobsConfig;
 import net.minecraft.component.type.PotionContentsComponent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.projectile.thrown.PotionEntity;
+import net.minecraft.entity.projectile.thrown.SplashPotionEntity;
 import net.minecraft.item.Items;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
@@ -64,7 +64,7 @@ public class AlchemistAbility implements Ability {
                 RegistryEntry<Potion> potion = target.hasInvertedHealingAndHarm()
                         ? (ALCHEMIST_CONFIG.useStrongHealing ? Potions.STRONG_HEALING : Potions.HEALING)
                         : (ALCHEMIST_CONFIG.useStrongHarming ? Potions.STRONG_HARMING : Potions.HARMING);
-                PotionEntity potionEntity = new PotionEntity(mobEntity.getEntityWorld(), mobEntity, PotionContentsComponent.createStack(Items.SPLASH_POTION, potion));
+                SplashPotionEntity potionEntity = new SplashPotionEntity(mobEntity.getEntityWorld(), mobEntity, PotionContentsComponent.createStack(Items.SPLASH_POTION, potion));
                 potionEntity.setItem(PotionContentsComponent.createStack(Items.SPLASH_POTION, potion));
                 potionEntity.setPitch(potionEntity.getPitch() - 20);
                 potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.25F, 8.0F);

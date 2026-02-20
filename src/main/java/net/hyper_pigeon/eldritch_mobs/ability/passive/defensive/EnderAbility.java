@@ -70,7 +70,7 @@ public class EnderAbility implements Ability {
         if (bl && !bl2) {
             boolean bl3 = livingEntity.teleport(x, y, z, false);
             if (bl3 && !livingEntity.isSilent()) {
-                livingEntity.getEntityWorld().playSound(null, livingEntity.prevX, livingEntity.prevY, livingEntity.prevZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, livingEntity.getSoundCategory(), 1.0F, 1.0F);
+                livingEntity.getEntityWorld().playSound(null, livingEntity.lastX, livingEntity.lastY, livingEntity.lastZ, SoundEvents.ENTITY_ENDERMAN_TELEPORT, livingEntity.getSoundCategory(), 1.0F, 1.0F);
                 livingEntity.playSound(SoundEvents.ENTITY_ENDERMAN_TELEPORT, 1.0F, 1.0F);
             }
         }
