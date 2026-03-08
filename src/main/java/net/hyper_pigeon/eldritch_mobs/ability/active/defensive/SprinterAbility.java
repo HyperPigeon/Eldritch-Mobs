@@ -42,9 +42,9 @@ public class SprinterAbility implements Ability {
 
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
-        if (!mobEntity.getEntityWorld().isClient() && canUseAbility(mobEntity)) {
+        if (!mobEntity.getWorld().isClient() && canUseAbility(mobEntity)) {
             mobEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, sprinterConfig.duration, sprinterConfig.amplifier));
-            nextUseTime = mobEntity.getEntityWorld().getTime() + getCooldown();
+            nextUseTime = mobEntity.getWorld().getTime() + getCooldown();
         }
     }
 

@@ -45,12 +45,12 @@ public class AlchemistAbility implements Ability {
 
     @Override
     public boolean canUseAbility(MobEntity mobEntity) {
-        return mobEntity.getEntityWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
+        return mobEntity.getWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
-        if (!mobEntity.getEntityWorld().isClient() && canUseAbility(mobEntity)) {
+        if (!mobEntity.getWorld().isClient() && canUseAbility(mobEntity)) {
             LivingEntity target = mobEntity.getTarget();
 
             if (target != null) {
@@ -64,12 +64,12 @@ public class AlchemistAbility implements Ability {
                 RegistryEntry<Potion> potion = target.hasInvertedHealingAndHarm()
                         ? (ALCHEMIST_CONFIG.useStrongHealing ? Potions.STRONG_HEALING : Potions.HEALING)
                         : (ALCHEMIST_CONFIG.useStrongHarming ? Potions.STRONG_HARMING : Potions.HARMING);
-                SplashPotionEntity potionEntity = new SplashPotionEntity(mobEntity.getEntityWorld(), mobEntity, PotionContentsComponent.createStack(Items.SPLASH_POTION, potion));
+                SplashPotionEntity potionEntity = new SplashPotionEntity(mobEntity.getWorld(), mobEntity, PotionContentsComponent.createStack(Items.SPLASH_POTION, potion));
                 potionEntity.setItem(PotionContentsComponent.createStack(Items.SPLASH_POTION, potion));
                 potionEntity.setPitch(potionEntity.getPitch() - 20);
                 potionEntity.setVelocity(d, e + (double) (g * 0.2F), f, 0.25F, 8.0F);
-                mobEntity.getEntityWorld().spawnEntity(potionEntity);
-                nextUseTime = getCooldown() + mobEntity.getEntityWorld().getTime();
+                mobEntity.getWorld().spawnEntity(potionEntity);
+                nextUseTime = getCooldown() + mobEntity.getWorld().getTime();
             }
         }
     }

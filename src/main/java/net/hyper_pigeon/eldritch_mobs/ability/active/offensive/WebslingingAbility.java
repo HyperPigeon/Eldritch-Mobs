@@ -38,13 +38,13 @@ public class WebslingingAbility implements Ability {
 
     @Override
     public boolean canUseAbility(MobEntity mobEntity) {
-        return mobEntity.getEntityWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
+        return mobEntity.getWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
-        if (!mobEntity.getEntityWorld().isClient() && mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
-            long time = mobEntity.getEntityWorld().getTime();
+        if (!mobEntity.getWorld().isClient() && mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
+            long time = mobEntity.getWorld().getTime();
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
                 LivingEntity target = mobEntity.getTarget();
@@ -55,10 +55,10 @@ public class WebslingingAbility implements Ability {
 
                 BlockPos blockPos = new BlockPos(x,y,z);
 
-                if (target.getEntityWorld().getBlockState(blockPos).getBlock().equals(Blocks.AIR) ||
-                        target.getEntityWorld().getBlockState(blockPos).getBlock().equals(Blocks.CAVE_AIR)
-                        || target.getEntityWorld().getBlockState(blockPos).getBlock().equals(Blocks.VOID_AIR)) {
-                    target.getEntityWorld().setBlockState(blockPos, Blocks.COBWEB.getDefaultState());
+                if (target.getWorld().getBlockState(blockPos).getBlock().equals(Blocks.AIR) ||
+                        target.getWorld().getBlockState(blockPos).getBlock().equals(Blocks.CAVE_AIR)
+                        || target.getWorld().getBlockState(blockPos).getBlock().equals(Blocks.VOID_AIR)) {
+                    target.getWorld().setBlockState(blockPos, Blocks.COBWEB.getDefaultState());
                 }
 
             }
