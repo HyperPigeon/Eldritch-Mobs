@@ -3,6 +3,7 @@ package net.hyper_pigeon.eldritch_mobs.mixin.client;
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import net.hyper_pigeon.eldritch_mobs.extensions.EntityRenderDispatcherExtensions;
 import net.hyper_pigeon.eldritch_mobs.extensions.GameRendererExtensions;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.util.ObjectAllocator;
@@ -21,6 +22,10 @@ public class WorldRendererMixin {
     @Final
     private EntityRenderDispatcher entityRenderDispatcher;
 
+    @Shadow
+    @Final
+    private MinecraftClient client;
+
     @Inject(
             method = "render",
             at = @At(
@@ -29,6 +34,6 @@ public class WorldRendererMixin {
             )
     )
     private void configureDispatcher(ObjectAllocator allocator, RenderTickCounter tickCounter, boolean renderBlockOutline, Camera camera, Matrix4f positionMatrix, Matrix4f projectionMatrix, GpuBufferSlice fog, Vector4f fogColor, boolean shouldRenderSky, CallbackInfo ci) {
-       ((EntityRenderDispatcherExtensions) this.entityRenderDispatcher).eldritch_mobs$configureTargetedEldritch(((GameRendererExtensions) gameRenderer).eldritch_mobs$getTargetedEldritch());
+        ((EntityRenderDispatcherExtensions) this.entityRenderDispatcher).eldritch_mobs$configureTargetedEldritch(((GameRendererExtensions) this.client.gameRenderer).eldritch_mobs$getTargetedEldritch());
     }
 }
