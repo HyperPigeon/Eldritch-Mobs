@@ -10,7 +10,6 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -24,10 +23,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
-    @Shadow public abstract ServerWorld getServerWorld();
+    @Shadow public abstract ServerWorld getWorld();
 
-    public ServerPlayerEntityMixin(World world, BlockPos pos, float yaw, GameProfile gameProfile) {
-        super(world, pos, yaw, gameProfile);
+    public ServerPlayerEntityMixin(World world, GameProfile gameProfile) {
+        super(world, gameProfile);
     }
 
 
@@ -39,7 +38,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
             Vec3d rotationVec = getRotationVec(1.0F);
             Vec3d reachVec = cameraVec.add(rotationVec.multiply(64.0D));
             EntityHitResult entityHitResult = ProjectileUtil.getEntityCollision(
-                    getServerWorld(),
+                    getWorld(),
                     (ServerPlayerEntity) (Object) this,
                     cameraVec,
                     reachVec,

@@ -40,21 +40,21 @@ public class StormyAbility implements Ability {
 
     @Override
     public boolean canUseAbility(MobEntity mobEntity) {
-        return mobEntity.getEntityWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
+        return mobEntity.getWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
-        if (!mobEntity.getEntityWorld().isClient() && mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
-            long time = mobEntity.getEntityWorld().getTime();
+        if (!mobEntity.getWorld().isClient() && mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
+            long time = mobEntity.getWorld().getTime();
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
                 LivingEntity target = mobEntity.getTarget();
-                LightningEntity lightningEntity = new LightningEntity(EntityType.LIGHTNING_BOLT, mobEntity.getEntityWorld());
+                LightningEntity lightningEntity = new LightningEntity(EntityType.LIGHTNING_BOLT, mobEntity.getWorld());
 
                 Random random = new Random();
                 lightningEntity.setPos(target.getX() + random.nextInt(3), target.getY() + random.nextInt(3), target.getZ() + random.nextInt(3));
-                mobEntity.getEntityWorld().spawnEntity(lightningEntity);
+                mobEntity.getWorld().spawnEntity(lightningEntity);
             }
         }
     }

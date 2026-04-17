@@ -135,7 +135,7 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                 && (causedByPlayer || !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.onlyDropLootIfKilledByPlayers)
                 && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.disableLootDrops) {
 
-            MinecraftServer server = this.getEntityWorld().getServer();
+            MinecraftServer server = this.getWorld().getServer();
 
             if (server != null) {
                 LootWorldContext.Builder builder = new LootWorldContext.Builder(

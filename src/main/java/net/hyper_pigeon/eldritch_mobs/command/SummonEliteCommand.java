@@ -44,7 +44,7 @@ public class SummonEliteCommand {
                                 ((RequiredArgumentBuilder)CommandManager.argument(
                                                 "entity", RegistryEntryReferenceArgumentType.registryEntry(registryAccess, RegistryKeys.ENTITY_TYPE)
                                         )
-                                        .suggests(SuggestionProviders.SUMMONABLE_ENTITIES)
+                                        .suggests(SuggestionProviders.cast(SuggestionProviders.SUMMONABLE_ENTITIES))
                                         .executes(
                                                 context -> execute((ServerCommandSource)context.getSource(), RegistryEntryReferenceArgumentType.getSummonableEntityType(context, "entity"), ((ServerCommandSource)context.getSource()).getPosition(), new NbtCompound(), true)
                                         ))

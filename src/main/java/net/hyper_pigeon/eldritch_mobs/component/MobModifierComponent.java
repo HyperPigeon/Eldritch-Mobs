@@ -19,6 +19,9 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.storage.NbtReadView;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.text.Text;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -172,12 +175,12 @@ public class MobModifierComponent implements ModifierComponent {
     public ServerBossBar getBossBar() { return bossBar; }
 
     @Override
-    public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+    public void readData(ReadView view) {
 
-        healthIncreased = tag.getBoolean("healthIncreased", false);
-        numMaxAbilities = tag.getInt("numMaxAbilities", 0);
-        checkedIfSpawnedInSoothingLanternChunk = tag.getBoolean("checkedIfSpawnedInSoothingLanternChunk", false);
-        titleSet = tag.getBoolean("titleSet", false);
+        healthIncreased = view.getBoolean("healthIncreased", false);
+        numMaxAbilities = view.getInt("numMaxAbilities", 0);
+        checkedIfSpawnedInSoothingLanternChunk = view.getBoolean("checkedIfSpawnedInSoothingLanternChunk", false);
+        titleSet = view.getBoolean("titleSet", false);
 
         switch (numMaxAbilities) {
             case 1, 2, 3, 4 -> {
@@ -197,15 +200,17 @@ public class MobModifierComponent implements ModifierComponent {
 
         if (modifiers != null) modifiers.clear();
 
-        for (String name : tag.getCompoundOrEmpty("abilities").getKeys()) AbilityHelper.getAbilityRecordByName(name).ifPresent(record -> modifiers.add(record.ability));
+        if(view.read("abilities", NbtCompound.CODEC).isPresent()) {
+            for (String name : view.read("abilities", NbtCompound.CODEC).get().getKeys()) AbilityHelper.getAbilityRecordByName(name).ifPresent(record -> modifiers.add(record.ability));
+        }
     }
 
     @Override
-    public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
-        tag.putBoolean("healthIncreased", healthIncreased);
-        tag.putInt("numMaxAbilities", numMaxAbilities);
-        tag.putBoolean("checkedIfSpawnedInSoothingLanternChunk", checkedIfSpawnedInSoothingLanternChunk);
-        tag.putBoolean("titleSet", titleSet);
+    public void writeData(WriteView view) {
+        view.putBoolean("healthIncreased", healthIncreased);
+        view.putInt("numMaxAbilities", numMaxAbilities);
+        view.putBoolean("checkedIfSpawnedInSoothingLanternChunk", checkedIfSpawnedInSoothingLanternChunk);
+        view.putBoolean("titleSet", titleSet);
 
         NbtCompound mobAbilities = new NbtCompound();
 
@@ -213,7 +218,7 @@ public class MobModifierComponent implements ModifierComponent {
             for (Ability ability : modifiers) mobAbilities.putString(ability.getName(), ability.getName());
         }
 
-        tag.put("abilities", mobAbilities);
+        view.put("abilities", NbtCompound.CODEC, mobAbilities);
     }
 
     public void makeMobNormal() {
@@ -228,7 +233,7 @@ public class MobModifierComponent implements ModifierComponent {
         Vec3d vec3d2 = player.getRotationVec(1.0F);
         Vec3d vec3d3 = vec3d.add(vec3d2.x * 100.0D, vec3d2.y * 100.0D, vec3d2.z * 100.0D);
         EntityHitResult entityHitResult = ProjectileUtil.getEntityCollision(
-                player.getEntityWorld(),
+                player.getWorld(),
                 player,
                 vec3d,
                 vec3d3,
@@ -247,8 +252,8 @@ public class MobModifierComponent implements ModifierComponent {
     @Override
     public void serverTick() {
         if (!checkedIfSpawnedInSoothingLanternChunk) {
-            if (this.rank != MobRank.NONE  && !provider.getEntityWorld().isClient) {
-                if(SoothingLanternPersistentState.get((ServerWorld) provider.getEntityWorld()).containsChunk(provider.getChunkPos())) {
+            if (this.rank != MobRank.NONE  && !provider.getWorld().isClient) {
+                if(SoothingLanternPersistentState.get((ServerWorld) provider.getWorld()).containsChunk(provider.getChunkPos())) {
                     makeMobNormal();
                 }
                 else {

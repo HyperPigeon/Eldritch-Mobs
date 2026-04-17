@@ -51,7 +51,7 @@ public class CustomAbility implements Ability {
 
     @Override
     public boolean canUseAbility(MobEntity mobEntity) {
-        return mobEntity.getEntityWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
+        return mobEntity.getWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     public long getCooldown() {
@@ -70,7 +70,7 @@ public class CustomAbility implements Ability {
             ServerCommandSource commandSource = mobEntity.getServer().getCommandSource();
             ParseResults<ServerCommandSource> parseResults = mobEntity.getServer().getCommandManager().getDispatcher().parse(parsedCommand, commandSource);
             mobEntity.getServer().getCommandManager().execute(parseResults, parsedCommand);
-            nextUseTime = mobEntity.getEntityWorld().getTime() + getCooldown();
+            nextUseTime = mobEntity.getWorld().getTime() + getCooldown();
         }
     }
 

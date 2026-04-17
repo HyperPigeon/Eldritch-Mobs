@@ -39,13 +39,13 @@ public class GhastlyAbility implements Ability {
 
     @Override
     public boolean canUseAbility(MobEntity mobEntity) {
-        return mobEntity.getEntityWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
+        return mobEntity.getWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
-        if (!mobEntity.getEntityWorld().isClient() && mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
-            long time = mobEntity.getEntityWorld().getTime();
+        if (!mobEntity.getWorld().isClient() && mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
+            long time = mobEntity.getWorld().getTime();
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
                 LivingEntity target = mobEntity.getTarget();
@@ -55,14 +55,14 @@ public class GhastlyAbility implements Ability {
                 double g = target.getBodyY(0.5D) - (0.5D + mobEntity.getBodyY(0.5D));
                 double h = target.getZ() - (mobEntity.getZ() + vec3d.z * 4.0D);
                 if (!mobEntity.isSilent()) {
-                    mobEntity.getEntityWorld().syncWorldEvent(null, 1016, mobEntity.getBlockPos(), 0);
+                    mobEntity.getWorld().syncWorldEvent(null, 1016, mobEntity.getBlockPos(), 0);
                 }
 
                 FireballEntity fireballEntity;
-                fireballEntity = new FireballEntity(mobEntity.getEntityWorld(), mobEntity, new Vec3d(f, g, h), ghastlyConfig.fireballPower);
+                fireballEntity = new FireballEntity(mobEntity.getWorld(), mobEntity, new Vec3d(f, g, h), ghastlyConfig.fireballPower);
 
                 fireballEntity.updatePosition(mobEntity.getX() + vec3d.x * 4.0D, mobEntity.getBodyY(0.5D) + 0.5D, fireballEntity.getZ() + vec3d.z * 4.0D);
-                mobEntity.getEntityWorld().spawnEntity(fireballEntity);
+                mobEntity.getWorld().spawnEntity(fireballEntity);
             }
         }
     }
