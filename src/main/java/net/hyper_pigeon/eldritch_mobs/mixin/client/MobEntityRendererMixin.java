@@ -5,8 +5,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.hyper_pigeon.eldritch_mobs.EldritchMobsMod;
-import net.hyper_pigeon.eldritch_mobs.extensions.EntityRenderDispatcherExtensions;
-import net.minecraft.client.render.entity.EntityRenderDispatcher;
+import net.hyper_pigeon.eldritch_mobs.extensions.EntityRenderManagerExtensions;
+import net.minecraft.client.render.entity.EntityRenderManager;
 import net.minecraft.client.render.entity.MobEntityRenderer;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,12 +19,12 @@ public class MobEntityRendererMixin {
             method = "hasLabel(Lnet/minecraft/entity/mob/MobEntity;D)Z",
             at = @At(
                     value = "FIELD",
-                    target = "Lnet/minecraft/client/render/entity/EntityRenderDispatcher;targetedEntity:Lnet/minecraft/entity/Entity;"
+                    target = "Lnet/minecraft/client/render/entity/EntityRenderManager;targetedEntity:Lnet/minecraft/entity/Entity;"
             )
     )
-    private Entity replaceTargetedEntity(EntityRenderDispatcher instance, Operation<Entity> original) {
+    private Entity replaceTargetedEntity(EntityRenderManager instance, Operation<Entity> original) {
         if (EldritchMobsMod.ELDRITCH_MOBS_CONFIG.distantVisibleNameTags) {
-			var eldritch = ((EntityRenderDispatcherExtensions) instance).eldritch_mobs$getTargetedEldritch();
+			var eldritch = ((EntityRenderManagerExtensions) instance).eldritch_mobs$getTargetedEldritch();
 			if (eldritch != null) {
 				return eldritch;
 			}
