@@ -8,9 +8,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.particle.SimpleParticleType;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.particle.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
@@ -32,7 +30,11 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
     @SuppressWarnings("SpellCheckingInspection") public static final String ACTIVE_SKIN
             = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjI0MzcwNjA3NWE0ZjVmMjczMWE4YWQ1ZjYzNjA1OGIxZDViM2E0OWMxZjE0ZjViOWJhYmNmMjA0NGY1OTM1NSJ9fX0=";
 
-    public static final SimpleParticleType[] PARTICLE_TYPES = new SimpleParticleType[] { ParticleTypes.ENCHANT, ParticleTypes.PORTAL, ParticleTypes.EFFECT };
+    public static final ParticleEffect[] PARTICLE_TYPES = new ParticleEffect[] {
+            ParticleTypes.ENCHANT,
+            ParticleTypes.PORTAL,
+            EffectParticleEffect.of(ParticleTypes.EFFECT, 6742307, 1.0f)
+    };
 
     public SoothingLanternBlock(final Settings settings) {
         this(settings, false);
@@ -59,7 +61,7 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
 
     @Override public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
         super.onPlaced(world, pos, state, placer, itemStack);
-        if (!world.isClient) {
+        if (!world.isClient()) {
             if (state.get(LIT)) SoothingLanternPersistentState.get((ServerWorld) world).addChunkPos((ServerWorld) world, pos);
             else SoothingLanternPersistentState.get((ServerWorld) world).removeChunkPos(pos);
         }
@@ -94,7 +96,7 @@ public class SoothingLanternBlock extends Block implements PolymerHeadBlock {
 
         SoothingLanternPersistentState.get((ServerWorld) world).printSoothingLanternChunks();
 
-        if (!world.isClient) {
+        if (!world.isClient()) {
             boolean isLit = state.get(LIT);
             if (isLit != world.isReceivingRedstonePower(pos)) {
                 // If the block is lit and is not receiving redstone power, turn it off.

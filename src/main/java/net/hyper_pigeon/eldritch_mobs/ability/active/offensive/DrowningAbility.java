@@ -33,11 +33,11 @@ public class DrowningAbility implements Ability {
 
     @Override
     public void onAbilityUse(MobEntity mobEntity) {
-        if (!mobEntity.getWorld().isClient() && mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
+        if (!mobEntity.getEntityWorld().isClient() && mobEntity.getTarget() != null && mobEntity.canSee(mobEntity.getTarget()) && mobEntity.getTarget().isAlive()) {
             LivingEntity target = mobEntity.getTarget();
             if (!(target.hasStatusEffect(StatusEffects.WATER_BREATHING))) {
                 //world can be cast because we query if it is !client
-                target.damage((ServerWorld) mobEntity.getWorld(), mobEntity.getDamageSources().drown(), drowningConfig.drowningDamage);
+                target.damage((ServerWorld) mobEntity.getEntityWorld(), mobEntity.getDamageSources().drown(), drowningConfig.drowningDamage);
             }
         }
     }

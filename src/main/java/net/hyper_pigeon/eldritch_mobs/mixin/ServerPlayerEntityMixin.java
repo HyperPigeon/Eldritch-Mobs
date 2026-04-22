@@ -23,7 +23,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerPlayerEntity.class)
 public abstract class ServerPlayerEntityMixin extends PlayerEntity {
 
-    @Shadow public abstract ServerWorld getWorld();
+    @Shadow public abstract ServerWorld getEntityWorld();
 
     public ServerPlayerEntityMixin(World world, GameProfile gameProfile) {
         super(world, gameProfile);
@@ -38,7 +38,7 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
             Vec3d rotationVec = getRotationVec(1.0F);
             Vec3d reachVec = cameraVec.add(rotationVec.multiply(64.0D));
             EntityHitResult entityHitResult = ProjectileUtil.getEntityCollision(
-                    getWorld(),
+                    getEntityWorld(),
                     (ServerPlayerEntity) (Object) this,
                     cameraVec,
                     reachVec,

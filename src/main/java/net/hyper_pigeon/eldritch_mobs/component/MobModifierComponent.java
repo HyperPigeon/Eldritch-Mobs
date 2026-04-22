@@ -233,7 +233,7 @@ public class MobModifierComponent implements ModifierComponent {
         Vec3d vec3d2 = player.getRotationVec(1.0F);
         Vec3d vec3d3 = vec3d.add(vec3d2.x * 100.0D, vec3d2.y * 100.0D, vec3d2.z * 100.0D);
         EntityHitResult entityHitResult = ProjectileUtil.getEntityCollision(
-                player.getWorld(),
+                player.getEntityWorld(),
                 player,
                 vec3d,
                 vec3d3,
@@ -252,8 +252,8 @@ public class MobModifierComponent implements ModifierComponent {
     @Override
     public void serverTick() {
         if (!checkedIfSpawnedInSoothingLanternChunk) {
-            if (this.rank != MobRank.NONE  && !provider.getWorld().isClient) {
-                if(SoothingLanternPersistentState.get((ServerWorld) provider.getWorld()).containsChunk(provider.getChunkPos())) {
+            if (this.rank != MobRank.NONE  && !provider.getEntityWorld().isClient()) {
+                if(SoothingLanternPersistentState.get((ServerWorld) provider.getEntityWorld()).containsChunk(provider.getChunkPos())) {
                     makeMobNormal();
                 }
                 else {

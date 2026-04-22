@@ -32,15 +32,15 @@ public class DuplicatorAbility implements Ability {
 
     @Override
     public boolean canUseAbility(MobEntity mobEntity) {
-        return mobEntity.getWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
+        return mobEntity.getEntityWorld().getTime() > nextUseTime && mobEntity.getTarget() != null;
     }
 
     public void onAbilityUse(MobEntity entity) {
-        if (!entity.getWorld().isClient() && entity.getTarget() != null && entity.canSee(entity.getTarget()) && entity.getTarget().isAlive()) {
-            long time = entity.getWorld().getTime();
+        if (!entity.getEntityWorld().isClient() && entity.getTarget() != null && entity.canSee(entity.getTarget()) && entity.getTarget().isAlive()) {
+            long time = entity.getEntityWorld().getTime();
             if (time > nextUseTime) {
                 nextUseTime = time + cooldown;
-                entity.getType().spawn((ServerWorld) entity.getWorld(), entity.getBlockPos(), SpawnReason.REINFORCEMENT);
+                entity.getType().spawn((ServerWorld) entity.getEntityWorld(), entity.getBlockPos(), SpawnReason.REINFORCEMENT);
             }
         }
     }

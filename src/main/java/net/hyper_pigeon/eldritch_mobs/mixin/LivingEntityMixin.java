@@ -135,41 +135,41 @@ public abstract class LivingEntityMixin extends Entity implements ComponentProvi
                 && (causedByPlayer || !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.onlyDropLootIfKilledByPlayers)
                 && !EldritchMobsMod.ELDRITCH_MOBS_CONFIG.disableLootDrops) {
 
-            MinecraftServer server = this.getWorld().getServer();
+            MinecraftServer server = this.getEntityWorld().getServer();
 
             if (server != null) {
                 LootWorldContext.Builder builder = new LootWorldContext.Builder(
-                        (ServerWorld)this.getWorld()
+                        (ServerWorld)this.getEntityWorld()
                 )
                         .add(LootContextParameters.THIS_ENTITY, this)
-                        .add(LootContextParameters.ORIGIN, this.getPos())
+                        .add(LootContextParameters.ORIGIN, this.getEntityPos())
                         .add(LootContextParameters.DAMAGE_SOURCE, damageSource)
                         .addOptional(LootContextParameters.ATTACKING_ENTITY, damageSource.getAttacker())
                         .addOptional(LootContextParameters.DIRECT_ATTACKING_ENTITY, damageSource.getSource());
 
                 LootWorldContext lootContextParameterSet = builder.build(LootContextTypes.ENTITY);
 
-                LootTable eliteLootTable = this.getWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ELITE_LOOT_ID));
-                LootTable ultraLootTable = this.getWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ULTRA_LOOT_ID));
-                LootTable eldritchLootTable = this.getWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ELDRITCH_LOOT_ID));
+                LootTable eliteLootTable = this.getEntityWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ELITE_LOOT_ID));
+                LootTable ultraLootTable = this.getEntityWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ULTRA_LOOT_ID));
+                LootTable eldritchLootTable = this.getEntityWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ELDRITCH_LOOT_ID));
 
                 switch (EldritchMobsMod.ELDRITCH_MODIFIERS.get(this).getRank()) {
                     case ELITE -> {
-                        LootTable lootTable = this.getWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ELITE_LOOT_ID));
-                        lootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getWorld(), stack));
+                        LootTable lootTable = this.getEntityWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ELITE_LOOT_ID));
+                        lootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getEntityWorld(), stack));
                     }
                     case ULTRA -> {
-                        LootTable lootTable = this.getWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ULTRA_LOOT_ID));
-                        lootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getWorld(), stack));
+                        LootTable lootTable = this.getEntityWorld().getServer().getReloadableRegistries().getLootTable(RegistryKey.of(RegistryKeys.LOOT_TABLE, EldritchMobsLootTables.ULTRA_LOOT_ID));
+                        lootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getEntityWorld(), stack));
                         if (EldritchMobsMod.ELDRITCH_MOBS_CONFIG.combinedLootDrop) {
-                            eliteLootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getWorld(), stack));
+                            eliteLootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getEntityWorld(), stack));
                         }
                     }
                     case ELDRITCH -> {
-                        eldritchLootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getWorld(), stack));
+                        eldritchLootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getEntityWorld(), stack));
                         if (EldritchMobsMod.ELDRITCH_MOBS_CONFIG.combinedLootDrop) {
-                            eliteLootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getWorld(), stack));
-                            ultraLootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getWorld(), stack));
+                            eliteLootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getEntityWorld(), stack));
+                            ultraLootTable.generateLoot(lootContextParameterSet, stack -> this.dropStack((ServerWorld)this.getEntityWorld(), stack));
                         }
                     }
                     default -> {}
