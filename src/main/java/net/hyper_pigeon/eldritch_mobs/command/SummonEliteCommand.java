@@ -39,7 +39,7 @@ public class SummonEliteCommand {
 
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
         dispatcher.register(
-                (LiteralArgumentBuilder)((LiteralArgumentBuilder)CommandManager.literal("summon_elite").requires(source -> source.hasPermissionLevel(2)))
+                (LiteralArgumentBuilder)((LiteralArgumentBuilder)CommandManager.literal("summon_elite").requires(source -> CommandPermissionHelper.hasPermission(source, 2)))
                         .then(
                                 ((RequiredArgumentBuilder)CommandManager.argument(
                                                 "entity", RegistryEntryReferenceArgumentType.registryEntry(registryAccess, RegistryKeys.ENTITY_TYPE)
