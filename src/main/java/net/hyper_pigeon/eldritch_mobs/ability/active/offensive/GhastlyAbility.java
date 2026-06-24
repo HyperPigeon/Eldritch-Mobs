@@ -50,7 +50,7 @@ public class GhastlyAbility implements Ability {
                 nextUseTime = time + cooldown;
                 LivingEntity target = mobEntity.getTarget();
                 double e = 4.0D;
-                Vec3d vec3d = mobEntity.getRotationVec(1.0F);
+                Vec3d vec3d = target.getEntityPos().subtract(mobEntity.getEntityPos()).normalize();
                 double f = target.getX() - (mobEntity.getX() + vec3d.x * 4.0D);
                 double g = target.getBodyY(0.5D) - (0.5D + mobEntity.getBodyY(0.5D));
                 double h = target.getZ() - (mobEntity.getZ() + vec3d.z * 4.0D);
